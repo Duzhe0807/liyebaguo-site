@@ -23,15 +23,18 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 22
+          cache: npm
 
       - name: Build
         shell: bash
         run: |
           set -euo pipefail
-          npm ci
+          # Static export uses unoptimized images, so native image build scripts are unnecessary.
+          # Skipping them avoids intermittent npm/sharp installer failures on GitHub runners.
+          npm ci --ignore-scripts --no-audit --no-fund
           npm run build
 
       - name: Create deploy archive
