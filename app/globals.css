@@ -740,3 +740,115 @@ body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opa
 .button:disabled{cursor:not-allowed;opacity:.55;filter:saturate(.55);transform:none}.notice.success{border-color:rgba(98,180,115,.34);background:#122d1a;color:#d9f0dd}.notice.error{border-color:rgba(210,88,65,.42);background:#35120f;color:#f3d3ca}
 .faq-category-nav{position:sticky;top:92px;z-index:8;display:flex;flex-wrap:wrap;gap:8px;margin:0 0 42px;padding:12px;background:rgba(12,8,7,.9);border:1px solid var(--line);backdrop-filter:blur(14px)}.faq-category-nav a{padding:9px 13px;color:var(--body);font-size:14px;border:1px solid transparent}.faq-category-nav a:hover,.faq-category-nav a:focus-visible{color:var(--gold-strong);border-color:var(--line-strong);background:rgba(199,163,92,.06)}
 @media(max-width:600px){.mobile-cta,.inner-mobile-book{right:78px;border-right:1px solid var(--line)}.mobile-cta{grid-template-columns:1fr 1fr 1fr}.inner-mobile-book a{font-size:16px}.faq-category-nav{position:static;flex-wrap:nowrap;overflow-x:auto}.faq-category-nav a{flex:0 0 auto}}
+
+/* Layout normalization: one horizontal grid and one spacing rhythm */
+:root{
+  --content:1200px;
+  --section-home:clamp(76px,7vw,96px);
+  --section-inner:clamp(68px,6vw,84px);
+}
+
+.section,
+.stories,
+.home-practical-grid,
+.contact-section,
+.inner-hero-copy,
+.inner-content,
+.related-pages{
+  width:min(calc(100% - 2 * var(--gutter)),var(--content));
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* Banner copy keeps a stable measure and never breaks letter by letter. */
+.hero h1,
+.inner-hero h1{
+  max-width:12ch;
+  text-wrap:balance;
+  word-break:normal;
+  overflow-wrap:normal;
+}
+.hero-business{
+  max-width:46ch;
+  text-wrap:balance;
+  word-break:normal;
+  overflow-wrap:normal;
+}
+.hero-sub,
+.inner-hero-copy>p:last-child{
+  max-width:62ch;
+  text-wrap:pretty;
+  word-break:normal;
+  overflow-wrap:break-word;
+}
+
+@media(min-width:981px){
+  .hero-copy{
+    width:100%;
+    max-width:none;
+    margin:0;
+    padding-left:max(var(--gutter),calc((100vw - var(--content))/2));
+    padding-right:55%;
+  }
+  .stories{padding-block:var(--section-home);gap:56px}
+  .story:nth-child(n){width:100%;margin-inline:0}
+  .section{padding-block:var(--section-home)}
+  .home-practical-grid{margin-block:var(--section-home)}
+  .conversion{width:min(calc(100% - 2 * var(--gutter)),var(--content));padding-block:var(--section-home)}
+  .booking-tabs,.conversion form,.conversion .notice{width:min(100%,900px);margin-left:auto;margin-right:auto}
+}
+
+.journey{
+  padding-left:max(var(--gutter),calc((100vw - var(--content))/2));
+  padding-right:max(var(--gutter),calc((100vw - var(--content))/2));
+}
+.contact-section{margin-top:0;margin-bottom:var(--section-home)}
+
+/* Inner pages use one-sided spacing so adjacent modules do not double the gap. */
+.inner-content{padding-block:var(--section-inner)}
+.page-content .inner-content,
+.page-utility .inner-content,
+.page-faq .inner-content{padding-block:var(--section-inner)}
+.inner-content>.inner-section{
+  margin:0 0 44px;
+  padding:0 0 44px;
+}
+.inner-content>.inner-section:first-child{padding-top:0}
+.inner-content>.inner-section:last-child{margin-bottom:0;padding-bottom:0;border-bottom:0}
+.inner-content>.inner-feature{margin:0 0 var(--section-inner)}
+.inner-content>.inner-feature:last-child{margin-bottom:0}
+.related-pages{margin-bottom:var(--section-inner)}
+
+/* Repair the two ticket symbols that were damaged by an earlier file encoding. */
+.ticket-card li.yes:before{content:"\2713"}
+.ticket-card li.no:before{content:"\2014"}
+
+@media(max-width:980px){
+  .section,.stories{padding-block:72px}
+  .home-practical-grid{margin-block:72px}
+  .conversion{padding-block:72px}
+  .inner-content>.inner-feature{margin-bottom:72px}
+}
+
+@media(max-width:600px){
+  :root{--section-home:60px;--section-inner:56px}
+  .hero-copy{padding:128px var(--gutter) 38px}
+  .hero h1{max-width:9ch;font-size:clamp(42px,12vw,50px)}
+  .hero-business{max-width:32ch;font-size:14px;line-height:1.55}
+  .hero-sub{max-width:34ch;line-height:1.7}
+  .inner-hero-copy{width:calc(100% - 2 * var(--gutter));padding:24px 0}
+  .inner-hero h1{max-width:11ch;font-size:clamp(32px,9.5vw,40px);line-height:1.16}
+  .inner-hero-copy>p:last-child{max-width:36ch;font-size:16px;line-height:1.6}
+  .section,.stories{width:calc(100% - 2 * var(--gutter));padding:var(--section-home) 0}
+  .journey{padding:var(--section-home) var(--gutter)}
+  .home-practical-grid{margin-block:var(--section-home)}
+  .conversion{width:calc(100% - 2 * var(--gutter));padding:var(--section-home) 0}
+  .contact-section{margin-bottom:var(--section-home)}
+  .inner-content,
+  .page-content .inner-content,
+  .page-utility .inner-content,
+  .page-faq .inner-content{padding-block:var(--section-inner)}
+  .inner-content>.inner-section{margin-bottom:32px;padding-bottom:32px}
+  .inner-content>.inner-feature{margin-bottom:var(--section-inner)}
+  .related-pages{margin-bottom:var(--section-inner)}
+}
