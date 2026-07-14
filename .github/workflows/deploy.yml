@@ -73,7 +73,7 @@ jobs:
           DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
         run: |
           set -euo pipefail
-          ssh -i ~/.ssh/deploy_key "$DEPLOY_USER@$DEPLOY_HOST" "bash -s" <<'REMOTE'
+          ssh -i ~/.ssh/deploy_key "$DEPLOY_USER@$DEPLOY_HOST" "sudo -n bash -s" <<'REMOTE'
           set -euo pipefail
           archive="/tmp/liyanbaguo-site.tar.gz"
           stamp="$(date -u +%Y%m%dT%H%M%SZ)"
