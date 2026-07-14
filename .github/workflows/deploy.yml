@@ -1,0 +1,112 @@
+name: Deploy website
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: liyanbaguo-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out website
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm ci
+          npm run build
+
+      - name: Create deploy archive
+        shell: bash
+        run: tar -czf /tmp/liyanbaguo-site.tar.gz -C out .
+
+      - name: Configure SSH
+        shell: bash
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Upload
+        shell: bash
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          set -euo pipefail
+          scp -i ~/.ssh/deploy_key \
+            /tmp/liyanbaguo-site.tar.gz \
+            "$DEPLOY_USER@$DEPLOY_HOST:/tmp/liyanbaguo-site.tar.gz"
+
+      - name: Deploy to server
+        shell: bash
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          set -euo pipefail
+          ssh -i ~/.ssh/deploy_key "$DEPLOY_USER@$DEPLOY_HOST" "bash -s" <<'REMOTE'
+          set -euo pipefail
+          archive="/tmp/liyanbaguo-site.tar.gz"
+          stamp="$(date -u +%Y%m%dT%H%M%SZ)"
+
+          # Extract to temp dir
+          tmpdir="/tmp/liyanbaguo-$stamp"
+          mkdir -p "$tmpdir"
+          tar -xzf "$archive" -C "$tmpdir"
+          rm -f "$archive"
+
+          # Copy media files from current production
+          for d in images videos; do
+            if [ -d "/var/www/liyan-baguo/$d" ]; then
+              cp -a "/var/www/liyan-baguo/$d" "$tmpdir/" 2>/dev/null || true
+            fi
+            if [ -d "/var/www/liyanbaguo/$d" ]; then
+              cp -a "/var/www/liyanbaguo/$d" "$tmpdir/" 2>/dev/null || true
+            fi
+          done
+
+          # Replace production with new build
+          rm -rf /var/www/liyan-baguo/*
+          cp -a "$tmpdir"/* /var/www/liyan-baguo/
+          rm -rf /var/www/liyanbaguo/*
+          cp -a "$tmpdir"/* /var/www/liyanbaguo/
+          rm -rf "$tmpdir"
+
+          # Fix permissions
+          find /var/www/liyan-baguo -type d -exec chmod 755 {} +
+          find /var/www/liyan-baguo -type f -exec chmod 644 {} +
+          find /var/www/liyanbaguo -type d -exec chmod 755 {} +
+          find /var/www/liyanbaguo -type f -exec chmod 644 {} +
+
+          test -f /var/www/liyan-baguo/index.html
+          echo "Deploy OK: $stamp"
+          REMOTE
+
+      - name: Verify
+        shell: bash
+        run: curl --fail --silent --show-error --retry 4 --retry-delay 3 https://gongyanshow.com/ > /dev/null
