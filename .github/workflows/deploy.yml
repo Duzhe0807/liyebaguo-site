@@ -26,16 +26,15 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: 22
-          cache: npm
 
       - name: Build
         shell: bash
         run: |
           set -euo pipefail
-          # Static export uses unoptimized images, so native image build scripts are unnecessary.
-          # Skipping them avoids intermittent npm/sharp installer failures on GitHub runners.
-          npm ci --ignore-scripts --no-audit --no-fund
-          npm run build
+          corepack enable
+          corepack prepare pnpm@10.13.1 --activate
+          pnpm install --frozen-lockfile --ignore-scripts
+          pnpm run build
 
       - name: Create deploy archive
         shell: bash
