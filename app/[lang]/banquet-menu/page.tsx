@@ -1,46 +1,8 @@
-import { languages, type Lang } from "../../languages";
-import { siteSeo, getCanonicalPath, getHreflang } from "../../seo";
-import { content } from "../../content";
-import type { Metadata } from "next";
-
-export function generateStaticParams() {
-  return languages.map((lang) => ({ lang }));
-}
-
-export async function generateMetadata({ params }: { params: Promise<{ lang: Lang }> }): Promise<Metadata> {
-  const { lang } = await params;
-  const seo = siteSeo[lang].banquetMenu;
-  return {
-    title: seo.title, description: seo.description,
-    alternates: { canonical: getCanonicalPath(lang, "banquetMenu"), languages: getHreflang("banquetMenu") },
-    openGraph: { title: seo.title, description: seo.description, url: getCanonicalPath(lang, "banquetMenu"), type: "website" },
-    twitter: { card: "summary_large_image", title: seo.title, description: seo.description },
-  };
-}
-
-export default async function Page({ params }: { params: Promise<{ lang: Lang }> }) {
-  const { lang } = await params;
-  const t = content[lang];
-  return (
-    <main className="page-content">
-      <nav className="breadcrumb" aria-label="Breadcrumb">
-        <ol><li><a href={`/${lang}/`}>{t.brandName}</a></li><li aria-current="page">{t.navBanquet}</li></ol>
-      </nav>
-      <section>
-        <h1>{lang === "en" ? "Banquet Menu: Ba-Yu Cuisine" : "演艺美馔 — 巴渝风味宴席"}</h1>
-        <p>{t.featureTwoCopy}</p>
-      </section>
-      <section>
-        <h2>{t.factCuisine}</h2>
-        <p>{lang === "en" ? "A curated multi-course banquet inspired by Chongqing's rich culinary heritage. Each dish reflects the ceremonial dining traditions of ancient Ba Kingdom, using seasonal local ingredients and time-honored preparation methods." : "以巴渝地方风味为根基，结合宴席礼仪设计的菜品体系。每道菜品融入巴国宴饮传统，选用时令食材与传统烹制方式，呈现完整的待客之道。"}</p>
-      </section>
-      <section>
-        <h2>{t.packageEyebrow}</h2>
-        <div><h3>{t.packageVisitorTitle}</h3><p>{t.packageVisitorCopy}</p></div>
-        <div><h3>{t.packageVipTitle}</h3><p>{t.packageVipCopy}</p></div>
-        <div><h3>{t.packageGroupTitle}</h3><p>{t.packageGroupCopy}</p></div>
-      </section>
-      <a href={`/${lang}/location-booking/`} className="cta-button">{t.bookCta}</a>
-    </main>
-  );
-}
+import Image from "next/image"; import type { Metadata } from "next"; import { languages,type Lang } from "../../languages"; import { siteSeo,getCanonicalPath,getHreflang } from "../../seo"; import { InnerPageShell,DetailFaq } from "../InnerPageShell";
+export function generateStaticParams(){return languages.map(lang=>({lang}));} export async function generateMetadata({params}:{params:Promise<{lang:Lang}>}):Promise<Metadata>{const{lang}=await params;const s=siteSeo[lang].banquetMenu;return{title:s.title,description:s.description,alternates:{canonical:getCanonicalPath(lang,"banquet-menu"),languages:getHreflang("banquet-menu")}}}
+export default async function Page({params}:{params:Promise<{lang:Lang}>}){const{lang}=await params;const en=lang==="en";const categories=en?[["Welcome","Plum Pu’er wine · White peony tea · ceremonial sweets"],["At the table","Clear chicken broth · seasonal vegetables · Ba Mountain mushrooms"],["Main & finish","Wagyu pairing · pork chop rice · chilled fruit dessert"]]:[["迎宾茶酒","青梅普洱酒 · 高山白牡丹 · 宴前茶点"],["宴席前段","清鸡汤 · 时令蔬菜 · 巴山野菌"],["主食与甜品","和牛搭配 · 猪扒饭 · 酒糟冻奶鲜果"]];return <InnerPageShell lang={lang} eyebrow="BANQUET MENU" title={en?"A Ba-Yu Banquet at the Centre of the Show":"演艺美馔 · 巴渝风味宴席"} summary={en?"Local flavour and ceremonial hospitality meet in a paced, multi-course menu served alongside the performance.":"菜单不只是菜名的罗列，而是与演出节奏同步展开的巴渝待客之礼。"} image="/hero-banquet-cropped.jpg">
+<section className="inner-section"><p className="eyebrow">SAMPLE MENU</p><h2>{en?"A menu in three movements":"一席三章，循序上菜"}</h2><div className="inner-cards">{categories.map(([t,x],i)=><article className="inner-card" key={t}><span className="eyebrow">0{i+1}</span><h3>{t}</h3><p>{x}</p></article>)}</div><p>{en?"Menu items are examples and may change with season and confirmed package.":"以上为菜单参考，实际菜品可能随季节及确认套餐调整。"}</p></section>
+<section className="inner-feature"><div className="inner-feature-media"><Image src="/audience-ritual.jpg" alt="" fill sizes="50vw" /></div><div className="inner-feature-copy"><p className="eyebrow">FOOD & CULTURE</p><h2>{en?"Hospitality is part of the performance":"上菜，也是一种礼仪"}</h2><p>{en?"Serving rhythm, table ritual and Chongqing flavour are designed as one continuous guest experience.":"上菜节奏、席间礼仪与重庆风味共同构成完整体验，而不是演出之外的一顿普通餐食。"}</p></div></section>
+<section className="inner-section"><p className="eyebrow">DIETARY NEEDS</p><h2>{en?"Tell us before confirmation":"饮食限制请提前说明"}</h2><p>{en?"Add allergies, vegetarian needs, child meals or other restrictions when enquiring. Available alternatives require confirmation from the venue.":"过敏、素食、儿童餐或其他忌口请在咨询时备注；是否可调整需由场地方进一步确认。"}</p></section>
+<DetailFaq title={en?"Menu questions":"菜单常见问题"} items={en?[["Is the menu fixed?","Dishes may vary by season and selected package."],["Can allergies be accommodated?","Submit details before payment so the venue can confirm."],["Is costume styling part of the menu ticket?","Only selected ticket types include costume services."]]:[["菜单是否固定？","菜品可能随季节及所选套餐调整。"],["过敏或忌口可以处理吗？","请在付款前提供详细信息，由场地方确认。"],["餐票是否包含华服？","仅部分票种包含华服相关服务。"]]} />
+</InnerPageShell>}

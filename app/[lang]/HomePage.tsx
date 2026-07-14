@@ -159,7 +159,7 @@ const copy = {
   },
 } as const;
 
-const storyImages = ["/images/immersive-show.jpg", "/images/ritual-banquet.jpg", "/images/hanfu-etiquette.jpg", "/images/ancient-styling.png"];
+const storyImages = ["/sleeve-dance.jpg", "/hero-banquet-cropped.jpg", "/jade-dance.jpg", "/audience-ritual.jpg"];
 const factIcons = [Clock, UsersThree, DoorOpen, MapPin];
 const baseGalleryGroups = {
   zh: [
@@ -211,6 +211,9 @@ const faqs = { ...baseFaqs, "zh-hant": baseFaqs.zh, ko: baseFaqs.en };
 
 export function HomePage({ locale }: { locale: Locale }) {
   const t = copy[locale];
+  const practicalFacts = locale === "en"
+    ? [["Location", "Chongqing · Baguocheng"], ["Duration", "Approx. 110 minutes"], ["Includes", "Dinner · Live show"], ["Languages", "English support on request"]]
+    : [["地点", "重庆 · 巴国城"], ["时长", "餐秀约 110 分钟"], ["包含", "巴渝宴席 · 沉浸演出"], ["语言", "可提前咨询英文支持"]];
   const [menuOpen, setMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [activeGallery, setActiveGallery] = useState(0);
@@ -247,7 +250,7 @@ export function HomePage({ locale }: { locale: Locale }) {
   return (
     <main>
       <header className="site-header">
-        <Link className="brand-logo" href={`${langPath(locale)}/`}><Image src="/images/liyan-baguo-logo.png" alt="礼宴巴国 Liyan Baguo" width={1540} height={539} priority /></Link>
+        <Link className="brand-logo" href={`${langPath(locale)}/`}><Image src="/brand-logo.png" alt="礼宴巴国 Liyan Baguo" width={1540} height={539} priority /></Link>
         <nav className={menuOpen ? "nav open" : "nav"}>
           {t.nav.map((item, index) => <Link key={item} href={`${langPath(locale)}/${navSlugs[index]}/`} onClick={() => setMenuOpen(false)}>{item}</Link>)}
         </nav>
@@ -270,20 +273,21 @@ export function HomePage({ locale }: { locale: Locale }) {
         <div className="hero-copy">
           <p className="eyebrow">LIYAN BAGUO · CHONGQING</p>
           <h1>{t.heroTitle}</h1>
+          <p className="hero-business">Ba Kingdom Banquet · Chongqing<br />Immersive Dinner Show &amp; Traditional Costume Experience</p>
           <p className="hero-sub">{t.heroSub.split(" · ").map((item) => <span key={item}>{item}</span>)}</p>
           <div className="button-row"><a className="button" href="#booking">{t.book}</a><a className="button secondary" href="#groups">{t.group}</a></div>
         </div>
         <div className="hero-media">
-          <video autoPlay muted loop playsInline preload="metadata" poster="/images/hero.webp" aria-label={locale === "zh" ? "礼宴巴国沉浸式文化餐秀" : "Liyan Baguo immersive cultural banquet show"}>
+          <video autoPlay muted loop playsInline preload="metadata" poster="/hero-banquet-cropped.jpg" aria-label={locale === "zh" ? "礼宴巴国沉浸式文化餐秀" : "Liyan Baguo immersive cultural banquet show"}>
             <source src="/videos/hero-banquet.mp4" type="video/mp4" media="(min-width: 768px)" />
           </video>
         </div>
       </section>
 
       <section className="fact-bar">
-        {t.facts.map((fact, index) => {
+        {practicalFacts.map(([label, fact], index) => {
           const Icon = factIcons[index];
-          return <div key={fact}><Icon size={28} weight="thin" /><span>{fact}</span></div>;
+          return <div key={label}><Icon size={28} weight="thin" /><span><small>{label}</small>{fact}</span></div>;
         })}
       </section>
 
@@ -397,7 +401,7 @@ export function HomePage({ locale }: { locale: Locale }) {
         <div className="faq-panel"><p className="eyebrow">FAQ</p><h2>{t.faq}</h2>{faqs[locale].map(([question, answer], index) => <button type="button" aria-expanded={openFaq === index} key={question} onClick={() => setOpenFaq(openFaq === index ? null : index)}><span>{question}</span><Plus className={openFaq === index ? "rotated" : ""} />{openFaq === index && <small>{answer}</small>}</button>)}</div>
       </section>
 
-      <footer id="about"><div className="brand-logo footer-logo"><Image src="/images/liyan-baguo-logo.png" alt="礼宴巴国 Liyan Baguo" width={1540} height={539} /></div><p>{locale === "zh" ? "重庆沉浸式巴蜀文化餐秀" : "An immersive Bashu banquet experience in Chongqing"}</p><div><Link href={`${langPath(locale)}/about/`}>{t.nav[4]}</Link><Link href={`${langPath(locale)}/faq/`}>FAQ</Link></div></footer>
+      <footer id="about"><div className="brand-logo footer-logo"><Image src="/brand-logo.png" alt="礼宴巴国 Liyan Baguo" width={1540} height={539} /></div><p>{locale === "zh" ? "重庆沉浸式巴蜀文化餐秀" : "An immersive Bashu banquet experience in Chongqing"}</p><div><Link href={`${langPath(locale)}/about/`}>{t.nav[4]}</Link><Link href={`${langPath(locale)}/faq/`}>FAQ</Link></div></footer>
       <div className="mobile-cta" aria-label={locale === "zh" ? "快捷联系" : "Quick contact"}><a href="#booking">{locale === "zh" ? "立即预约" : "Book"}</a><a href="#group-form">{locale === "zh" ? "团队咨询" : "Group"}</a><a href="#contact">WhatsApp</a></div>
     </main>
   );
