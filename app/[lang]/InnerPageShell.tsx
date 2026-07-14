@@ -3,14 +3,25 @@ import Link from "next/link";
 import type { Lang } from "../languages";
 import { content } from "../content";
 
-const routes = ["experience", "banquet-menu", "costume-experience", "location-booking", "about"];
+const routes = ["experience", "banquet-menu", "costume-experience", "show-times-prices", "location-booking", "about"];
 
-export function InnerPageShell({ lang, title, eyebrow, summary, image, children }: {
-  lang: Lang; title: string; eyebrow: string; summary: string; image: string; children: React.ReactNode;
+export function InnerPageShell({ lang, title, eyebrow, summary, image, children, pageType, heroSize, relatedLinks }: {
+  lang: Lang; title: string; eyebrow: string; summary: string; image?: string; children: React.ReactNode;
+  pageType?: "content" | "utility" | "faq"; heroSize?: "experience" | "content" | "about" | "utility" | "faq";
+  relatedLinks?: Array<{ href: string; label: string; meta: string }>;
 }) {
   const t = content[lang];
   const isEn = lang === "en";
-  const labels = [t.navExperience, t.navBanquet, t.navCostume, t.navVisit, t.navAbout];
+  const resolvedPageType = pageType ?? (eyebrow === "VISITOR GUIDE" ? "faq" : eyebrow === "SHOW TIMES & PRICES" || eyebrow === "LOCATION & BOOKING" ? "utility" : "content");
+  const resolvedHeroSize = heroSize ?? (eyebrow === "THE EXPERIENCE" ? "experience" : eyebrow === "OUR STORY" ? "about" : resolvedPageType === "faq" ? "faq" : resolvedPageType === "utility" ? "utility" : "content");
+  const labels = [t.navExperience, t.navBanquet, t.navCostume, isEn ? "Tickets" : "场次票价", t.navVisit, t.navAbout];
+  const links = relatedLinks ?? (resolvedPageType === "content" ? [
+    { href: `/${lang}/show-times-prices/`, label: isEn ? "Show Times & Prices" : "场次与票价", meta: isEn ? "Choose a session" : "选择场次" },
+    { href: `/${lang}/location-booking/`, label: isEn ? "Book Now" : "立即预订", meta: isEn ? "Plan your visit" : "安排行程" },
+  ] : resolvedPageType === "utility" ? [
+    { href: `/${lang}/show-times-prices/`, label: isEn ? "Tickets" : "场次票价", meta: isEn ? "Compare options" : "对比票种" },
+    { href: `/${lang}/location-booking/`, label: isEn ? "Location & Booking" : "地址与预订", meta: isEn ? "Get directions" : "导航与联系" },
+  ] : []);
   const breadcrumb = {
     "@context": "https://schema.org", "@type": "BreadcrumbList",
     itemListElement: [
@@ -19,7 +30,7 @@ export function InnerPageShell({ lang, title, eyebrow, summary, image, children 
     ],
   };
   return (
-    <main className="inner-page">
+    <main className={`inner-page page-${resolvedPageType}`}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
       <header className="site-header inner-header">
         <Link className="wordmark" href={`/${lang}/`}><strong>礼宴巴国</strong><span>LIYAN BAGUO</span></Link>
@@ -34,8 +45,10 @@ export function InnerPageShell({ lang, title, eyebrow, summary, image, children 
         </div>
       </header>
 
-      <section className="inner-hero">
-        <Image src={image} alt="" fill priority sizes="100vw" />
+      <details className="inner-mobile-nav"><summary>{isEn ? "Menu" : "菜单"}</summary><nav>{labels.map((label, index) => <Link href={`/${lang}/${routes[index]}/`} key={routes[index]}>{label}</Link>)}</nav></details>
+
+      <section className={`inner-hero hero-${resolvedHeroSize}`}>
+        {image ? <Image src={image} alt="" fill priority sizes="100vw" /> : null}
         <div className="inner-hero-shade" />
         <div className="inner-hero-copy">
           <nav className="breadcrumb" aria-label="Breadcrumb"><ol><li><Link href={`/${lang}/`}>{t.brandName}</Link></li><li aria-current="page">{title}</li></ol></nav>
@@ -44,6 +57,8 @@ export function InnerPageShell({ lang, title, eyebrow, summary, image, children 
       </section>
 
       <div className="inner-content">{children}</div>
+
+      {links.length ? <section className="related-pages"><p className="eyebrow">{isEn ? "CONTINUE PLANNING" : "继续了解"}</p><div>{links.map(link => <Link href={link.href} key={link.href}><small>{link.meta}</small><strong>{link.label}</strong><span>→</span></Link>)}</div></section> : null}
 
       <section className="inner-cta">
         <p className="eyebrow">RESERVATIONS</p>

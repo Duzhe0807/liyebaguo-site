@@ -180,7 +180,14 @@ function langPath(locale: Locale): string {
   if (locale === "zh-hant") return "/tw";
   return `/${locale}`;
 }
-const navSlugs = ["experience", "banquet-menu", "show-times-prices", "location-booking", "about", "faq"];
+const navSlugs = ["experience", "banquet-menu", "costume-experience", "show-times-prices", "location-booking", "about"];
+const mainNavLabels = {
+  zh: ["体验概览", "演艺美馔", "华服体验", "场次票价", "到访指引", "品牌故事"],
+  "zh-hant": ["體驗概覽", "演藝美饌", "華服體驗", "場次票價", "到訪指引", "品牌故事"],
+  en: ["Experience", "Banquet", "Costume", "Tickets", "Plan Your Visit", "About"],
+  ja: ["体験", "宴と料理", "衣装体験", "公演・料金", "アクセス", "私たちについて"],
+  ko: ["체험", "연회와 요리", "의상 체험", "공연·요금", "방문 안내", "브랜드 소개"],
+} as const;
 const baseFaqs = {
   zh: [
     ["演出和用餐一共多久？", "完整体验约 110 分钟，团队活动可根据行程与接待需求提前协调。"],
@@ -211,6 +218,7 @@ const faqs = { ...baseFaqs, "zh-hant": baseFaqs.zh, ko: baseFaqs.en };
 
 export function HomePage({ locale }: { locale: Locale }) {
   const t = copy[locale];
+  const navLabels = mainNavLabels[locale];
   const practicalFacts = locale === "en"
     ? [["Location", "Chongqing · Baguocheng"], ["Duration", "Approx. 110 minutes"], ["Includes", "Dinner · Live show"], ["Languages", "English support on request"]]
     : [["地点", "重庆 · 巴国城"], ["时长", "餐秀约 110 分钟"], ["包含", "巴渝宴席 · 沉浸演出"], ["语言", "可提前咨询英文支持"]];
@@ -250,9 +258,9 @@ export function HomePage({ locale }: { locale: Locale }) {
   return (
     <main>
       <header className="site-header">
-        <Link className="brand-logo" href={`${langPath(locale)}/`}><Image src="/brand-logo.png" alt="礼宴巴国 Liyan Baguo" width={1540} height={539} priority /></Link>
+        <Link className="wordmark" href={`${langPath(locale)}/`}><strong>礼宴巴国</strong><span>LIYAN BAGUO</span></Link>
         <nav className={menuOpen ? "nav open" : "nav"}>
-          {t.nav.map((item, index) => <Link key={item} href={`${langPath(locale)}/${navSlugs[index]}/`} onClick={() => setMenuOpen(false)}>{item}</Link>)}
+          {navLabels.map((item, index) => <Link key={item} href={`${langPath(locale)}/${navSlugs[index]}/`} onClick={() => setMenuOpen(false)}>{item}</Link>)}
         </nav>
         <div className="header-actions">
           <nav className="language-switcher" aria-label="Language">
@@ -275,7 +283,7 @@ export function HomePage({ locale }: { locale: Locale }) {
           <h1>{t.heroTitle}</h1>
           <p className="hero-business">Ba Kingdom Banquet · Chongqing<br />Immersive Dinner Show &amp; Traditional Costume Experience</p>
           <p className="hero-sub">{t.heroSub.split(" · ").map((item) => <span key={item}>{item}</span>)}</p>
-          <div className="button-row"><a className="button" href="#booking">{t.book}</a><a className="button secondary" href="#groups">{t.group}</a></div>
+          <div className="button-row"><a className="button" href="#booking">{t.book}</a><Link className="button secondary" href={`${langPath(locale)}/location-booking/`}>{t.group}</Link></div>
         </div>
         <div className="hero-media">
           <video autoPlay muted loop playsInline preload="metadata" poster="/hero-banquet-cropped.jpg" aria-label={locale === "zh" ? "礼宴巴国沉浸式文化餐秀" : "Liyan Baguo immersive cultural banquet show"}>
@@ -291,22 +299,6 @@ export function HomePage({ locale }: { locale: Locale }) {
         })}
       </section>
 
-      <section className="section audience-section">
-        <div className="audience-heading">
-          <p className="eyebrow">DESIGNED FOR YOU</p><h2>{t.audienceTitle}</h2>
-        </div>
-        <div className="audience-grid">
-          {t.audiences.map(([title, text]) => <article key={title}><h3>{title}</h3><p>{text}</p></article>)}
-        </div>
-      </section>
-
-      <section className="section value-section">
-        <p className="eyebrow">WHY LIYAN BAGUO</p><h2>{t.valueTitle}</h2>
-        <div className="value-grid">
-          {t.values.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}
-        </div>
-      </section>
-
       <section className="journey" id="experience">
         <p className="eyebrow">THE EXPERIENCE</p><h2>{t.journey}</h2>
         <div className="step-grid">
@@ -314,23 +306,8 @@ export function HomePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section className="section packages" id="packages">
-        <p className="eyebrow">MENU & PACKAGES</p><h2>{t.choose}</h2>
-        <div className="tier-grid">
-          {t.tiers.map(([name, text, duration, show, suited, price], index) => (
-            <article className="tier" key={name}>
-              {index === 0 ? <Sparkle /> : index === 1 ? <Crown /> : <UsersThree />}
-              <h3>{name}</h3><p>{text}</p>
-              <ul><li><Clock />{duration}</li><li><MusicNotes />{show}</li><li><UsersThree />{suited}</li></ul>
-              <strong>{price}</strong>
-              <a className="tier-cta" href={index === 2 ? "#group-form" : "#booking"}>{locale === "zh" ? "选择此体验" : "Choose Experience"} <ArrowRight /></a>
-            </article>
-          ))}
-        </div>
-      </section>
-
       <section className="stories">
-        {t.stories.map(([title, kicker, text, tag], index) => (
+        {t.stories.slice(0, 3).map(([title, kicker, text, tag], index) => (
           <article className={index % 2 ? "story reverse" : "story"} key={title}>
             <div className="story-copy"><span>0{index + 1}</span><small>{kicker}</small><h2>{title}</h2><p>{text}</p><Link className="story-cta" href={`${langPath(locale)}/${["experience","banquet-menu","costume-experience","show-times-prices"][index]}/`}>{tag} <ArrowRight /></Link></div>
             <div className="story-media"><Image src={storyImages[index]} alt={locale === "zh" ? `${title}现场` : `${title} at Liyan Baguo`} fill sizes="(max-width: 800px) 100vw, 60vw" /></div>
@@ -338,20 +315,9 @@ export function HomePage({ locale }: { locale: Locale }) {
         ))}
       </section>
 
-      <section className="visitor-friendly" aria-label={locale === "zh" ? "外国游客友好体验" : "International visitor friendly"}>
-        <div><p className="eyebrow">{locale === "zh" ? "外国游客友好体验" : "INTERNATIONAL VISITOR FRIENDLY"}</p><strong>{locale === "zh" ? "无需语言门槛，轻松加入整场体验" : "Easy to enjoy, even without speaking Chinese"}</strong></div>
-        <ul>
-          {(locale === "zh"
-            ? ["提供英文引导", "不懂中文也能体验", "可选华服妆造", "多个出片场景", "晚宴 + 演出结合", "适合情侣、家庭与团队"]
-            : ["English guidance available", "No Chinese required", "Optional Hanfu styling", "Multiple photo-ready settings", "Dinner + live show", "Ideal for couples, families & groups"]
-          ).map((item) => <li key={item}><Sparkle />{item}</li>)}
-        </ul>
-      </section>
-
-      <section className="group-band" id="groups">
-        <div><p className="eyebrow">GROUP EVENTS</p><h2>{t.travelTitle}</h2><p>{t.travelSub}</p></div>
-        <div className="group-facts"><span><UsersThree />{t.facts[1]}</span><span><DoorOpen />{t.facts[2]}</span><span><CalendarBlank />{locale === "zh" ? "英文菜单 / 多语言接待" : "English Menu / Language Support"}</span></div>
-        <div className="group-actions"><a className="button" href="#group-form">{locale === "zh" ? "提交团队需求" : "Submit Group Request"}</a><a className="button secondary" href="#group-form">{locale === "zh" ? "获取团队报价" : "Get Group Rates"}</a></div>
+      <section className="home-practical-grid">
+        <article><p className="eyebrow">SHOW TIMES & PRICES</p><h2>{locale === "zh" ? "先选场次，再选席位" : "Choose a session and seat"}</h2><p>{locale === "zh" ? "午宴与晚宴均包含游园、迎宾、宴席与演出。":"Lunch and dinner sessions combine the garden, welcome ritual, banquet and show."}</p><Link className="button secondary" href={`${langPath(locale)}/show-times-prices/`}>{locale === "zh" ? "查看场次票价" : "View tickets"}</Link></article>
+        <article><p className="eyebrow">LOCATION</p><h2>{locale === "zh" ? "重庆 · 巴国城" : "Baguocheng · Chongqing"}</h2><p>{locale === "zh" ? "查看中英文地址、地图导航和到场方式。":"Get the address, maps and arrival information."}</p><Link className="button secondary" href={`${langPath(locale)}/location-booking/`}>{locale === "zh" ? "查看地址交通" : "Plan your visit"}</Link></article>
       </section>
 
       <section className="section gallery" id="gallery">
@@ -395,10 +361,6 @@ export function HomePage({ locale }: { locale: Locale }) {
             <a className="button secondary" href="#group-form">{t.group}</a>
           </div>
         </div>
-      </section>
-
-      <section className="section faq-section" id="faq">
-        <div className="faq-panel"><p className="eyebrow">FAQ</p><h2>{t.faq}</h2>{faqs[locale].map(([question, answer], index) => <button type="button" aria-expanded={openFaq === index} key={question} onClick={() => setOpenFaq(openFaq === index ? null : index)}><span>{question}</span><Plus className={openFaq === index ? "rotated" : ""} />{openFaq === index && <small>{answer}</small>}</button>)}</div>
       </section>
 
       <footer id="about"><div className="brand-logo footer-logo"><Image src="/brand-logo.png" alt="礼宴巴国 Liyan Baguo" width={1540} height={539} /></div><p>{locale === "zh" ? "重庆沉浸式巴蜀文化餐秀" : "An immersive Bashu banquet experience in Chongqing"}</p><div><Link href={`${langPath(locale)}/about/`}>{t.nav[4]}</Link><Link href={`${langPath(locale)}/faq/`}>FAQ</Link></div></footer>
