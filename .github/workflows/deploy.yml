@@ -107,7 +107,7 @@ jobs:
           find /var/www/liyanbaguo -type d -exec chmod 755 {} +
           find /var/www/liyanbaguo -type f -exec chmod 644 {} +
 
-          test -f /var/www/liyan-baguo/index.html
+          test -f /var/www/liyan-baguo/zh/index.html
           echo "Deploy OK: $stamp"
           REMOTE
 
