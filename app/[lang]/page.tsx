@@ -9,7 +9,7 @@ const langToLocale: Record<Lang, string> = {
   zh: "zh",
   tw: "zh-hant",
   en: "en",
-  ja: "zh",
+  ja: "ja",
   ko: "ko",
 };
 
