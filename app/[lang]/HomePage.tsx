@@ -9,6 +9,8 @@ import {
 } from "@phosphor-icons/react";
 import { FormEvent, useEffect, useState } from "react";
 import { TrailerModal } from "./TrailerModal";
+import { customerServiceUrl, whatsappId, whatsappUrl } from "../customerService";
+import { CustomerServiceChooser } from "./CustomerServiceChooser";
 
 
 type Locale = "zh" | "zh-hant" | "en" | "ja" | "ko";
@@ -358,7 +360,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       form.reset();
     } catch {
       setSubmitStatus("error");
-      setNotice(locale === "zh" ? "提交未成功，请稍后重试，或通过电话、邮件与微信联系。" : locale === "zh-hant" ? "提交未成功，請稍後重試。" : locale === "ko" ? "제출하지 못했습니다. 다시 시도하거나 다른 연락처로 문의해 주세요." : locale === "ja" ? "送信に失敗しました。時間をおいて再度お試しください。" : "Submission failed. Please retry or contact us by phone, email or WeChat.");
+      setNotice(locale === "zh" ? "提交未成功，请稍后重试，或通过电话、邮件与 WeChat Support 联系。" : locale === "zh-hant" ? "提交未成功，請稍後重試。" : locale === "ko" ? "제출하지 못했습니다. 다시 시도하거나 다른 연락처로 문의해 주세요." : locale === "ja" ? "送信に失敗しました。時間をおいて再度お試しください。" : "Submission failed. Please retry or contact us by phone, email or WeChat Support.");
     }
   };
 
@@ -487,7 +489,8 @@ export function HomePage({ locale }: { locale: Locale }) {
           <div className="contact-list">
             <a href="tel:+8617383017612"><Phone />{locale === "zh" ? "电话：+86 173 8301 7612" : "Phone: +86 173 8301 7612"}</a>
             <a href="mailto:liaorenxi23@gmail.com"><EnvelopeSimple />Email: liaorenxi23@gmail.com</a>
-            <span><ChatCircleDots />WeChat: cqlybg8866</span>
+            <a href={whatsappUrl} target="_blank" rel="noreferrer"><ChatCircleDots />WhatsApp: {whatsappId}</a>
+            <a href={customerServiceUrl} target="_blank" rel="noreferrer"><ChatCircleDots />WeChat Support</a>
           </div>
           <div className="contact-actions">
             <a className="button" href="#guest-form">{t.book}</a>
@@ -497,7 +500,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       </section>
 
       <footer id="about"><div className="brand-logo footer-logo"><Image src="/brand-logo.png" alt="礼宴巴国 Liyan Baguo" width={1540} height={539} /></div><p>{locale === "zh" ? "重庆沉浸式巴蜀文化餐秀" : "An immersive Bashu banquet experience in Chongqing"}</p><div><Link href={`${langPath(locale)}/about/`}>{t.nav[4]}</Link><Link href={`${langPath(locale)}/faq/`}>FAQ</Link></div></footer>
-      <div className="mobile-cta" aria-label={locale === "zh" ? "快捷联系" : "Quick contact"}><a href="#booking" className="primary" onClick={() => setBookingMode("guest")}>{t.book}</a><a href="tel:+8617383017612">{locale === "zh" ? "电话咨询" : "Call"}</a></div>
+      <div className="mobile-cta" aria-label={locale === "zh" ? "快捷联系" : "Quick contact"}><a href="#booking" className="primary" onClick={() => setBookingMode("guest")}>{t.book}</a><CustomerServiceChooser compact isEnglish={locale === "en"} /><a href="tel:+8617383017612">{locale === "zh" ? "电话" : "Call"}</a></div>
     </main>
   );
 }

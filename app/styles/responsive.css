@@ -471,7 +471,28 @@
   .menu-intro{gap:30px}.menu-intro figure{min-height:310px}.menu-chapters>div,.dish-grid,.dietary-panel>div,.styling-flow>div,.costume-inclusions>div,.ticket-grid,.arrival-grid>div,.contact-cards>div,.making-grid>div{grid-template-columns:1fr}.menu-chapters article{min-height:0;border-right:0;border-bottom:1px solid var(--line)}.dish-grid article:nth-child(n){border-right:0}.food-gallery>div{grid-template-columns:1fr;grid-template-rows:280px 220px 220px}.food-gallery figure:first-child{grid-row:auto}.lookbook-grid{grid-template-columns:1fr 1fr;grid-template-rows:390px 200px}.lookbook-main{grid-column:1/3;grid-row:1}.styling-flow figure{aspect-ratio:3/2}.detail-strip>div{grid-template-columns:1fr 1fr}.detail-strip figure:first-child{grid-column:1/3}.schedule-grid{grid-template-columns:1fr}.schedule-grid article:nth-child(n){border-right:0}.ticket-card{min-height:0;padding:28px 24px}.ticket-card .price{font-size:32px}.location-lead{gap:28px}.location-lead figure{min-height:300px}.address-line{grid-template-columns:1fr}.address-line .copy-button{justify-self:start}.venue-hours{display:grid}.map-embed{height:320px}.map-actions.refined{display:grid}.map-actions.refined a{justify-content:center}.contact-cards strong{font-size:16px}.story-origin figure{min-height:320px}.backstage-gallery>div{grid-template-columns:1fr;grid-template-rows:280px 210px 210px}.backstage-gallery figure:first-child{grid-row:auto}.inner-faq summary{font-size:16px}.inner-faq details p{padding-right:0;font-size:16px}
 }
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}.button:hover,.inner-card:hover,.related-pages a:hover{transform:none}}
-@media(max-width:600px){.mobile-cta{right:78px;border-right:1px solid var(--line);grid-template-columns:1fr 1fr 1fr}.faq-category-nav{position:static;flex-wrap:nowrap;overflow-x:auto}.faq-category-nav a{flex:0 0 auto}}
+@media(max-width:600px){.mobile-cta{right:0;border-right:0;grid-template-columns:1.35fr .85fr .65fr}.faq-category-nav{position:static;flex-wrap:nowrap;overflow-x:auto}.faq-category-nav a{flex:0 0 auto}}
+
+/* Mobile width normalization: old chat-widget clearance and stacked container
+   widths created visible seams at 390px. Full-bleed bands stay edge-to-edge;
+   readable content keeps the shared gutter. */
+@media(max-width:600px){
+  html,body,.home-page,.inner-page{width:100%;max-width:100%;overflow-x:clip}
+  img,video{display:block;max-width:100%}
+  .hero,.inner-hero,.fact-bar,.journey,.inner-cta,.inner-footer{width:100%;max-width:none;margin-left:0;margin-right:0}
+  .section,.stories,.conversion,.contact-section,.inner-content,.related-pages{width:calc(100% - 2 * var(--gutter));max-width:none;margin-left:auto;margin-right:auto}
+  .story,.inner-feature,.ticket-card,.contact-methods>*{min-width:0}
+  .story-media,.inner-feature-media,.lookbook-grid figure,.styling-flow figure,.food-gallery-grid figure{width:100%}
+  .mobile-cta{width:100%;padding-bottom:env(safe-area-inset-bottom);height:calc(64px + env(safe-area-inset-bottom))}
+  .inner-mobile-book{display:grid;grid-template-columns:64px 64px minmax(0,1fr);width:100%}
+  .inner-mobile-book a{min-width:0;border-right:1px solid rgba(255,255,255,.18)}
+  .inner-mobile-book a.book{border-right:0}
+  .mobile-cta>.customer-service-chooser,.inner-mobile-book>.customer-service-chooser{min-width:0;height:100%;border-right:1px solid rgba(255,255,255,.18)}
+  .mobile-cta>.customer-service-chooser>summary,.inner-mobile-book>.customer-service-chooser>summary{height:100%;display:flex;align-items:center;justify-content:center;color:#ead5a3;font-size:14px;font-weight:700;cursor:pointer}
+  .inner-mobile-book>.customer-service-chooser>summary{color:#fff;font-size:0}
+  .inner-mobile-book>.customer-service-chooser>summary::before{content:"客服";font-size:13px}
+  .customer-service-menu{right:8px;bottom:calc(100% + 10px);width:min(224px,calc(100vw - 16px))}
+}
 @media(min-width:981px){
   .hero-copy{
     width:100%;

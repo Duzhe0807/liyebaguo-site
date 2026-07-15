@@ -7,7 +7,8 @@ import type { Lang } from "../languages";
 import { langCodes } from "../languages";
 import { content } from "../content";
 import { HtmlLang } from "./HtmlLang";
-import { Phone, ChatCircleText } from "@phosphor-icons/react";
+import { Phone } from "@phosphor-icons/react";
+import { CustomerServiceChooser } from "./CustomerServiceChooser";
 
 const routes = ["experience", "banquet-menu", "costume-experience", "show-times-prices", "location-booking", "about"];
 
@@ -127,7 +128,7 @@ export function InnerPageShell({ lang, title, eyebrow, summary, image, children,
       <footer className="inner-footer"><div className="wordmark"><strong>礼宴巴国</strong><span>LIYAN BAGUO</span></div><p>{isEn ? "Immersive Ba-Yu dinner show in Chongqing" : "重庆沉浸式巴渝文化餐秀"}</p><div><Link href={`/${lang}/about/`}>{t.navAbout}</Link><Link href={`/${lang}/faq/`}>FAQ</Link></div></footer>
       <div className="inner-mobile-book">
         <a href="tel:+8617383017612" aria-label={isEn ? "Call us" : "拨打电话"}><Phone size={20} weight="fill" /></a>
-        <a href="https://wa.me/8617383017612" target="_blank" rel="noreferrer" aria-label={isEn ? "WhatsApp" : "WhatsApp 咨询"}><ChatCircleText size={20} weight="fill" /></a>
+        <CustomerServiceChooser compact isEnglish={isEn} />
         <Link className="book" href={`/${lang}/#booking`}>{t.bookCta}</Link>
       </div>
     </main>

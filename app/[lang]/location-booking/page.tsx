@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { languages, type Lang } from "../../languages";
 import { siteSeo, getCanonicalPath, getHreflang } from "../../seo";
 import { InnerPageShell, DetailFaq } from "../InnerPageShell";
+import { customerServiceUrl, whatsappId, whatsappUrl } from "../../customerService";
 import { CopyButton } from "../CopyButton";
 import { PhoneIcon, MailIcon, WechatIcon, PinIcon, PlaneIcon, TrainIcon, TaxiIcon, CarIcon } from "./LocationIcons";
 
@@ -31,7 +32,7 @@ const copy = {
       ["洪崖洞", "约 30 分钟车程，重庆夜景地标。"],
       ["四川美术学院", "约 20 分钟车程，涂鸦街与当代艺术。"],
     ],
-    contactTitle: "联系与预约", phone: "电话 · 点击拨号", email: "Email", wechat: "微信", book: "打开预订表单",
+    contactTitle: "联系与预约", phone: "电话 · 点击拨号", email: "Email", wechat: "WeChat Support", book: "打开预订表单",
     faqTitle: "到访常见问题", faq: [
       ["应该提前多久到？", "请在所选场次的游园时间前抵达。"],
       ["可以使用哪些地图？", "页面提供百度地图、高德地图和 Google Maps 入口。"],
@@ -55,7 +56,7 @@ const copy = {
       ["洪崖洞", "約 30 分鐘車程，重慶夜景地標。"],
       ["四川美術學院", "約 20 分鐘車程，塗鴉街與當代藝術。"],
     ],
-    contactTitle: "聯繫與預訂", phone: "電話 · 點擊撥號", email: "Email", wechat: "微信", book: "打開預訂表單",
+    contactTitle: "聯繫與預訂", phone: "電話 · 點擊撥號", email: "Email", wechat: "WeChat Support", book: "打開預訂表單",
     faqTitle: "到訪常見問題", faq: [
       ["應該提前多久到？", "請在所選場次的遊園時間前抵達。"],
       ["可以使用哪些地圖？", "頁面提供百度地圖、高德地圖和 Google Maps 入口。"],
@@ -79,7 +80,7 @@ const copy = {
       ["Hongyadong", "About 30 minutes by car — Chongqing's iconic riverside night view."],
       ["Sichuan Fine Arts Institute", "About 20 minutes by car — graffiti street and contemporary art."],
     ],
-    contactTitle: "Contact and booking", phone: "Phone · tap to call", email: "Email", wechat: "WeChat", book: "Open booking form",
+    contactTitle: "Contact and booking", phone: "Phone · tap to call", email: "Email", wechat: "WeChat Support", book: "Open booking form",
     faqTitle: "Arrival questions", faq: [
       ["When should I arrive?", "Arrive before the garden visit time shown for your session."],
       ["Which map can I use?", "Direct Baidu Maps, Amap and Google Maps links are provided above."],
@@ -103,7 +104,7 @@ const copy = {
       ["洪崖洞", "車で約30分。重慶の夜景スポット。"],
       ["四川美術学院", "車で約20分。グラフィティストリートと現代アート。"],
     ],
-    contactTitle: "お問い合わせと予約", phone: "電話 · タップで発信", email: "Email", wechat: "WeChat", book: "予約フォームを開く",
+    contactTitle: "お問い合わせと予約", phone: "電話 · タップで発信", email: "Email", wechat: "WeChat Support", book: "予約フォームを開く",
     faqTitle: "よくあるアクセスの質問", faq: [
       ["何分前に到着すべきですか？", "選択されたセッションの庭園散策時間までに到着してください。"],
       ["どの地図が使えますか？", "百度地図、高德地図、Google Maps のリンクを用意しています。"],
@@ -127,7 +128,7 @@ const copy = {
       ["홍야동", "차로 약 30분. 충칭의 야경 랜드마크."],
       ["사천미술학원", "차로 약 20분. 그래피티 거리와 현대 미술."],
     ],
-    contactTitle: "연락 및 예약", phone: "전화 · 탭하여 걸기", email: "Email", wechat: "WeChat", book: "예약 폼 열기",
+    contactTitle: "연락 및 예약", phone: "전화 · 탭하여 걸기", email: "Email", wechat: "WeChat Support", book: "예약 폼 열기",
     faqTitle: "자주 묻는 방문 질문", faq: [
       ["얼마나 일찍 도착해야 하나요?", "선택한 세션의 정원 산책 시간 전에 도착하세요."],
       ["어떤 지도를 사용할 수 있나요?", "바이두 지도, 가오더 지도, Google Maps 링크를 제공합니다."],
@@ -188,7 +189,8 @@ export default async function Page({ params }: { params: Promise<{ lang: Lang }>
       <div className="contact-methods">
         <a href="tel:+8617383017612"><PhoneIcon size={22} /><div><small>{t.phone}</small><strong>+86 173 8301 7612</strong></div></a>
         <a href="mailto:liaorenxi23@gmail.com"><MailIcon size={22} /><div><small>{t.email}</small><strong>liaorenxi23@gmail.com</strong></div></a>
-        <article><WechatIcon size={22} /><div><small>{t.wechat}</small><strong>cqlybg8866</strong></div><CopyButton value="cqlybg8866" label={t.wechat} copiedLabel={t.wechat} /></article>
+        <a href={whatsappUrl} target="_blank" rel="noreferrer"><WechatIcon size={22} /><div><small>WhatsApp</small><strong>{whatsappId}</strong></div></a>
+        <a href={customerServiceUrl} target="_blank" rel="noreferrer"><WechatIcon size={22} /><div><small>{t.wechat}</small><strong>Open WeChat Support</strong></div></a>
       </div>
       <Link className="button" href={`/${lang}/#booking`}>{t.book}</Link>
     </section>
