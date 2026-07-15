@@ -267,7 +267,7 @@ export function HomePage({ locale }: { locale: Locale }) {
   };
 
   return (
-    <main>
+    <main className="home-page">
       <header className="site-header">
         <Link className="wordmark" href={`${langPath(locale)}/`}><strong>礼宴巴国</strong><span>LIYAN BAGUO</span></Link>
         <nav className={menuOpen ? "nav open" : "nav"}>
@@ -289,13 +289,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       </header>
 
       <section className="hero">
-        <div className="hero-copy">
-          <p className="eyebrow">LIYAN BAGUO · CHONGQING</p>
-          <h1>{t.heroTitle}</h1>
-          <p className="hero-business">Ba Kingdom Banquet · Chongqing<br />Immersive Dinner Show &amp; Traditional Costume Experience</p>
-          <p className="hero-sub">{t.heroSub.split(" · ").map((item) => <span key={item}>{item}</span>)}</p>
-          <div className="button-row"><a className="button" href="#booking">{t.book}</a><Link className="button secondary" href={`${langPath(locale)}/location-booking/`}>{t.group}</Link></div>
-        </div>
+        <h1 className="sr-only">{t.heroTitle}</h1>
         <div className="hero-media">
           <video autoPlay muted loop playsInline preload="metadata" poster="/hero-banquet-cropped.jpg" aria-label={locale === "zh" ? "礼宴巴国沉浸式文化餐秀" : "Liyan Baguo immersive cultural banquet show"}>
             <source src="/videos/hero-banquet.mp4" type="video/mp4" media="(min-width: 768px)" />
@@ -347,7 +341,7 @@ export function HomePage({ locale }: { locale: Locale }) {
             <figcaption>{galleryGroups[locale][activeGallery].title}</figcaption>
           </figure>
           <div className="gallery-photos">
-            {[...galleryGroups[locale][activeGallery].images.slice(galleryPhotoOffset), ...galleryGroups[locale][activeGallery].images.slice(0, galleryPhotoOffset)].map((src, index) => <figure key={src}><Image src={src} alt={`${galleryGroups[locale][activeGallery].title} ${index + 1}`} fill sizes={index === 0 ? "(max-width: 980px) 100vw, 64vw" : "(max-width: 700px) 33vw, 21vw"} /></figure>)}
+            {[...galleryGroups[locale][activeGallery].images.slice(galleryPhotoOffset), ...galleryGroups[locale][activeGallery].images.slice(0, galleryPhotoOffset)].slice(0, 3).map((src, index) => <figure key={src}><Image src={src} alt={`${galleryGroups[locale][activeGallery].title} ${index + 1}`} fill sizes={index === 0 ? "(max-width: 980px) 100vw, 64vw" : "(max-width: 700px) 50vw, 21vw"} /></figure>)}
           </div>
         </div>
       </section>
