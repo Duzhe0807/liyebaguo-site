@@ -400,7 +400,7 @@ export function HomePage({ locale }: { locale: Locale }) {
           <p className="hero-sub">{t.heroSub}</p>
           <div className="button-row">
             <a className="button" href="#booking">{t.book}</a>
-            <a className="button secondary" href="#group-form">{t.group}</a>
+            <a className="button secondary" href="#booking">{t.group}</a>
             <button type="button" className="button ghost" onClick={() => setTrailerOpen(true)}>
               <Play weight="fill" /> {t.watchTrailer}
             </button>
@@ -477,6 +477,17 @@ export function HomePage({ locale }: { locale: Locale }) {
       </section>
 
       <section className="section conversion" id="booking">
+        <div className="service-booking-panel">
+          <div className="service-booking-copy">
+            <p className="eyebrow">ONLINE RESERVATIONS</p>
+            <h2>{locale === "zh" ? "通过在线客服咨询与预约" : locale === "zh-hant" ? "透過線上客服諮詢與預訂" : "Reserve with Online Support"}</h2>
+            <p>{locale === "zh" ? "请选择常用的联系方式，客服将协助确认场次、席位、团队接待与其他需求。" : locale === "zh-hant" ? "請選擇常用的聯絡方式，客服將協助確認場次、席位、團隊接待與其他需求。" : "Choose your preferred channel. Our team will help confirm sessions, seating, group visits and other requests."}</p>
+          </div>
+          <div className="service-booking-actions">
+            <a className="button" href={whatsappUrl} target="_blank" rel="noreferrer"><ChatCircleDots />WhatsApp <small>{whatsappId}</small></a>
+            <a className="button secondary" href={customerServiceUrl} target="_blank" rel="noreferrer"><ChatCircleDots />WeChat Support</a>
+          </div>
+        </div>
         <div className="booking-tabs" role="tablist"><button type="button" role="tab" aria-selected={bookingMode === "guest"} className={bookingMode === "guest" ? "active" : ""} onClick={() => setBookingMode("guest")}>{t.booking}</button><button type="button" role="tab" aria-selected={bookingMode === "group"} className={bookingMode === "group" ? "active" : ""} onClick={() => setBookingMode("group")}>{t.inquiry}</button></div>
         <form className={bookingMode === "guest" ? "mobile-form-active" : ""} onSubmit={submit} id="guest-form" data-form-type="guest-booking"><p className="eyebrow">SEAT RESERVATION</p><h2>{t.booking}</h2><div className="form-grid"><input name="name" required aria-label={locale === "zh" ? "姓名" : "Name"} placeholder={locale === "zh" ? "姓名" : "Name"} /><input name="phone" required aria-label="Phone / WhatsApp" placeholder={locale === "zh" ? "手机 / WhatsApp" : "Phone / WhatsApp"} /><input name="email" required type="email" aria-label={locale === "zh" ? "邮箱" : "Email"} placeholder={locale === "zh" ? "邮箱" : "Email"} /><input name="country" aria-label={locale === "zh" ? "国家或地区" : "Country or region"} placeholder={locale === "zh" ? "国家 / 地区" : "Country / Region"} /><label className="picker-field"><span>{locale === "zh" ? "预约日期" : "Booking Date"}</span><input name="date" required type="date" aria-label={locale === "zh" ? "预约日期" : "Booking date"} onClick={(event) => event.currentTarget.showPicker()} /></label><select name="mealPeriod" required aria-label={locale === "zh" ? "宴席时段" : "Banquet session"} defaultValue=""><option value="" disabled>{locale === "zh" ? "选择午宴或晚宴" : "Choose Lunch or Dinner"}</option><option value="lunch">{locale === "zh" ? "午宴" : "Lunch"}</option><option value="dinner">{locale === "zh" ? "晚宴" : "Dinner"}</option></select><input name="guests" required type="number" min="1" max="160" aria-label={locale === "zh" ? "人数" : "Guests"} placeholder={locale === "zh" ? "人数" : "Guests"} /><select name="package" required aria-label={locale === "zh" ? "套餐类型" : "Package"} defaultValue=""><option value="" disabled>{locale === "zh" ? "套餐类型" : "Package"}</option><option>{locale === "zh" ? "嘉宾体验" : "Guest"}</option><option>{locale === "zh" ? "贵宾体验" : "VIP"}</option><option>SVIP</option></select><textarea name="notes" className="full-field" aria-label={locale === "zh" ? "忌口、过敏或备注" : "Dietary needs or notes"} placeholder={locale === "zh" ? "忌口 / 过敏 / 备注" : "Dietary needs / Allergies / Notes"} /></div><button className="button" type="submit" disabled={submitStatus === "loading"}>{submitStatus === "loading" ? (locale === "zh" ? "正在提交…" : "Submitting…") : t.submitBook}</button></form>
         <form className={bookingMode === "group" ? "mobile-form-active" : ""} onSubmit={submit} id="group-form" data-form-type="group-inquiry"><p className="eyebrow">GROUP INQUIRY</p><h2>{t.inquiry}</h2><div className="form-grid"><input name="company" required aria-label={locale === "zh" ? "旅行社或公司名称" : "Agency or company"} placeholder={locale === "zh" ? "公司 / 旅行社名称" : "Company / Travel Agency"} /><input name="contact" required aria-label={locale === "zh" ? "联系人" : "Contact name"} placeholder={locale === "zh" ? "联系人" : "Contact Name"} /><input name="phone" required aria-label="Phone / WhatsApp" placeholder={locale === "zh" ? "手机 / WhatsApp" : "Phone / WhatsApp"} /><input name="email" required type="email" aria-label={locale === "zh" ? "邮箱" : "Email"} placeholder={locale === "zh" ? "邮箱" : "Email"} /><input name="country" aria-label={locale === "zh" ? "国家或地区" : "Country or region"} placeholder={locale === "zh" ? "国家 / 地区" : "Country / Region"} /><label className="picker-field"><span>{locale === "zh" ? "预计日期" : "Estimated Date"}</span><input name="date" required type="date" aria-label={locale === "zh" ? "预计日期" : "Estimated date"} onClick={(event) => event.currentTarget.showPicker()} /></label><input name="guests" required type="number" min="1" max="160" aria-label={locale === "zh" ? "预计人数" : "Estimated guests"} placeholder={locale === "zh" ? "预计人数" : "Estimated Guests"} /><select name="eventType" required aria-label={locale === "zh" ? "活动类型" : "Event type"} defaultValue=""><option value="" disabled>{locale === "zh" ? "活动类型" : "Event Type"}</option><option>{locale === "zh" ? "旅行团" : "Tour Group"}</option><option>{locale === "zh" ? "商务宴请" : "Business Dinner"}</option><option>{locale === "zh" ? "企业活动" : "Corporate Event"}</option><option>{locale === "zh" ? "海外游客团" : "International Group"}</option><option>{locale === "zh" ? "其他" : "Other"}</option></select><select name="privateBuyout" aria-label={locale === "zh" ? "是否需要包场" : "Private buyout"} defaultValue=""><option value="" disabled>{locale === "zh" ? "是否需要包场" : "Private Buyout?"}</option><option>{locale === "zh" ? "需要" : "Yes"}</option><option>{locale === "zh" ? "不需要" : "No"}</option><option>{locale === "zh" ? "待确认" : "Not Sure"}</option></select><input name="budget" aria-label={locale === "zh" ? "预算范围" : "Budget range"} placeholder={locale === "zh" ? "预算范围" : "Budget Range"} /><textarea name="requirements" className="full-field" aria-label={locale === "zh" ? "活动需求" : "Event requirements"} placeholder={locale === "zh" ? "需求描述" : "Requirements"} /></div><button className="button" type="submit" disabled={submitStatus === "loading"}>{submitStatus === "loading" ? (locale === "zh" ? "正在提交…" : "Submitting…") : t.submitGroup}</button></form>
@@ -493,14 +504,14 @@ export function HomePage({ locale }: { locale: Locale }) {
             <a href={customerServiceUrl} target="_blank" rel="noreferrer"><ChatCircleDots />WeChat Support</a>
           </div>
           <div className="contact-actions">
-            <a className="button" href="#guest-form">{t.book}</a>
-            <a className="button secondary" href="#group-form">{t.group}</a>
+            <a className="button" href="#booking">{t.book}</a>
+            <a className="button secondary" href="#booking">{t.group}</a>
           </div>
         </div>
       </section>
 
       <footer id="about"><div className="brand-logo footer-logo"><Image src="/brand-logo.png" alt="礼宴巴国 Liyan Baguo" width={1540} height={539} /></div><p>{locale === "zh" ? "重庆沉浸式巴蜀文化餐秀" : "An immersive Bashu banquet experience in Chongqing"}</p><div><Link href={`${langPath(locale)}/about/`}>{t.nav[4]}</Link><Link href={`${langPath(locale)}/faq/`}>FAQ</Link></div></footer>
-      <div className="mobile-cta" aria-label={locale === "zh" ? "快捷联系" : "Quick contact"}><a href="#booking" className="primary" onClick={() => setBookingMode("guest")}>{t.book}</a><CustomerServiceChooser compact isEnglish={locale === "en"} /><a href="tel:+8617383017612">{locale === "zh" ? "电话" : "Call"}</a></div>
+      <div className="mobile-cta" aria-label={locale === "zh" ? "快捷联系" : "Quick contact"}><a href="#booking" className="primary">{t.book}</a><CustomerServiceChooser compact isEnglish={locale === "en"} /><a href="tel:+8617383017612">{locale === "zh" ? "电话" : "Call"}</a></div>
     </main>
   );
 }

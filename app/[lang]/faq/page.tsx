@@ -24,7 +24,7 @@ export default async function Page({ params }: { params: Promise<{ lang: Lang }>
   const en = lang === "en";
   const groups: Group[] = en
     ? [
-      { name: "Booking", items: [["How do I reserve?", "Use the booking form and wait for schedule confirmation before making travel plans."], ["Can groups enquire?", "Yes. Add your preferred date, party size and event needs in the group form."]] },
+      { name: "Booking", items: [["How do I reserve?", "Choose WhatsApp or WeChat Support on the reservation section and wait for schedule confirmation before making travel plans."], ["Can groups enquire?", "Yes. Contact online support with your preferred date, party size and event needs."]] },
       { name: "Tickets", items: [["What does each ticket include?", "Inclusions vary by ticket type. Check the Tickets page before booking."], ["Are prices shown per guest?", "Yes. The listed figures show lunch / dinner prices per guest."]] },
       { name: "Food", items: [["Can dietary needs be accommodated?", "Submit allergies and restrictions before payment so the venue can confirm what is possible."]] },
       { name: "Costume", items: [["Is costume styling included?", "Only selected ticket types include costume styling. Confirm the inclusion on the Tickets page."]] },
