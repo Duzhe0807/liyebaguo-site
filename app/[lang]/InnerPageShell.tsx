@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import type { Lang } from "../languages";
 import { langCodes } from "../languages";
 import { content } from "../content";
@@ -72,6 +73,12 @@ export function InnerPageShell({ lang, title, eyebrow, summary, image, children,
   };
   const [ctaTitle, ctaText] = ctaCopy[theme];
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const switchLangHref = (l: string) => {
+    const parts = pathname.split("/").filter(Boolean);
+    const rest = parts.slice(1).join("/");
+    return rest ? `/${l}/${rest}/` : `/${l}/`;
+  };
   const breadcrumb = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -92,11 +99,11 @@ export function InnerPageShell({ lang, title, eyebrow, summary, image, children,
         </nav>
         <div className="header-actions">
           <nav className="language-switcher" aria-label="Language">
-            <Link className={lang === "zh" ? "active" : ""} href="/zh/">简</Link>
-            <Link className={lang === "tw" ? "active" : ""} href="/tw/">繁</Link>
-            <Link className={lang === "en" ? "active" : ""} href="/en/">EN</Link>
-            <Link className={lang === "ja" ? "active" : ""} href="/ja/">日</Link>
-            <Link className={lang === "ko" ? "active" : ""} href="/ko/">KR</Link>
+            <Link className={lang === "zh" ? "active" : ""} href={switchLangHref("zh")}>简</Link>
+            <Link className={lang === "tw" ? "active" : ""} href={switchLangHref("tw")}>繁</Link>
+            <Link className={lang === "en" ? "active" : ""} href={switchLangHref("en")}>EN</Link>
+            <Link className={lang === "ja" ? "active" : ""} href={switchLangHref("ja")}>日</Link>
+            <Link className={lang === "ko" ? "active" : ""} href={switchLangHref("ko")}>KR</Link>
           </nav>
           <Link className="button compact" href={`/${lang}/#booking`}>{t.bookCta}</Link>
         </div>

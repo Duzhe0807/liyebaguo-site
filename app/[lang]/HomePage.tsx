@@ -373,11 +373,11 @@ export function HomePage({ locale }: { locale: Locale }) {
         </nav>
         <div className="header-actions">
           <nav className="language-switcher" aria-label="Language">
-            <Link className={locale === "zh" ? "active" : ""} href="/zh">简</Link>
-            <Link className={locale === "zh-hant" ? "active" : ""} href="/tw">繁</Link>
-            <Link className={locale === "en" ? "active" : ""} href="/en">EN</Link>
-            <Link className={locale === "ja" ? "active" : ""} href="/ja">日</Link>
-            <Link className={locale === "ko" ? "active" : ""} href="/ko">KR</Link>
+            <Link className={locale === "zh" ? "active" : ""} href="/zh/">简</Link>
+            <Link className={locale === "zh-hant" ? "active" : ""} href="/tw/">繁</Link>
+            <Link className={locale === "en" ? "active" : ""} href="/en/">EN</Link>
+            <Link className={locale === "ja" ? "active" : ""} href="/ja/">日</Link>
+            <Link className={locale === "ko" ? "active" : ""} href="/ko/">KR</Link>
           </nav>
           <a className="button compact" href="#booking">{t.book}</a>
           <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
