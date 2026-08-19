@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, CalendarBlank, Check, Clock, Minus, Plus, ShieldCheck } from "@phosphor-icons/react";
+import { ArrowLeft, CalendarBlank, ChatCircleDots, Check, CheckCircle, Clock, Minus, Plus, ShieldCheck } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useMemo, useState } from "react";
@@ -53,6 +53,7 @@ export function CheckoutFlow({ lang }: { lang: Lang }) {
 
   const adjust = (ticketTypeId: string, delta: number) => {
     setQuantities((current) => {
+      if (delta > 0 && count >= Math.min(20, selectedShow?.remaining ?? 20)) return current;
       const next = Math.max(0, Math.min(20, (current[ticketTypeId] ?? 0) + delta));
       return { ...current, [ticketTypeId]: next };
     });
@@ -93,7 +94,8 @@ export function CheckoutFlow({ lang }: { lang: Lang }) {
         <div><strong>礼宴巴国</strong><span>LIYAN BAGUO</span></div>
         <span className="secure-label"><ShieldCheck />Secure checkout</span>
       </header>
-      <div className="checkout-intro"><p>OFFICIAL BOOKING</p><h1>{t.title}</h1><span>{t.subtitle}</span></div>
+      <div className="checkout-intro"><p>OFFICIAL BOOKING</p><h1>{t.title}</h1><span>{t.subtitle}</span><ol className="checkout-process" aria-label="Booking process"><li><b>1</b><span>{t.processDate}</span></li><li><b>2</b><span>{t.processTickets}</span></li><li><b>3</b><span>{t.processDetails}</span></li><li><b>4</b><span>{t.processSeat}</span></li></ol></div>
+      <section className="checkout-seat-notice"><ChatCircleDots /><div><strong>{t.seatNoticeTitle}</strong><p>{t.seatNotice}</p></div></section>
       <form className="checkout-layout" onSubmit={submit}>
         <div className="checkout-main">
           <section className="checkout-step">
@@ -101,7 +103,8 @@ export function CheckoutFlow({ lang }: { lang: Lang }) {
             <label className="checkout-date"><CalendarBlank /><input type="date" value={date} min={new Date().toISOString().slice(0, 10)} onChange={(event) => setDate(event.target.value)} /></label>
             {loading ? <p className="checkout-muted">{t.loading}</p> : shows.length === 0 ? <p className="checkout-empty">{t.noShows}</p> : (
               <div className="session-options">
-                {shows.map((show) => <button key={show.id} type="button" className={showId === show.id ? "active" : ""} onClick={() => { setShowId(show.id); setQuantities({}); }}>
+                {shows.map((show) => <button key={show.id} type="button" aria-pressed={showId === show.id} className={showId === show.id ? "active" : ""} onClick={() => { setShowId(show.id); setQuantities({}); }}>
+                  <CheckCircle className="session-check" weight="fill" />
                   <span>{show.sessionType === "LUNCH" ? t.lunch : t.dinner}</span>
                   <strong><Clock />{show.showStart}–{show.showEnd}</strong>
                   <small>{t.garden} {show.gardenStart}–{show.gardenEnd}</small>
@@ -112,10 +115,11 @@ export function CheckoutFlow({ lang }: { lang: Lang }) {
           </section>
           <section className="checkout-step">
             <div className="step-title"><span>02</span><div><small>{t.tickets}</small><h2>{t.tickets}</h2></div></div>
+            <p className="seat-category-note"><ChatCircleDots />{t.seatNoticeTitle}</p>
             <div className="ticket-options">
               {selectedShow?.prices.map((ticket) => <article key={ticket.ticketTypeId} className={ticket.featured ? "featured" : ""}>
                 <div><small>{ticket.code}</small><h3>{ticket.names[lang]}</h3><p>{lang === "zh" || lang === "tw" ? ticket.description.zh : ticket.description.en}</p>{ticket.includesCostume ? <em><Check />Costume included</em> : null}</div>
-                <div className="ticket-buy"><strong>¥{(ticket.priceCents / 100).toFixed(0)}</strong><div className="quantity"><button type="button" aria-label="Decrease" onClick={() => adjust(ticket.ticketTypeId, -1)}><Minus /></button><span>{quantities[ticket.ticketTypeId] ?? 0}</span><button type="button" aria-label="Increase" onClick={() => adjust(ticket.ticketTypeId, 1)}><Plus /></button></div></div>
+                <div className="ticket-buy"><strong>¥{(ticket.priceCents / 100).toFixed(0)}</strong><div className="quantity"><button type="button" aria-label="Decrease" disabled={(quantities[ticket.ticketTypeId] ?? 0) === 0} onClick={() => adjust(ticket.ticketTypeId, -1)}><Minus /></button><span>{quantities[ticket.ticketTypeId] ?? 0}</span><button type="button" aria-label="Increase" disabled={count >= Math.min(20, selectedShow.remaining)} onClick={() => adjust(ticket.ticketTypeId, 1)}><Plus /></button></div></div>
               </article>)}
             </div>
           </section>
@@ -134,6 +138,7 @@ export function CheckoutFlow({ lang }: { lang: Lang }) {
           <p>04 · {t.payment}</p><h2>{t.summary}</h2>
           {selectedItems.length ? selectedItems.map((item) => <div className="summary-line" key={item.ticketTypeId}><span>{item.names[lang]} × {item.quantity}</span><strong>¥{(item.priceCents * item.quantity / 100).toFixed(0)}</strong></div>) : <p className="checkout-muted">{t.empty}</p>}
           {selectedShow ? <div className="summary-session"><CalendarBlank /><span>{date}<small>{selectedShow.sessionType === "LUNCH" ? t.lunch : t.dinner} · {selectedShow.showStart}–{selectedShow.showEnd}</small></span></div> : null}
+          <div className="summary-seat-note"><ChatCircleDots /><span><strong>{t.seatNoticeTitle}</strong><small>{t.seatNotice}</small></span></div>
           <div className="summary-total"><span>{t.total}</span><strong>¥{(total / 100).toFixed(0)}</strong></div>
           <button className="checkout-submit" disabled={submitting || count < 1 || !selectedShow}>{submitting ? t.creating : t.create}</button>
           <small className="mock-notice"><ShieldCheck />{t.notice}</small>

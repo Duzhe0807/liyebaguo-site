@@ -5,6 +5,7 @@ import "./styles/components.css";
 import "./styles/pages.css";
 import "./styles/responsive.css";
 import "./styles/checkout.css";
+import "./styles/checkout-refined.css";
 import "./styles/admin.css";
 
 export default async function RootLayout({
