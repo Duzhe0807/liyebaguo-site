@@ -64,7 +64,7 @@ export default async function Page({ params }: { params: Promise<{ lang: Lang }>
               <li className={ticket.headwear ? "yes" : "no"}><span>{ticket.headwear ? <CheckIcon /> : <XIcon />}</span>{labels.headwear}</li>
             </ul>
             <p className="ticket-audience"><span>{labels.bestFor}</span>{ticket.audience}</p>
-            <Link className="button" href={`/${lang}/#booking`}>{labels.choose}</Link>
+            <Link className="button" href={`/${lang}/checkout`}>{labels.choose}</Link>
           </article>
         ))}
       </div>

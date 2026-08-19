@@ -1,0 +1,349 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum SessionType {
+  LUNCH
+  DINNER
+}
+
+enum ShowStatus {
+  DRAFT
+  AVAILABLE
+  SOLD_OUT
+  CLOSED
+  CANCELLED
+}
+
+enum TicketTypeStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum OrderStatus {
+  PENDING_PAYMENT
+  PAID
+  CANCELLED
+  EXPIRED
+  PARTIALLY_REFUNDED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  UNPAID
+  PROCESSING
+  PAID
+  FAILED
+  REFUNDING
+  PARTIALLY_REFUNDED
+  REFUNDED
+}
+
+enum PaymentProviderCode {
+  MOCK
+  WECHAT
+  ALIPAY
+  PAYPAL
+}
+
+enum PaymentTransactionType {
+  PAYMENT
+  REFUND
+}
+
+enum PaymentTransactionStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+}
+
+enum TicketStatus {
+  VALID
+  USED
+  CANCELLED
+  REFUNDED
+}
+
+enum RefundStatus {
+  PENDING
+  PROCESSING
+  SUCCEEDED
+  FAILED
+}
+
+enum AdminRole {
+  ADMIN
+  OPERATOR
+  CHECKIN_STAFF
+}
+
+enum OutboxStatus {
+  PENDING
+  PROCESSING
+  SENT
+  FAILED
+}
+
+model Show {
+  id             String      @id @default(cuid())
+  date           DateTime    @db.Date
+  sessionType    SessionType
+  gardenStart    String
+  gardenEnd      String
+  showStart      String
+  showEnd        String
+  venue          String
+  capacity       Int         @default(160)
+  onlineCapacity Int         @default(20)
+  heldCount      Int         @default(0)
+  soldCount      Int         @default(0)
+  status         ShowStatus  @default(DRAFT)
+  saleStart      DateTime?
+  saleEnd        DateTime?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  prices         ShowTicketPrice[]
+  orders         Order[]
+  tickets        Ticket[]
+
+  @@unique([date, sessionType])
+  @@index([date, status])
+  @@map("shows")
+}
+
+model TicketType {
+  id              String           @id @default(cuid())
+  code            String           @unique
+  nameZh          String
+  nameZhHant      String
+  nameEn          String
+  nameJa          String
+  nameKo          String
+  descriptionZh   String
+  descriptionEn   String
+  seatArea        String
+  includesMeal    Boolean          @default(true)
+  includesCostume Boolean          @default(false)
+  includesMakeup  Boolean          @default(false)
+  includesPhoto   Boolean          @default(false)
+  isFeatured      Boolean          @default(false)
+  status          TicketTypeStatus @default(ACTIVE)
+  sortOrder       Int              @default(0)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  prices          ShowTicketPrice[]
+  orderItems      OrderItem[]
+
+  @@map("ticket_types")
+}
+
+model ShowTicketPrice {
+  showId       String
+  ticketTypeId String
+  priceCents   Int
+  currency     String     @default("CNY")
+  saleLimit    Int?
+  soldCount    Int        @default(0)
+  heldCount    Int        @default(0)
+  show         Show       @relation(fields: [showId], references: [id], onDelete: Cascade)
+  ticketType   TicketType @relation(fields: [ticketTypeId], references: [id])
+
+  @@id([showId, ticketTypeId])
+  @@map("show_ticket_prices")
+}
+
+model Order {
+  id                    String              @id @default(cuid())
+  orderNo               String              @unique
+  accessTokenHash       String
+  status                OrderStatus         @default(PENDING_PAYMENT)
+  paymentStatus         PaymentStatus       @default(UNPAID)
+  paymentProvider       PaymentProviderCode?
+  providerTransactionId String?
+  showId                String
+  customerName          String
+  customerEmail         String
+  customerPhone         String
+  customerCountry       String?
+  locale                String
+  dietaryNotes          String?
+  subtotalCents         Int
+  discountCents         Int                 @default(0)
+  totalAmountCents      Int
+  refundedAmountCents   Int                 @default(0)
+  currency              String              @default("CNY")
+  expiresAt             DateTime
+  paidAt                DateTime?
+  cancelledAt           DateTime?
+  expiredAt             DateTime?
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+  show                  Show                @relation(fields: [showId], references: [id])
+  items                 OrderItem[]
+  transactions          PaymentTransaction[]
+  tickets               Ticket[]
+  refunds               Refund[]
+
+  @@index([showId, status])
+  @@index([customerEmail, createdAt])
+  @@index([expiresAt, status])
+  @@map("orders")
+}
+
+model OrderItem {
+  id                 String     @id @default(cuid())
+  orderId            String
+  ticketTypeId       String
+  ticketCodeSnapshot String
+  ticketNameSnapshot String
+  unitPriceCents     Int
+  quantity           Int
+  subtotalCents      Int
+  order              Order      @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  ticketType         TicketType @relation(fields: [ticketTypeId], references: [id])
+  tickets            Ticket[]
+
+  @@index([orderId])
+  @@map("order_items")
+}
+
+model PaymentTransaction {
+  id                    String                   @id @default(cuid())
+  orderId               String
+  provider              PaymentProviderCode
+  type                  PaymentTransactionType
+  providerTransactionId String?
+  providerEventId       String?
+  idempotencyKey        String                   @unique
+  amountCents           Int
+  currency              String
+  status                PaymentTransactionStatus
+  failureCode           String?
+  createdAt             DateTime                 @default(now())
+  updatedAt             DateTime                 @updatedAt
+  order                 Order                    @relation(fields: [orderId], references: [id])
+
+  @@unique([provider, providerEventId])
+  @@index([orderId, type])
+  @@map("payment_transactions")
+}
+
+model Ticket {
+  id            String       @id @default(cuid())
+  ticketNo      String       @unique
+  orderId       String
+  orderItemId   String
+  showId        String
+  ticketType    String
+  qrTokenHash   String       @unique
+  status        TicketStatus @default(VALID)
+  issuedAt      DateTime     @default(now())
+  checkedInAt   DateTime?
+  checkedInById String?
+  order         Order        @relation(fields: [orderId], references: [id])
+  orderItem     OrderItem    @relation(fields: [orderItemId], references: [id])
+  show          Show         @relation(fields: [showId], references: [id])
+  checkedInBy   AdminUser?   @relation(fields: [checkedInById], references: [id])
+
+  @@index([showId, status])
+  @@map("tickets")
+}
+
+model Refund {
+  id               String       @id @default(cuid())
+  refundNo         String       @unique
+  orderId          String
+  amountCents      Int
+  reason           String
+  status           RefundStatus @default(PENDING)
+  providerRefundId String?
+  operatorId       String
+  createdAt        DateTime     @default(now())
+  completedAt      DateTime?
+  order            Order        @relation(fields: [orderId], references: [id])
+  operator         AdminUser    @relation(fields: [operatorId], references: [id])
+
+  @@index([orderId, status])
+  @@map("refunds")
+}
+
+model AdminUser {
+  id           String         @id @default(cuid())
+  email        String         @unique
+  passwordHash String
+  totpSecret   String
+  role         AdminRole
+  isActive     Boolean        @default(true)
+  failedLogins Int            @default(0)
+  lockedUntil  DateTime?
+  lastLoginAt  DateTime?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  sessions     AdminSession[]
+  auditLogs    AuditLog[]
+  checkedIn    Ticket[]
+  refunds      Refund[]
+
+  @@map("admin_users")
+}
+
+model AdminSession {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+  lastSeenAt DateTime @default(now())
+  user      AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([expiresAt])
+  @@map("admin_sessions")
+}
+
+model AuditLog {
+  id           String     @id @default(cuid())
+  actorId      String?
+  action       String
+  targetType   String
+  targetId     String?
+  metadata     Json?
+  ipHash       String?
+  createdAt    DateTime   @default(now())
+  actor        AdminUser? @relation(fields: [actorId], references: [id])
+
+  @@index([createdAt])
+  @@index([targetType, targetId])
+  @@map("audit_logs")
+}
+
+model EmailOutbox {
+  id          String       @id @default(cuid())
+  orderId     String
+  template    String
+  recipient   String
+  payload     Json
+  status      OutboxStatus @default(PENDING)
+  attempts    Int          @default(0)
+  nextAttempt DateTime     @default(now())
+  lastError   String?
+  createdAt   DateTime     @default(now())
+  sentAt      DateTime?
+
+  @@index([status, nextAttempt])
+  @@map("email_outbox")
+}
+
+model RequestThrottle {
+  key         String   @id
+  count       Int      @default(0)
+  windowStart DateTime
+  expiresAt   DateTime
+
+  @@index([expiresAt])
+  @@map("request_throttles")
+}

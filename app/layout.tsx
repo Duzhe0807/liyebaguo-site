@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import "./styles/base.css";
 import "./styles/components.css";
 import "./styles/pages.css";
 import "./styles/responsive.css";
+import "./styles/checkout.css";
+import "./styles/admin.css";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  await connection();
   return (
     <html lang="zh-CN">
       <head>

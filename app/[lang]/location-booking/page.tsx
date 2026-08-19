@@ -192,7 +192,7 @@ export default async function Page({ params }: { params: Promise<{ lang: Lang }>
         <a href={whatsappUrl} target="_blank" rel="noreferrer"><WechatIcon size={22} /><div><small>WhatsApp</small><strong>{whatsappId}</strong></div></a>
         <a href={customerServiceUrl} target="_blank" rel="noreferrer"><WechatIcon size={22} /><div><small>{t.wechat}</small><strong>Open WeChat Support</strong></div></a>
       </div>
-      <Link className="button" href={`/${lang}/#booking`}>{t.book}</Link>
+      <Link className="button" href={`/${lang}/checkout`}>{t.book}</Link>
     </section>
 
     <DetailFaq title={t.faqTitle} items={t.faq} />

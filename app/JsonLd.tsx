@@ -1,6 +1,11 @@
-export function JsonLdOrganization() {
+import { headers } from "next/headers";
+
+async function nonce() { return (await headers()).get("x-nonce") ?? undefined; }
+
+export async function JsonLdOrganization() {
   return (
     <script
+      nonce={await nonce()}
       type="application/ld+json"
       dangerouslySetInnerHTML={{
         __html: JSON.stringify({
@@ -21,9 +26,10 @@ export function JsonLdOrganization() {
   );
 }
 
-export function JsonLdLocalBusiness() {
+export async function JsonLdLocalBusiness() {
   return (
     <script
+      nonce={await nonce()}
       type="application/ld+json"
       dangerouslySetInnerHTML={{
         __html: JSON.stringify({
@@ -51,7 +57,7 @@ export function JsonLdLocalBusiness() {
   );
 }
 
-export function JsonLdBreadcrumb(items: { name: string; url: string }[]) {
+export async function JsonLdBreadcrumb(items: { name: string; url: string }[]) {
   const listItems = items.map((item, i) => ({
     "@type": "ListItem" as const,
     position: i + 1,
@@ -60,6 +66,7 @@ export function JsonLdBreadcrumb(items: { name: string; url: string }[]) {
   }));
   return (
     <script
+      nonce={await nonce()}
       type="application/ld+json"
       dangerouslySetInnerHTML={{
         __html: JSON.stringify({
@@ -72,9 +79,10 @@ export function JsonLdBreadcrumb(items: { name: string; url: string }[]) {
   );
 }
 
-export function JsonLdFAQPage(questions: { question: string; answer: string }[]) {
+export async function JsonLdFAQPage(questions: { question: string; answer: string }[]) {
   return (
     <script
+      nonce={await nonce()}
       type="application/ld+json"
       dangerouslySetInnerHTML={{
         __html: JSON.stringify({

@@ -48,10 +48,10 @@ export function InnerPageShell({ lang, title, eyebrow, summary, image, children,
   ];
   const defaultUtilityLinks: RelatedLink[] = theme === "tickets" ? [
     { href: `/${lang}/location-booking/`, label: isEn ? "Location & Booking" : "地址与预订", meta: isEn ? "Get directions" : "导航与联系" },
-    { href: `/${lang}/#booking`, label: isEn ? "Book Now" : "立即预订", meta: isEn ? "Send a request" : "提交预约" },
+    { href: `/${lang}/checkout`, label: isEn ? "Book Now" : "立即预订", meta: isEn ? "Choose tickets" : "在线购票" },
   ] : [
     { href: `/${lang}/show-times-prices/`, label: isEn ? "Tickets" : "场次票价", meta: isEn ? "Compare options" : "对比票种" },
-    { href: `/${lang}/#booking`, label: isEn ? "Book Now" : "立即预订", meta: isEn ? "Send a request" : "提交预约" },
+    { href: `/${lang}/checkout`, label: isEn ? "Book Now" : "立即预订", meta: isEn ? "Choose tickets" : "在线购票" },
   ];
   const links = relatedLinks ?? (resolvedPageType === "content" ? defaultContentLinks : resolvedPageType === "utility" ? defaultUtilityLinks : []);
   const ctaCopy: Record<string, [string, string]> = isEn ? {
@@ -74,24 +74,14 @@ export function InnerPageShell({ lang, title, eyebrow, summary, image, children,
   const [ctaTitle, ctaText] = ctaCopy[theme];
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-  const switchLangHref = (l: string) => {
+  const switchLangHref = (nextLang: string) => {
     const parts = pathname.split("/").filter(Boolean);
     const rest = parts.slice(1).join("/");
-    return rest ? `/${l}/${rest}/` : `/${l}/`;
+    return rest ? `/${nextLang}/${rest}/` : `/${nextLang}/`;
   };
-  const breadcrumb = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: t.brandName, item: `https://gongyanshow.com/${lang}/` },
-      { "@type": "ListItem", position: 2, name: title },
-    ],
-  };
-
   return (
     <main className={`inner-page page-${resolvedPageType} theme-${theme}`}>
       <HtmlLang lang={langCodes[lang]} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
       <header className="site-header inner-header">
         <Link className="wordmark" href={`/${lang}/`}><strong>礼宴巴国</strong><span>LIYAN BAGUO</span></Link>
         <nav className="nav inner-nav" aria-label={isEn ? "Main navigation" : "主导航"}>
@@ -105,7 +95,7 @@ export function InnerPageShell({ lang, title, eyebrow, summary, image, children,
             <Link className={lang === "ja" ? "active" : ""} href={switchLangHref("ja")}>日</Link>
             <Link className={lang === "ko" ? "active" : ""} href={switchLangHref("ko")}>KR</Link>
           </nav>
-          <Link className="button compact" href={`/${lang}/#booking`}>{t.bookCta}</Link>
+          <Link className="button compact" href={`/${lang}/checkout`}>{t.bookCta}</Link>
         </div>
       </header>
 
@@ -129,14 +119,14 @@ export function InnerPageShell({ lang, title, eyebrow, summary, image, children,
 
       <section className="inner-cta">
         <p className="eyebrow">RESERVATIONS</p><h2>{ctaTitle}</h2><p>{ctaText}</p>
-        <Link className="button" href={`/${lang}/#booking`}>{t.bookCta}</Link>
+        <Link className="button" href={`/${lang}/checkout`}>{t.bookCta}</Link>
       </section>
 
       <footer className="inner-footer"><div className="wordmark"><strong>礼宴巴国</strong><span>LIYAN BAGUO</span></div><p>{isEn ? "Immersive Ba-Yu dinner show in Chongqing" : "重庆沉浸式巴渝文化餐秀"}</p><div><Link href={`/${lang}/about/`}>{t.navAbout}</Link><Link href={`/${lang}/faq/`}>FAQ</Link></div></footer>
       <div className="inner-mobile-book">
         <a href="tel:+8617383017612" aria-label={isEn ? "Call us" : "拨打电话"}><Phone size={20} weight="fill" /></a>
         <CustomerServiceChooser compact isEnglish={isEn} />
-        <Link className="book" href={`/${lang}/#booking`}>{t.bookCta}</Link>
+        <Link className="book" href={`/${lang}/checkout`}>{t.bookCta}</Link>
       </div>
     </main>
   );
