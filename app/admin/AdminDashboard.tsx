@@ -103,6 +103,11 @@ export function AdminDashboard() {
   function showNotice(tone: Notice["tone"], text: string) {
     setNotice({ tone, text }); window.setTimeout(() => setNotice(null), 5000);
   }
+  function switchView(view: AdminView) {
+    if (view === activeView) return;
+    setActiveView(view);
+    window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: "smooth" }));
+  }
   async function checkin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); const form = event.currentTarget; const data = new FormData(form);
     const response = await fetch("/api/admin/checkin", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ token: data.get("token"), showId: data.get("showId") }) });
@@ -150,7 +155,7 @@ export function AdminDashboard() {
   return <main className="admin-shell">
     <aside className="admin-sidebar">
       <div className="admin-brand"><span className="admin-brand-mark">礼</span><div><strong>礼宴巴国</strong><small>票务运营中心</small></div></div>
-      <nav aria-label="后台导航">{navItems.map((item) => <button key={item.id} type="button" className={activeView === item.id ? "active" : ""} onClick={() => setActiveView(item.id)}>{item.icon}<span>{item.label}</span>{item.id === "orders" && metrics.pendingOrders > 0 ? <b>{metrics.pendingOrders}</b> : null}</button>)}</nav>
+      <nav aria-label="后台导航">{navItems.map((item) => <button key={item.id} type="button" className={activeView === item.id ? "active" : ""} onClick={() => switchView(item.id)}>{item.icon}<span>{item.label}</span>{item.id === "orders" && metrics.pendingOrders > 0 ? <b>{metrics.pendingOrders}</b> : null}</button>)}</nav>
       <div className="admin-sidebar-foot"><ShieldCheck /><span><strong>测试环境</strong><small>模拟支付已启用</small></span></div>
     </aside>
 
@@ -159,16 +164,17 @@ export function AdminDashboard() {
       {notice ? <div className="admin-notice" data-tone={notice.tone} role="status">{notice.tone === "error" ? <WarningCircle /> : <CheckCircle />}<span>{notice.text}</span><button type="button" onClick={() => setNotice(null)}><X /></button></div> : null}
 
       <div className="admin-content" aria-busy={loading}>
+        <div className="admin-view" key={activeView}>
         {activeView === "overview" ? <><section className="admin-metrics" aria-label="关键指标">
           <Metric icon={<CalendarBlank />} label="开放场次" value={String(metrics.activeShows)} detail="当前可售与已售罄场次" />
           <Metric icon={<Ticket />} label="已售电子票" value={String(metrics.soldTickets)} detail="所有测试场次累计" />
           <Metric icon={<Clock />} label="待支付订单" value={String(metrics.pendingOrders)} detail="需关注支付超时状态" />
           <Metric icon={<CurrencyCny />} label="已支付金额" value={money(metrics.paidRevenue)} detail="不含已退款订单" />
         </section><div className="admin-overview-grid">
-          <section className="admin-panel"><div className="admin-panel-head"><div><h2>近期场次</h2><p>优先确认库存占用和售票状态</p></div><button type="button" onClick={() => setActiveView("shows")}>管理场次<CaretRight /></button></div><div className="admin-compact-list">
-            {recentShows.length ? recentShows.map((show) => <button type="button" key={show.id} onClick={() => { setActiveView("shows"); setShowEditor({ mode: "edit", show }); }}><span className="admin-date-tile"><strong>{dateLabel(show.date).split(" ")[0]}</strong><small>{sessionLabel(show.sessionType)}</small></span><span><strong>{show.showStart} - {show.showEnd}</strong><small>线上库存 {show.soldCount + show.heldCount} / {show.onlineCapacity}</small></span><StatusBadge value={show.status} /><CaretRight /></button>) : <div className="admin-empty">暂无场次</div>}
+          <section className="admin-panel"><div className="admin-panel-head"><div><h2>近期场次</h2><p>优先确认库存占用和售票状态</p></div><button type="button" onClick={() => switchView("shows")}>管理场次<CaretRight /></button></div><div className="admin-compact-list">
+            {recentShows.length ? recentShows.map((show) => <button type="button" key={show.id} onClick={() => { switchView("shows"); setShowEditor({ mode: "edit", show }); }}><span className="admin-date-tile"><strong>{dateLabel(show.date).split(" ")[0]}</strong><small>{sessionLabel(show.sessionType)}</small></span><span><strong>{show.showStart} - {show.showEnd}</strong><small>线上库存 {show.soldCount + show.heldCount} / {show.onlineCapacity}</small></span><StatusBadge value={show.status} /><CaretRight /></button>) : <div className="admin-empty">暂无场次</div>}
           </div></section>
-          <section className="admin-panel"><div className="admin-panel-head"><div><h2>最近订单</h2><p>新订单和状态变化集中在这里</p></div><button type="button" onClick={() => setActiveView("orders")}>查看全部<CaretRight /></button></div><div className="admin-compact-list orders">
+          <section className="admin-panel"><div className="admin-panel-head"><div><h2>最近订单</h2><p>新订单和状态变化集中在这里</p></div><button type="button" onClick={() => switchView("orders")}>查看全部<CaretRight /></button></div><div className="admin-compact-list orders">
             {orders.slice(0, 5).map((order) => <button type="button" key={order.orderNo} onClick={() => setSelectedOrder(order)}><span><strong>{order.customerName}</strong><small>{order.orderNo}</small></span><span><strong>{money(order.totalAmountCents)}</strong><small>{sessionLabel(order.show.sessionType)} · {String(order.show.date).slice(0, 10)}</small></span><StatusBadge value={order.status} /><CaretRight /></button>)}
           </div></section>
         </div></> : null}
@@ -183,6 +189,7 @@ export function AdminDashboard() {
         })}</div></section> : null}
 
         {activeView === "checkin" ? <section className="admin-checkin-page"><div className="admin-checkin-intro"><span className="admin-checkin-icon"><QrCode /></span><p>ONSITE CHECK-IN</p><h2>电子票现场核销</h2><span>先确认当前现场场次，再扫描宾客电子票。错场票、已退款票和已核销票会被拒绝。</span></div><form onSubmit={checkin}><label>当前现场场次<select name="showId" required defaultValue=""><option value="" disabled>请选择场次</option>{shows.filter((show) => show.status !== "CANCELLED").map((show) => <option key={show.id} value={show.id}>{String(show.date).slice(0, 10)} · {sessionLabel(show.sessionType)} · {show.showStart}</option>)}</select></label><label>电子票内容<div className="admin-ticket-input"><Ticket /><input name="token" required placeholder="扫描二维码或粘贴 LYTICKET:v1..." autoComplete="off" /></div></label><button className="admin-primary" type="submit"><CheckCircle />确认核销</button></form></section> : null}
+        </div>
       </div>
     </section>
 
