@@ -42,6 +42,8 @@ export function CheckoutFlow({ lang }: { lang: Lang }) {
   const [showId, setShowId] = useState("");
   const [quantities, setQuantities] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(false);
+  const [availabilityError, setAvailabilityError] = useState("");
+  const [availabilityRequest, setAvailabilityRequest] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const selectedShow = shows.find((show) => show.id === showId);
@@ -60,14 +62,14 @@ export function CheckoutFlow({ lang }: { lang: Lang }) {
 
   useEffect(() => {
     const controller = new AbortController();
-    setLoading(true); setError(""); setShowId(""); setQuantities({});
+    setLoading(true); setAvailabilityError(""); setShowId(""); setShows([]); setQuantities({});
     fetch(`/api/shows?date=${date}`, { signal: controller.signal, cache: "no-store" })
       .then((response) => response.ok ? response.json() : Promise.reject(new Error("availability")))
       .then((data: { shows: Show[] }) => { setShows(data.shows); setShowId(data.shows[0]?.id ?? ""); })
-      .catch((cause) => { if (cause.name !== "AbortError") setError(t.error); })
+      .catch((cause) => { if (cause.name !== "AbortError") setAvailabilityError(t.availabilityError); })
       .finally(() => setLoading(false));
     return () => controller.abort();
-  }, [date, t.error]);
+  }, [availabilityRequest, date, t.availabilityError]);
 
   const selectedItems = useMemo(() => selectedShow?.prices
     .map((ticket) => ({ ...ticket, quantity: quantities[ticket.ticketTypeId] ?? 0 }))
@@ -138,13 +140,15 @@ export function CheckoutFlow({ lang }: { lang: Lang }) {
         </ol>
 
         <div className="checkout-main">
-          <section className="checkout-step">
+          <section className="checkout-step" id="session-step">
             <div className="step-title"><span>01</span><div><small>{t.date}</small><h2>{t.session}</h2><p>{t.sessionHelp}</p></div></div>
             <div className="date-selection">
               <label className="checkout-date"><CalendarBlank /><input type="date" value={date} min={new Date().toISOString().slice(0, 10)} onChange={(event) => setDate(event.target.value)} /></label>
               {availableDates.length ? <div className="available-date-list"><span>{t.nextAvailable}</span><div>{availableDates.map((availableDate) => <button type="button" className={date === availableDate ? "active" : ""} aria-pressed={date === availableDate} key={availableDate} onClick={() => setDate(availableDate)}>{formatAvailableDate(availableDate, lang)}</button>)}</div></div> : null}
             </div>
-            {loading ? <p className="checkout-muted">{t.loading}</p> : shows.length === 0 ? <p className="checkout-empty">{t.noShows}</p> : (
+            {loading ? <p className="checkout-muted">{t.loading}</p> : availabilityError ? (
+              <div className="availability-error" role="alert"><WarningCircle /><span><strong>{t.availabilityError}</strong><small>{t.availabilityErrorHelp}</small></span><button type="button" onClick={() => setAvailabilityRequest((current) => current + 1)}>{t.retry}</button></div>
+            ) : shows.length === 0 ? <p className="checkout-empty">{t.noShows}</p> : (
               <div className="session-options">
                 {shows.map((show) => <button key={show.id} type="button" aria-pressed={showId === show.id} className={showId === show.id ? "active" : ""} onClick={() => { setShowId(show.id); setQuantities({}); }}>
                   <CheckCircle className="session-check" weight="fill" />
@@ -157,15 +161,17 @@ export function CheckoutFlow({ lang }: { lang: Lang }) {
             )}
           </section>
 
-          <section className="checkout-step">
+          <section className={`checkout-step ${selectedShow?.prices.length ? "" : "step-pending"}`}>
             <div className="step-title"><span>02</span><div><small>{t.tickets}</small><h2>{t.tickets}</h2><p>{t.ticketHelp}</p></div></div>
-            <div className="ticket-options">
-              {selectedShow?.prices.map((ticket) => <article key={ticket.ticketTypeId} className={ticket.featured ? "featured" : ""}>
-                <div><small>{ticket.code}</small><h3>{ticket.names[lang]}</h3><p>{lang === "zh" || lang === "tw" ? ticket.description.zh : ticket.description.en}</p>{ticket.includesCostume ? <em><Check />Costume included</em> : null}</div>
-                <div className="ticket-buy"><strong>¥{(ticket.priceCents / 100).toFixed(0)}</strong><div className="quantity"><button type="button" aria-label="Decrease" disabled={(quantities[ticket.ticketTypeId] ?? 0) === 0} onClick={() => adjust(ticket.ticketTypeId, -1)}><Minus /></button><span>{quantities[ticket.ticketTypeId] ?? 0}</span><button type="button" aria-label="Increase" disabled={count >= Math.min(20, selectedShow.remaining)} onClick={() => adjust(ticket.ticketTypeId, 1)}><Plus /></button></div></div>
-              </article>)}
-            </div>
-            <div className="checkout-seat-notice"><ChatCircleDots /><div><strong>{t.seatNoticeTitle}</strong><p>{t.seatNotice}</p></div></div>
+            {selectedShow?.prices.length ? <>
+              <div className="ticket-options">
+                {selectedShow.prices.map((ticket) => <article key={ticket.ticketTypeId} className={ticket.featured ? "featured" : ""}>
+                  <div><small>{ticket.code}</small><h3>{ticket.names[lang]}</h3><p>{lang === "zh" || lang === "tw" ? ticket.description.zh : ticket.description.en}</p>{ticket.includesCostume ? <em><Check />Costume included</em> : null}</div>
+                  <div className="ticket-buy"><strong>¥{(ticket.priceCents / 100).toFixed(0)}</strong><div className="quantity"><button type="button" aria-label="Decrease" disabled={(quantities[ticket.ticketTypeId] ?? 0) === 0} onClick={() => adjust(ticket.ticketTypeId, -1)}><Minus /></button><span>{quantities[ticket.ticketTypeId] ?? 0}</span><button type="button" aria-label="Increase" disabled={count >= Math.min(20, selectedShow.remaining)} onClick={() => adjust(ticket.ticketTypeId, 1)}><Plus /></button></div></div>
+                </article>)}
+              </div>
+              <div className="checkout-seat-notice"><ChatCircleDots /><div><strong>{t.seatNoticeTitle}</strong><p>{t.seatNotice}</p></div></div>
+            </> : <div className="ticket-step-empty"><Ticket /><span><strong>{t.ticketEmptyTitle}</strong><small>{selectedShow ? t.ticketEmptyNoPrices : t.ticketEmptyNoSession}</small></span><a href="#session-step">{t.chooseSessionAction}</a></div>}
           </section>
 
           <section className="checkout-step">

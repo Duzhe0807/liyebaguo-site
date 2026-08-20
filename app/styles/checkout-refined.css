@@ -117,6 +117,46 @@
 .session-check { color: var(--book-jade); }
 .session-options em { color: #89b59e; }
 
+.availability-error,
+.ticket-step-empty {
+  min-height: 138px;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 17px;
+  padding: 22px;
+  background: var(--book-panel);
+  border: 1px dashed rgba(224, 202, 155, 0.3);
+  border-radius: 6px;
+}
+.availability-error > svg,
+.ticket-step-empty > svg { width: 26px; height: 26px; color: var(--book-gold); }
+.availability-error strong,
+.availability-error small,
+.ticket-step-empty strong,
+.ticket-step-empty small { display: block; }
+.availability-error strong,
+.ticket-step-empty strong { color: #e6dfd3; font-size: 14px; }
+.availability-error small,
+.ticket-step-empty small { max-width: 530px; margin-top: 6px; color: var(--book-muted); font-size: 11px; line-height: 1.7; }
+.availability-error button,
+.ticket-step-empty a {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  color: #f2dfb3;
+  background: transparent;
+  border: 1px solid rgba(213, 180, 107, 0.5);
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.availability-error button:hover,
+.ticket-step-empty a:hover { background: rgba(213, 180, 107, 0.09); border-color: var(--book-gold); }
+.step-pending .step-title > span { color: #817b71; background: rgba(255, 255, 255, 0.03); border-color: var(--book-line); }
+
 .ticket-options { gap: 10px; }
 .ticket-options article {
   min-height: 132px;
@@ -247,6 +287,8 @@
   .checkout-process li { min-width: 150px; min-height: 60px; padding: 10px 14px; }
   .checkout-step:first-child { padding-top: 0; }
   .session-options { grid-template-columns: 1fr; }
+  .availability-error, .ticket-step-empty { grid-template-columns: 36px minmax(0, 1fr); }
+  .availability-error button, .ticket-step-empty a { grid-column: 2; justify-self: start; }
   .ticket-options article { align-items: flex-start; padding: 18px 15px; }
   .checkout-seat-notice { margin-top: 14px; }
   .order-summary { position: static; margin-top: 24px; }
