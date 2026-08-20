@@ -1,10 +1,11 @@
 "use client";
 
-import { ArrowLeft, CalendarBlank, ChatCircleDots, Check, CheckCircle, Clock, Minus, Plus, ShieldCheck } from "@phosphor-icons/react";
+import { ArrowLeft, CalendarBlank, ChatCircleDots, Check, CheckCircle, Clock, Minus, Plus, ShieldCheck, WarningCircle } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import type { Lang } from "@/app/languages";
+import { bookingPolicyCopy } from "../bookingPolicy";
 import { checkoutCopy } from "./copy";
 
 type TicketPrice = {
@@ -24,6 +25,7 @@ function tomorrow(): string {
 
 export function CheckoutFlow({ lang }: { lang: Lang }) {
   const t = checkoutCopy[lang];
+  const policy = bookingPolicyCopy[lang];
   const router = useRouter();
   const [date, setDate] = useState(tomorrow);
   const [shows, setShows] = useState<Show[]>([]);
@@ -96,6 +98,18 @@ export function CheckoutFlow({ lang }: { lang: Lang }) {
       </header>
       <div className="checkout-intro"><p>OFFICIAL BOOKING</p><h1>{t.title}</h1><span>{t.subtitle}</span><ol className="checkout-process" aria-label="Booking process"><li><b>1</b><span>{t.processDate}</span></li><li><b>2</b><span>{t.processTickets}</span></li><li><b>3</b><span>{t.processDetails}</span></li><li><b>4</b><span>{t.processSeat}</span></li></ol></div>
       <section className="checkout-seat-notice"><ChatCircleDots /><div><strong>{t.seatNoticeTitle}</strong><p>{t.seatNotice}</p></div></section>
+      <section className="checkout-policy" id="refund-policy" aria-labelledby="refund-policy-title">
+        <header>
+          <div><p>{policy.eyebrow}</p><h2 id="refund-policy-title">{policy.title}</h2></div>
+          <span>{policy.intro}</span>
+        </header>
+        <div className="checkout-policy-grid">
+          {policy.items.map((item, index) => <article key={item.label}>
+            <b>0{index + 1}</b><small>{item.label}</small><h3>{item.title}</h3><p>{item.description}</p>
+          </article>)}
+        </div>
+        <div className="checkout-force-majeure"><WarningCircle /><span><strong>{policy.forceMajeureTitle}</strong>{policy.forceMajeure}</span></div>
+      </section>
       <form className="checkout-layout" onSubmit={submit}>
         <div className="checkout-main">
           <section className="checkout-step">
@@ -141,6 +155,7 @@ export function CheckoutFlow({ lang }: { lang: Lang }) {
           <div className="summary-seat-note"><ChatCircleDots /><span><strong>{t.seatNoticeTitle}</strong><small>{t.seatNotice}</small></span></div>
           <div className="summary-total"><span>{t.total}</span><strong>¥{(total / 100).toFixed(0)}</strong></div>
           <button className="checkout-submit" disabled={submitting || count < 1 || !selectedShow}>{submitting ? t.creating : t.create}</button>
+          <a className="summary-policy-link" href="#refund-policy"><ShieldCheck /><span>{policy.consent}</span></a>
           <small className="mock-notice"><ShieldCheck />{t.notice}</small>
           {error ? <p className="checkout-error" role="alert">{error}</p> : null}
         </aside>

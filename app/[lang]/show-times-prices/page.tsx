@@ -4,12 +4,14 @@ import type { Metadata } from "next";
 import { languages, type Lang } from "../../languages";
 import { siteSeo, getCanonicalPath, getHreflang } from "../../seo";
 import { InnerPageShell, DetailFaq } from "../InnerPageShell";
+import { bookingPolicyCopy } from "../bookingPolicy";
 
 export function generateStaticParams() { return languages.map((lang) => ({ lang })); }
 export async function generateMetadata({ params }: { params: Promise<{ lang: Lang }> }): Promise<Metadata> { const { lang } = await params; const seo = siteSeo[lang].showTimes; return { title: seo.title, description: seo.description, alternates: { canonical: getCanonicalPath(lang, "show-times-prices"), languages: getHreflang("show-times-prices") } }; }
 
 export default async function Page({ params }: { params: Promise<{ lang: Lang }> }) {
   const { lang } = await params; const en = lang === "en";
+  const policy = bookingPolicyCopy[lang];
   const lunch = en ? ["Garden visit", "Welcome ritual", "Banquet & show"] : ["午间游园", "午宴迎宾礼", "午宴餐秀"];
   const dinner = en ? ["Garden visit", "Welcome ritual", "Banquet & show"] : ["晚间游园", "晚宴迎宾礼", "晚宴餐秀"];
   const lunchTimes = ["11:20", "12:05", "12:30–14:10"];
@@ -70,7 +72,13 @@ export default async function Page({ params }: { params: Promise<{ lang: Lang }>
       </div>
     </section>
 
-    <section className="inner-section policy-panel"><p className="eyebrow">CANCELLATION</p><h2>{en ? "Cancellation and refund" : "取消与退款"}</h2><p>{en ? "Unused bookings may be cancelled at any time. The original booking channel will confirm processing and arrival time for the refund." : "未核销订单随时可退；退款渠道与到账时间以原预订渠道的实际处理结果为准。"}</p></section>
+    <section className="inner-section policy-panel" id="refund-policy">
+      <p className="eyebrow">{policy.eyebrow}</p><h2>{policy.title}</h2><p>{policy.intro}</p>
+      <div className="policy-rule-list">
+        {policy.items.map((item) => <article key={item.label}><small>{item.label}</small><strong>{item.title}</strong><p>{item.description}</p></article>)}
+      </div>
+      <p className="policy-force-note"><strong>{policy.forceMajeureTitle}</strong>{policy.forceMajeure}</p>
+    </section>
     <DetailFaq title={en ? "Ticket questions" : "票务常见问题"} items={en ? [["Are prices per person?", "Yes. Prices are listed per guest and show lunch / dinner."], ["What does SVIP include?", "In addition to the banquet show, SVIP includes traditional costume and traditional headwear."], ["How do I confirm availability?", "Send a booking request with your date, session and party size."]] : [["票价是单人价格吗？", "是，价格依次为单人午宴 / 晚宴。"], ["SVIP 席位包含什么？", "除餐秀外，SVIP 席位赠送古装服饰和古装头饰。"], ["如何确认余位？", "提交日期、场次与人数后，由工作人员确认。"]]} />
   </InnerPageShell>;
 }

@@ -11,6 +11,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { TrailerModal } from "./TrailerModal";
 import { customerServiceUrl, whatsappId, whatsappUrl } from "../customerService";
 import { CustomerServiceChooser } from "./CustomerServiceChooser";
+import { bookingPolicyCopy } from "./bookingPolicy";
 
 
 type Locale = "zh" | "zh-hant" | "en" | "ja" | "ko";
@@ -287,7 +288,7 @@ const baseFaqs = {
     ["是否可以包场？", "支持包场及定制活动，请尽早提交团队需求。"],
     ["是否支持儿童、素食、清真或过敏备注？", "儿童及饮食需求请在预约时备注，团队会根据实际情况回复确认。"],
     ["如何预约？", "个人宾客可提交席位预约表单；旅行社、企业或多人团队请使用团队咨询表单。"],
-    ["取消或改期规则是什么？", "具体规则将在确认档期与套餐时说明，改期请尽早联系工作人员。"],
+    [bookingPolicyCopy.zh.faqQuestion, bookingPolicyCopy.zh.faqAnswer],
     ["地址在哪里，如何到达？", "位于中国重庆九龙坡区巴国城，页面底部提供 Google Maps 与百度地图入口。"],
   ],
   en: [
@@ -299,11 +300,16 @@ const baseFaqs = {
     ["Can the venue be booked privately?", "Yes. Private buyouts and customised events are available by advance enquiry."],
     ["Can you accommodate children or dietary needs?", "Please add child, vegetarian, halal or allergy requirements when booking so the team can confirm options."],
     ["How do I make a reservation?", "Use Guest Booking for individual visits, or Group Inquiry for agencies, companies and larger parties."],
-    ["What is the cancellation or rescheduling policy?", "The applicable policy will be shared when your date and package are confirmed."],
+    [bookingPolicyCopy.en.faqQuestion, bookingPolicyCopy.en.faqAnswer],
     ["Where are you located?", "We are in Baguocheng, Jiulongpo District, Chongqing. Map links are available at the bottom of the page."],
   ],
 };
-const faqs = { ...baseFaqs, "zh-hant": baseFaqs.zh, ko: baseFaqs.en, ja: baseFaqs.en };
+const faqs = {
+  ...baseFaqs,
+  "zh-hant": [...baseFaqs.zh.slice(0, 8), [bookingPolicyCopy.tw.faqQuestion, bookingPolicyCopy.tw.faqAnswer], baseFaqs.zh[9]],
+  ko: [...baseFaqs.en.slice(0, 8), [bookingPolicyCopy.ko.faqQuestion, bookingPolicyCopy.ko.faqAnswer], baseFaqs.en[9]],
+  ja: [...baseFaqs.en.slice(0, 8), [bookingPolicyCopy.ja.faqQuestion, bookingPolicyCopy.ja.faqAnswer], baseFaqs.en[9]],
+};
 
 export function HomePage({ locale }: { locale: Locale }) {
   const t = copy[locale];
