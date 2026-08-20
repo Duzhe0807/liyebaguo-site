@@ -79,6 +79,18 @@ export async function listAvailableShows(date: string) {
   }));
 }
 
+export async function listUpcomingShowDates(limit = 8): Promise<string[]> {
+  const today = new Date(`${currentShanghaiDate()}T00:00:00.000Z`);
+  const shows = await getDb().show.findMany({
+    where: { date: { gte: today }, status: ShowStatus.AVAILABLE },
+    select: { date: true },
+    distinct: ["date"],
+    orderBy: { date: "asc" },
+    take: Math.max(1, Math.min(limit, 20)),
+  });
+  return shows.map((show) => show.date.toISOString().slice(0, 10));
+}
+
 export async function createOrder(input: CreateOrderInput) {
   const db = getDb();
   const totalQuantity = input.items.reduce((sum, item) => sum + item.quantity, 0);
