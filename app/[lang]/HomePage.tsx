@@ -263,8 +263,20 @@ const baseGalleryGroups = {
     { title: "Japanese & Korean Guests", en: "日韩旅客", text: "Experience Eastern etiquette, costume aesthetics and theatrical atmosphere up close—from Hanfu rituals to banquet interaction.", video: "/videos/gallery-jk.mp4", images: ["/images/gallery-jk-1.webp", "/images/gallery-jk-2.webp", "/images/gallery-jk-3.webp", "/images/gallery-jk-4.webp"] },
     { title: "Southeast Asian Guests", en: "东南亚旅客", text: "Ideal for friends, families and groups—enjoy the show, join the banquet and capture lively travel moments worth remembering.", video: "/videos/gallery-sea.mp4", images: ["/images/gallery-sea-1.webp", "/images/gallery-sea-2.webp", "/images/gallery-sea-3.webp", "/images/gallery-sea-4.webp"] },
   ],
+  ja: [
+    { title: "欧米からのお客様", en: "European & American Guests", text: "英語案内と視覚的な物語で、中国が初めての方も巴国の夜を気軽に楽しめます。", video: "/videos/gallery-western.mp4", images: ["/images/gallery-western-1.webp", "/images/gallery-western-2.webp", "/images/gallery-western-3.webp", "/images/gallery-western-4.webp"] },
+    { title: "香港・マカオ・台湾からのお客様", en: "Hong Kong, Macao & Taiwan Guests", text: "家族旅行、ビジネス接待、文化体験に適した、親しみと新鮮さを備えた東方の礼宴です。", video: "/videos/gallery-hmt.mp4", images: ["/images/gallery-hmt-1.webp", "/images/gallery-hmt-2.webp", "/images/gallery-hmt-3.webp", "/images/gallery-hmt-4.webp"] },
+    { title: "日本・韓国からのお客様", en: "Japanese & Korean Guests", text: "華服の礼儀から宴席の交流まで、東方の美意識と舞台の雰囲気を間近で体験できます。", video: "/videos/gallery-jk.mp4", images: ["/images/gallery-jk-1.webp", "/images/gallery-jk-2.webp", "/images/gallery-jk-3.webp", "/images/gallery-jk-4.webp"] },
+    { title: "東南アジアからのお客様", en: "Southeast Asian Guests", text: "友人、家族、団体旅行に。公演と宴席を楽しみながら、思い出に残る写真を撮影できます。", video: "/videos/gallery-sea.mp4", images: ["/images/gallery-sea-1.webp", "/images/gallery-sea-2.webp", "/images/gallery-sea-3.webp", "/images/gallery-sea-4.webp"] },
+  ],
+  ko: [
+    { title: "유럽·미주 여행객", en: "European & American Guests", text: "영어 안내와 시각적 스토리텔링으로 중국을 처음 방문한 여행객도 바 왕국의 밤을 편하게 즐길 수 있습니다.", video: "/videos/gallery-western.mp4", images: ["/images/gallery-western-1.webp", "/images/gallery-western-2.webp", "/images/gallery-western-3.webp", "/images/gallery-western-4.webp"] },
+    { title: "홍콩·마카오·대만 여행객", en: "Hong Kong, Macao & Taiwan Guests", text: "가족 모임, 비즈니스 접대와 문화 여행에 어울리는 익숙하면서도 새로운 동양식 연회입니다.", video: "/videos/gallery-hmt.mp4", images: ["/images/gallery-hmt-1.webp", "/images/gallery-hmt-2.webp", "/images/gallery-hmt-3.webp", "/images/gallery-hmt-4.webp"] },
+    { title: "한국·일본 여행객", en: "Japanese & Korean Guests", text: "전통 의상 예절부터 연회 참여까지 동양의 미감과 무대 분위기를 가까이에서 경험해 보세요.", video: "/videos/gallery-jk.mp4", images: ["/images/gallery-jk-1.webp", "/images/gallery-jk-2.webp", "/images/gallery-jk-3.webp", "/images/gallery-jk-4.webp"] },
+    { title: "동남아시아 여행객", en: "Southeast Asian Guests", text: "친구, 가족과 단체 여행객이 공연과 연회를 함께 즐기며 특별한 여행 사진을 남기기에 좋습니다.", video: "/videos/gallery-sea.mp4", images: ["/images/gallery-sea-1.webp", "/images/gallery-sea-2.webp", "/images/gallery-sea-3.webp", "/images/gallery-sea-4.webp"] },
+  ],
 } as const;
-const galleryGroups = { ...baseGalleryGroups, "zh-hant": baseGalleryGroups.zh, ko: baseGalleryGroups.en, ja: baseGalleryGroups.en } as const;
+const galleryGroups = { ...baseGalleryGroups, "zh-hant": baseGalleryGroups.zh } as const;
 function langPath(locale: Locale): string {
   if (locale === "zh-hant") return "/tw";
   return `/${locale}`;
@@ -302,15 +314,55 @@ const baseFaqs = {
     ["What is the cancellation or rescheduling policy?", "The applicable policy will be shared when your date and package are confirmed."],
     ["Where are you located?", "We are in Baguocheng, Jiulongpo District, Chongqing. Map links are available at the bottom of the page."],
   ],
+  ja: [
+    ["体験時間はどのくらいですか？", "ディナーショーは約110分です。団体の日程は事前に調整できます。"],
+    ["海外旅行者でも楽しめますか？", "はい。公演、儀礼、料理、交流を中心とした視覚的な体験です。"],
+    ["英語メニューや英語対応はありますか？", "事前相談により英語メニューや言語サポートを手配できます。"],
+    ["旅行会社の団体にも対応できますか？", "はい。旅行会社、訪中団体、企業グループを受け入れています。"],
+    ["最大人数は何名ですか？", "会場は最大約160名まで対応可能です。レイアウトと日程は要確認です。"],
+    ["貸切はできますか？", "はい。貸切やカスタムイベントは事前にお問い合わせください。"],
+    ["子どもや食事制限にも対応できますか？", "お子様の年齢、ベジタリアン、ハラール、アレルギーは予約時にお知らせください。"],
+    ["予約方法を教えてください。", "個人は席予約、旅行会社・企業・団体は団体問い合わせをご利用ください。"],
+    ["キャンセルや日程変更の規定は？", "適用される規定は日付とプランの確定時にご案内します。"],
+    ["会場はどこですか？", "中国・重慶市九龍坡区の巴国城です。ページ下部から地図を開けます。"],
+  ],
+  ko: [
+    ["전체 체험 시간은 얼마나 되나요?", "디너쇼는 약 110분이며 단체 일정은 사전에 조율할 수 있습니다."],
+    ["해외 여행객도 즐길 수 있나요?", "네. 공연, 의식, 음식과 참여 중심의 시각적인 체험이라 언어 부담이 적습니다."],
+    ["영문 메뉴나 영어 응대가 가능한가요?", "사전 요청 시 영문 메뉴와 언어 지원을 조율할 수 있습니다."],
+    ["여행사 단체도 예약할 수 있나요?", "네. 여행사, 해외 관광단과 기업 단체를 위한 상담을 제공합니다."],
+    ["최대 수용 인원은 몇 명인가요?", "약 160명까지 가능하며 좌석 배치와 일정은 확인이 필요합니다."],
+    ["단독 대관이 가능한가요?", "네. 단독 대관과 맞춤 행사는 사전에 문의해 주세요."],
+    ["어린이 또는 식이 요청도 가능한가요?", "어린이 나이, 채식, 할랄, 알레르기 사항을 예약 시 남겨주시면 확인해 드립니다."],
+    ["어떻게 예약하나요?", "개인 방문은 좌석 예약, 여행사·기업·단체는 단체 문의를 이용해 주세요."],
+    ["취소 또는 일정 변경 규정은 무엇인가요?", "적용 규정은 날짜와 패키지 확정 시 안내해 드립니다."],
+    ["위치는 어디인가요?", "중국 충칭시 주룽포구 바궈청에 있으며 페이지 하단에서 지도를 열 수 있습니다."],
+  ],
 };
-const faqs = { ...baseFaqs, "zh-hant": baseFaqs.zh, ko: baseFaqs.en, ja: baseFaqs.en };
+const faqs = { ...baseFaqs, "zh-hant": baseFaqs.zh };
+
+const homeUi = {
+  zh: { facts: [["地点", "重庆 · 巴国城"], ["时长", "餐秀约 110 分钟"], ["包含", "巴渝宴席 · 沉浸演出"], ["语言", "可提前咨询英文支持"]], ticketTitle: "先选场次，再选席位", ticketText: "午宴与晚宴均包含游园、迎宾、宴席与演出。", ticketLink: "查看场次与席位", locationTitle: "重庆 · 巴国城", locationText: "查看中英文地址、地图导航和到场方式。", locationLink: "查看到访指引", guestCategories: "旅客分类", serviceTitle: "通过在线客服咨询与预约", serviceText: "请选择常用的联系方式，客服将协助确认场次、席位、团队接待与其他需求。", address: "中国重庆九龙坡区巴国城", hours: "每日 10:00–21:00", baidu: "百度地图", phone: "电话", footer: "重庆沉浸式巴蜀文化餐秀", quick: "快捷联系", call: "电话" },
+  "zh-hant": { facts: [["地點", "重慶 · 巴國城"], ["時長", "餐秀約 110 分鐘"], ["包含", "巴渝宴席 · 沉浸演出"], ["語言", "可提前諮詢英文支援"]], ticketTitle: "先選場次，再選席位", ticketText: "午宴與晚宴均包含遊園、迎賓、宴席與演出。", ticketLink: "查看場次與席位", locationTitle: "重慶 · 巴國城", locationText: "查看地址、地圖導航和到場方式。", locationLink: "查看到訪指引", guestCategories: "旅客分類", serviceTitle: "透過線上客服諮詢與預訂", serviceText: "請選擇常用的聯絡方式，客服將協助確認場次、席位、團隊接待與其他需求。", address: "中國重慶九龍坡區巴國城", hours: "每日 10:00–21:00", baidu: "百度地圖", phone: "電話", footer: "重慶沉浸式巴蜀文化餐秀", quick: "快捷聯絡", call: "電話" },
+  en: { facts: [["Location", "Chongqing · Baguocheng"], ["Duration", "Approx. 110 minutes"], ["Includes", "Banquet · Live show"], ["Languages", "English support on request"]], ticketTitle: "Choose a session and seat", ticketText: "Lunch and dinner sessions combine the garden, welcome ritual, banquet and show.", ticketLink: "View tickets", locationTitle: "Baguocheng · Chongqing", locationText: "Get the address, maps and arrival information.", locationLink: "Plan your visit", guestCategories: "Guest categories", serviceTitle: "Reserve with Online Support", serviceText: "Choose your preferred channel. Our team will help confirm sessions, seating, group visits and other requests.", address: "Baguocheng, Jiulongpo District, Chongqing, China", hours: "Daily, 10:00–21:00", baidu: "Baidu Maps", phone: "Phone", footer: "An immersive Bashu banquet experience in Chongqing", quick: "Quick contact", call: "Call" },
+  ja: { facts: [["場所", "重慶 · 巴国城"], ["所要時間", "約110分"], ["内容", "巴渝の宴席 · ライブ公演"], ["言語", "英語対応は事前相談"]], ticketTitle: "公演を選び、座席を選択", ticketText: "ランチ・ディナーとも庭園散策、出迎えの儀、宴席と公演を含みます。", ticketLink: "公演と座席を見る", locationTitle: "重慶 · 巴国城", locationText: "住所、地図、アクセス方法をご確認ください。", locationLink: "アクセスを見る", guestCategories: "お客様カテゴリー", serviceTitle: "オンラインサポートで予約", serviceText: "ご希望の連絡方法を選択してください。公演、座席、団体受付についてご案内します。", address: "中国重慶市九龍坡区巴国城", hours: "毎日 10:00–21:00", baidu: "百度地図", phone: "電話", footer: "重慶の没入型巴蜀文化ディナーショー", quick: "クイック連絡", call: "電話" },
+  ko: { facts: [["위치", "충칭 · 바궈청"], ["소요 시간", "약 110분"], ["포함 사항", "파위 연회 · 라이브 공연"], ["언어", "영어 지원 사전 문의"]], ticketTitle: "회차 선택 후 좌석 선택", ticketText: "점심과 저녁 회차 모두 정원 산책, 환영 의식, 연회와 공연을 포함합니다.", ticketLink: "공연·좌석 보기", locationTitle: "충칭 · 바궈청", locationText: "주소, 지도와 방문 방법을 확인하세요.", locationLink: "방문 안내 보기", guestCategories: "방문객 유형", serviceTitle: "온라인 고객센터 예약", serviceText: "원하는 연락 방법을 선택해 주세요. 회차, 좌석과 단체 방문을 안내해 드립니다.", address: "중국 충칭시 주룽포구 바궈청", hours: "매일 10:00–21:00", baidu: "바이두 지도", phone: "전화", footer: "충칭 몰입형 파위 문화 디너쇼", quick: "빠른 연락", call: "전화" },
+} as const;
+
+const formUi = {
+  zh: { name: "姓名", phone: "手机 / WhatsApp", email: "邮箱", country: "国家 / 地区", date: "预约日期", session: "宴席时段", chooseSession: "选择午宴或晚宴", lunch: "午宴", dinner: "晚宴", guests: "人数", package: "套餐类型", guest: "嘉宾体验", vip: "贵宾体验", notes: "忌口 / 过敏 / 备注", submitting: "正在提交…", company: "公司 / 旅行社名称", contact: "联系人", estimatedDate: "预计日期", estimatedGuests: "预计人数", eventType: "活动类型", events: ["旅行团", "商务宴请", "企业活动", "海外游客团", "其他"], buyout: "是否需要包场", yes: "需要", no: "不需要", unsure: "待确认", budget: "预算范围", requirements: "需求描述" },
+  "zh-hant": { name: "姓名", phone: "手機 / WhatsApp", email: "電郵", country: "國家 / 地區", date: "預約日期", session: "宴席時段", chooseSession: "選擇午宴或晚宴", lunch: "午宴", dinner: "晚宴", guests: "人數", package: "套餐類型", guest: "嘉賓體驗", vip: "貴賓體驗", notes: "忌口 / 過敏 / 備註", submitting: "正在提交…", company: "公司 / 旅行社名稱", contact: "聯絡人", estimatedDate: "預計日期", estimatedGuests: "預計人數", eventType: "活動類型", events: ["旅行團", "商務宴請", "企業活動", "海外旅客團", "其他"], buyout: "是否需要包場", yes: "需要", no: "不需要", unsure: "待確認", budget: "預算範圍", requirements: "需求描述" },
+  en: { name: "Name", phone: "Phone / WhatsApp", email: "Email", country: "Country / Region", date: "Booking Date", session: "Banquet session", chooseSession: "Choose Lunch or Dinner", lunch: "Lunch", dinner: "Dinner", guests: "Guests", package: "Package", guest: "Guest", vip: "VIP", notes: "Dietary needs / Allergies / Notes", submitting: "Submitting…", company: "Company / Travel Agency", contact: "Contact Name", estimatedDate: "Estimated Date", estimatedGuests: "Estimated Guests", eventType: "Event Type", events: ["Tour Group", "Business Dinner", "Corporate Event", "International Group", "Other"], buyout: "Private Buyout?", yes: "Yes", no: "No", unsure: "Not Sure", budget: "Budget Range", requirements: "Requirements" },
+  ja: { name: "お名前", phone: "電話 / WhatsApp", email: "メール", country: "国 / 地域", date: "予約日", session: "宴席時間", chooseSession: "ランチまたはディナーを選択", lunch: "ランチ", dinner: "ディナー", guests: "人数", package: "プラン", guest: "ゲスト席", vip: "VIP席", notes: "食事制限 / アレルギー / 備考", submitting: "送信中…", company: "会社 / 旅行会社名", contact: "ご担当者名", estimatedDate: "希望日", estimatedGuests: "予定人数", eventType: "イベント種類", events: ["旅行団体", "ビジネス宴席", "企業イベント", "海外旅行団体", "その他"], buyout: "貸切を希望しますか？", yes: "はい", no: "いいえ", unsure: "未定", budget: "ご予算", requirements: "ご要望" },
+  ko: { name: "이름", phone: "전화 / WhatsApp", email: "이메일", country: "국가 / 지역", date: "예약 날짜", session: "연회 시간", chooseSession: "점심 또는 저녁 선택", lunch: "점심", dinner: "저녁", guests: "인원", package: "패키지", guest: "일반석", vip: "VIP석", notes: "식이 요청 / 알레르기 / 메모", submitting: "전송 중…", company: "회사 / 여행사명", contact: "담당자 이름", estimatedDate: "예정 날짜", estimatedGuests: "예상 인원", eventType: "행사 유형", events: ["여행 단체", "비즈니스 만찬", "기업 행사", "해외 관광단", "기타"], buyout: "단독 대관이 필요한가요?", yes: "예", no: "아니요", unsure: "미정", budget: "예산 범위", requirements: "요청 사항" },
+} as const;
 
 export function HomePage({ locale }: { locale: Locale }) {
   const t = copy[locale];
+  const ui = homeUi[locale];
+  const form = formUi[locale];
   const navLabels = mainNavLabels[locale];
-  const practicalFacts = locale === "en"
-    ? [["Location", "Chongqing · Baguocheng"], ["Duration", "Approx. 110 minutes"], ["Includes", "Banquet · Live show"], ["Languages", "English support on request"]]
-    : [["地点", "重庆 · 巴国城"], ["时长", "餐秀约 110 分钟"], ["包含", "巴渝宴席 · 沉浸演出"], ["语言", "可提前咨询英文支持"]];
+  const practicalFacts = ui.facts;
   const [menuOpen, setMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [activeGallery, setActiveGallery] = useState(0);
@@ -389,7 +441,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       <section className="hero">
         <h1 className="sr-only">{t.heroTitle}</h1>
         <div className="hero-media">
-          <video autoPlay muted loop playsInline preload="metadata" poster="/hero-banquet-cropped.jpg" aria-label={locale === "zh" ? "礼宴巴国沉浸式文化餐秀" : "Liyan Baguo immersive cultural banquet show"}>
+          <video autoPlay muted loop playsInline preload="metadata" poster="/hero-banquet-cropped.jpg" aria-label={`${t.heroTitle} · ${t.heroTagline}`}>
             <source src="/videos/hero-banquet.mp4" type="video/mp4" />
           </video>
         </div>
@@ -427,21 +479,21 @@ export function HomePage({ locale }: { locale: Locale }) {
         {t.stories.slice(0, 3).map(([title, kicker, text, tag], index) => (
           <article className={index % 2 ? "story reverse" : "story"} key={title}>
             <div className="story-copy"><span>0{index + 1}</span><small>{kicker}</small><h2>{title}</h2><p>{text}</p><Link className="story-cta" href={`${langPath(locale)}/${["experience","banquet-menu","costume-experience","show-times-prices"][index]}/`}>{tag} <ArrowRight /></Link></div>
-            <div className="story-media"><Image src={storyImages[index]} alt={locale === "zh" ? `${title}现场` : `${title} at Liyan Baguo`} fill sizes="(max-width: 800px) 100vw, 60vw" /></div>
+            <div className="story-media"><Image src={storyImages[index]} alt={title} fill sizes="(max-width: 800px) 100vw, 60vw" /></div>
           </article>
         ))}
       </section>
 
       <section className="home-practical-grid">
-        <article><p className="eyebrow">SHOW TIMES & PRICES</p><h2>{locale === "zh" ? "先选场次，再选席位" : "Choose a session and seat"}</h2><p>{locale === "zh" ? "午宴与晚宴均包含游园、迎宾、宴席与演出。":"Lunch and dinner sessions combine the garden, welcome ritual, banquet and show."}</p><Link className="button secondary" href={`${langPath(locale)}/show-times-prices/`}>{locale === "zh" ? "查看场次与席位" : "View tickets"}</Link></article>
-        <article><p className="eyebrow">LOCATION</p><h2>{locale === "zh" ? "重庆 · 巴国城" : "Baguocheng · Chongqing"}</h2><p>{locale === "zh" ? "查看中英文地址、地图导航和到场方式。":"Get the address, maps and arrival information."}</p><Link className="button secondary" href={`${langPath(locale)}/location-booking/`}>{locale === "zh" ? "查看到访指引" : "Plan your visit"}</Link></article>
+        <article><p className="eyebrow">SHOW TIMES & PRICES</p><h2>{ui.ticketTitle}</h2><p>{ui.ticketText}</p><Link className="button secondary" href={`${langPath(locale)}/show-times-prices/`}>{ui.ticketLink}</Link></article>
+        <article><p className="eyebrow">LOCATION</p><h2>{ui.locationTitle}</h2><p>{ui.locationText}</p><Link className="button secondary" href={`${langPath(locale)}/location-booking/`}>{ui.locationLink}</Link></article>
       </section>
 
       <section className="section gallery" id="gallery">
         <div className="gallery-heading">
           <div><p className="eyebrow">GALLERY</p><h2>{t.gallery}</h2></div>
           <div className="gallery-controls">
-            <div className="gallery-tabs" role="tablist" aria-label={locale === "zh" ? "旅客分类" : "Guest categories"}>
+            <div className="gallery-tabs" role="tablist" aria-label={ui.guestCategories}>
               {galleryGroups[locale].map((group, index) => <button type="button" role="tab" aria-selected={activeGallery === index} className={activeGallery === index ? "active" : ""} onClick={() => setActiveGallery(index)} key={group.title}><span>{group.title}</span><small>{group.en}</small></button>)}
             </div>
             <p className="gallery-description">{galleryGroups[locale][activeGallery].text}</p>
@@ -480,8 +532,8 @@ export function HomePage({ locale }: { locale: Locale }) {
         <div className="service-booking-panel">
           <div className="service-booking-copy">
             <p className="eyebrow">ONLINE RESERVATIONS</p>
-            <h2>{locale === "zh" ? "通过在线客服咨询与预约" : locale === "zh-hant" ? "透過線上客服諮詢與預訂" : "Reserve with Online Support"}</h2>
-            <p>{locale === "zh" ? "请选择常用的联系方式，客服将协助确认场次、席位、团队接待与其他需求。" : locale === "zh-hant" ? "請選擇常用的聯絡方式，客服將協助確認場次、席位、團隊接待與其他需求。" : "Choose your preferred channel. Our team will help confirm sessions, seating, group visits and other requests."}</p>
+            <h2>{ui.serviceTitle}</h2>
+            <p>{ui.serviceText}</p>
           </div>
           <div className="service-booking-actions">
             <a className="button" href={whatsappUrl} target="_blank" rel="noreferrer"><ChatCircleDots />WhatsApp <small>{whatsappId}</small></a>
@@ -489,16 +541,16 @@ export function HomePage({ locale }: { locale: Locale }) {
           </div>
         </div>
         <div className="booking-tabs" role="tablist"><button type="button" role="tab" aria-selected={bookingMode === "guest"} className={bookingMode === "guest" ? "active" : ""} onClick={() => setBookingMode("guest")}>{t.booking}</button><button type="button" role="tab" aria-selected={bookingMode === "group"} className={bookingMode === "group" ? "active" : ""} onClick={() => setBookingMode("group")}>{t.inquiry}</button></div>
-        <form className={bookingMode === "guest" ? "mobile-form-active" : ""} onSubmit={submit} id="guest-form" data-form-type="guest-booking"><p className="eyebrow">SEAT RESERVATION</p><h2>{t.booking}</h2><div className="form-grid"><input name="name" required aria-label={locale === "zh" ? "姓名" : "Name"} placeholder={locale === "zh" ? "姓名" : "Name"} /><input name="phone" required aria-label="Phone / WhatsApp" placeholder={locale === "zh" ? "手机 / WhatsApp" : "Phone / WhatsApp"} /><input name="email" required type="email" aria-label={locale === "zh" ? "邮箱" : "Email"} placeholder={locale === "zh" ? "邮箱" : "Email"} /><input name="country" aria-label={locale === "zh" ? "国家或地区" : "Country or region"} placeholder={locale === "zh" ? "国家 / 地区" : "Country / Region"} /><label className="picker-field"><span>{locale === "zh" ? "预约日期" : "Booking Date"}</span><input name="date" required type="date" aria-label={locale === "zh" ? "预约日期" : "Booking date"} onClick={(event) => event.currentTarget.showPicker()} /></label><select name="mealPeriod" required aria-label={locale === "zh" ? "宴席时段" : "Banquet session"} defaultValue=""><option value="" disabled>{locale === "zh" ? "选择午宴或晚宴" : "Choose Lunch or Dinner"}</option><option value="lunch">{locale === "zh" ? "午宴" : "Lunch"}</option><option value="dinner">{locale === "zh" ? "晚宴" : "Dinner"}</option></select><input name="guests" required type="number" min="1" max="160" aria-label={locale === "zh" ? "人数" : "Guests"} placeholder={locale === "zh" ? "人数" : "Guests"} /><select name="package" required aria-label={locale === "zh" ? "套餐类型" : "Package"} defaultValue=""><option value="" disabled>{locale === "zh" ? "套餐类型" : "Package"}</option><option>{locale === "zh" ? "嘉宾体验" : "Guest"}</option><option>{locale === "zh" ? "贵宾体验" : "VIP"}</option><option>SVIP</option></select><textarea name="notes" className="full-field" aria-label={locale === "zh" ? "忌口、过敏或备注" : "Dietary needs or notes"} placeholder={locale === "zh" ? "忌口 / 过敏 / 备注" : "Dietary needs / Allergies / Notes"} /></div><button className="button" type="submit" disabled={submitStatus === "loading"}>{submitStatus === "loading" ? (locale === "zh" ? "正在提交…" : "Submitting…") : t.submitBook}</button></form>
-        <form className={bookingMode === "group" ? "mobile-form-active" : ""} onSubmit={submit} id="group-form" data-form-type="group-inquiry"><p className="eyebrow">GROUP INQUIRY</p><h2>{t.inquiry}</h2><div className="form-grid"><input name="company" required aria-label={locale === "zh" ? "旅行社或公司名称" : "Agency or company"} placeholder={locale === "zh" ? "公司 / 旅行社名称" : "Company / Travel Agency"} /><input name="contact" required aria-label={locale === "zh" ? "联系人" : "Contact name"} placeholder={locale === "zh" ? "联系人" : "Contact Name"} /><input name="phone" required aria-label="Phone / WhatsApp" placeholder={locale === "zh" ? "手机 / WhatsApp" : "Phone / WhatsApp"} /><input name="email" required type="email" aria-label={locale === "zh" ? "邮箱" : "Email"} placeholder={locale === "zh" ? "邮箱" : "Email"} /><input name="country" aria-label={locale === "zh" ? "国家或地区" : "Country or region"} placeholder={locale === "zh" ? "国家 / 地区" : "Country / Region"} /><label className="picker-field"><span>{locale === "zh" ? "预计日期" : "Estimated Date"}</span><input name="date" required type="date" aria-label={locale === "zh" ? "预计日期" : "Estimated date"} onClick={(event) => event.currentTarget.showPicker()} /></label><input name="guests" required type="number" min="1" max="160" aria-label={locale === "zh" ? "预计人数" : "Estimated guests"} placeholder={locale === "zh" ? "预计人数" : "Estimated Guests"} /><select name="eventType" required aria-label={locale === "zh" ? "活动类型" : "Event type"} defaultValue=""><option value="" disabled>{locale === "zh" ? "活动类型" : "Event Type"}</option><option>{locale === "zh" ? "旅行团" : "Tour Group"}</option><option>{locale === "zh" ? "商务宴请" : "Business Dinner"}</option><option>{locale === "zh" ? "企业活动" : "Corporate Event"}</option><option>{locale === "zh" ? "海外游客团" : "International Group"}</option><option>{locale === "zh" ? "其他" : "Other"}</option></select><select name="privateBuyout" aria-label={locale === "zh" ? "是否需要包场" : "Private buyout"} defaultValue=""><option value="" disabled>{locale === "zh" ? "是否需要包场" : "Private Buyout?"}</option><option>{locale === "zh" ? "需要" : "Yes"}</option><option>{locale === "zh" ? "不需要" : "No"}</option><option>{locale === "zh" ? "待确认" : "Not Sure"}</option></select><input name="budget" aria-label={locale === "zh" ? "预算范围" : "Budget range"} placeholder={locale === "zh" ? "预算范围" : "Budget Range"} /><textarea name="requirements" className="full-field" aria-label={locale === "zh" ? "活动需求" : "Event requirements"} placeholder={locale === "zh" ? "需求描述" : "Requirements"} /></div><button className="button" type="submit" disabled={submitStatus === "loading"}>{submitStatus === "loading" ? (locale === "zh" ? "正在提交…" : "Submitting…") : t.submitGroup}</button></form>
+        <form className={bookingMode === "guest" ? "mobile-form-active" : ""} onSubmit={submit} id="guest-form" data-form-type="guest-booking"><p className="eyebrow">SEAT RESERVATION</p><h2>{t.booking}</h2><div className="form-grid"><input name="name" required aria-label={form.name} placeholder={form.name} /><input name="phone" required aria-label={form.phone} placeholder={form.phone} /><input name="email" required type="email" aria-label={form.email} placeholder={form.email} /><input name="country" aria-label={form.country} placeholder={form.country} /><label className="picker-field"><span>{form.date}</span><input name="date" required type="date" aria-label={form.date} onClick={(event) => event.currentTarget.showPicker()} /></label><select name="mealPeriod" required aria-label={form.session} defaultValue=""><option value="" disabled>{form.chooseSession}</option><option value="lunch">{form.lunch}</option><option value="dinner">{form.dinner}</option></select><input name="guests" required type="number" min="1" max="160" aria-label={form.guests} placeholder={form.guests} /><select name="package" required aria-label={form.package} defaultValue=""><option value="" disabled>{form.package}</option><option>{form.guest}</option><option>{form.vip}</option><option>SVIP</option></select><textarea name="notes" className="full-field" aria-label={form.notes} placeholder={form.notes} /></div><button className="button" type="submit" disabled={submitStatus === "loading"}>{submitStatus === "loading" ? form.submitting : t.submitBook}</button></form>
+        <form className={bookingMode === "group" ? "mobile-form-active" : ""} onSubmit={submit} id="group-form" data-form-type="group-inquiry"><p className="eyebrow">GROUP INQUIRY</p><h2>{t.inquiry}</h2><div className="form-grid"><input name="company" required aria-label={form.company} placeholder={form.company} /><input name="contact" required aria-label={form.contact} placeholder={form.contact} /><input name="phone" required aria-label={form.phone} placeholder={form.phone} /><input name="email" required type="email" aria-label={form.email} placeholder={form.email} /><input name="country" aria-label={form.country} placeholder={form.country} /><label className="picker-field"><span>{form.estimatedDate}</span><input name="date" required type="date" aria-label={form.estimatedDate} onClick={(event) => event.currentTarget.showPicker()} /></label><input name="guests" required type="number" min="1" max="160" aria-label={form.estimatedGuests} placeholder={form.estimatedGuests} /><select name="eventType" required aria-label={form.eventType} defaultValue=""><option value="" disabled>{form.eventType}</option>{form.events.map((event) => <option key={event}>{event}</option>)}</select><select name="privateBuyout" aria-label={form.buyout} defaultValue=""><option value="" disabled>{form.buyout}</option><option>{form.yes}</option><option>{form.no}</option><option>{form.unsure}</option></select><input name="budget" aria-label={form.budget} placeholder={form.budget} /><textarea name="requirements" className="full-field" aria-label={form.requirements} placeholder={form.requirements} /></div><button className="button" type="submit" disabled={submitStatus === "loading"}>{submitStatus === "loading" ? form.submitting : t.submitGroup}</button></form>
         {notice && <p className={`notice ${submitStatus}`} role="status">{notice}</p>}
       </section>
 
       <section className="section contact-section" id="contact">
-        <div className="contact-intro"><p className="eyebrow">CONTACT & LOCATION</p><h2>{t.contactTitle}</h2><div className="contact-meta"><p><MapPin /><span>{locale === "zh" ? "中国重庆九龙坡区巴国城" : "Baguocheng, Jiulongpo District, Chongqing, China"}</span></p><p><Clock /><span>{locale === "zh" ? "每日 10:00 - 21:00" : "Daily, 10:00–21:00"}</span></p></div><nav className="map-links"><a href="https://maps.app.goo.gl/ZddotMySGkJYsjFh7" target="_blank" rel="noreferrer">Google Maps <ArrowRight /></a><a href="https://j.map.baidu.com/76/_1tc" target="_blank" rel="noreferrer">{locale === "zh" ? "百度地图" : "Baidu Maps"} <ArrowRight /></a></nav></div>
+        <div className="contact-intro"><p className="eyebrow">CONTACT & LOCATION</p><h2>{t.contactTitle}</h2><div className="contact-meta"><p><MapPin /><span>{ui.address}</span></p><p><Clock /><span>{ui.hours}</span></p></div><nav className="map-links"><a href="https://maps.app.goo.gl/ZddotMySGkJYsjFh7" target="_blank" rel="noreferrer">Google Maps <ArrowRight /></a><a href="https://j.map.baidu.com/76/_1tc" target="_blank" rel="noreferrer">{ui.baidu} <ArrowRight /></a></nav></div>
         <div className="contact-panel">
           <div className="contact-list">
-            <a href="tel:+8617383017612"><Phone />{locale === "zh" ? "电话：+86 173 8301 7612" : "Phone: +86 173 8301 7612"}</a>
+            <a href="tel:+8617383017612"><Phone />{ui.phone}: +86 173 8301 7612</a>
             <a href="mailto:liaorenxi23@gmail.com"><EnvelopeSimple />Email: liaorenxi23@gmail.com</a>
             <a href={whatsappUrl} target="_blank" rel="noreferrer"><ChatCircleDots />WhatsApp: {whatsappId}</a>
             <a href={customerServiceUrl} target="_blank" rel="noreferrer"><ChatCircleDots />WeChat Support</a>
@@ -510,8 +562,8 @@ export function HomePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <footer id="about"><div className="brand-logo footer-logo"><Image src="/brand-logo.png" alt="礼宴巴国 Liyan Baguo" width={1540} height={539} /></div><p>{locale === "zh" ? "重庆沉浸式巴蜀文化餐秀" : "An immersive Bashu banquet experience in Chongqing"}</p><div><Link href={`${langPath(locale)}/about/`}>{t.nav[4]}</Link><Link href={`${langPath(locale)}/faq/`}>FAQ</Link></div></footer>
-      <div className="mobile-cta" aria-label={locale === "zh" ? "快捷联系" : "Quick contact"}><a href="#booking" className="primary">{t.book}</a><CustomerServiceChooser compact isEnglish={locale === "en"} /><a href="tel:+8617383017612">{locale === "zh" ? "电话" : "Call"}</a></div>
+      <footer id="about"><div className="brand-logo footer-logo"><Image src="/brand-logo.png" alt={`${t.heroTitle} Liyan Baguo`} width={1540} height={539} /></div><p>{ui.footer}</p><div><Link href={`${langPath(locale)}/about/`}>{t.nav[4]}</Link><Link href={`${langPath(locale)}/faq/`}>FAQ</Link></div></footer>
+      <div className="mobile-cta" aria-label={ui.quick}><a href="#booking" className="primary">{t.book}</a><CustomerServiceChooser compact lang={locale === "zh-hant" ? "tw" : locale} /><a href="tel:+8617383017612">{ui.call}</a></div>
     </main>
   );
 }

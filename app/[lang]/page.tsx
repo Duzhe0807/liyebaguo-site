@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Lan
 
 export default async function Page({ params }: { params: Promise<{ lang: Lang }> }) {
   const { lang } = await params;
-  const locale = langToLocale[lang] as "zh" | "zh-hant" | "en" | "ko";
+  const locale = langToLocale[lang] as "zh" | "zh-hant" | "en" | "ja" | "ko";
 
   return (
     <>
