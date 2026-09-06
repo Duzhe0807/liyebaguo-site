@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { business } from "./business";
 import type { Lang } from "./languages";
 import { languages, langCodes } from "./languages";
 
@@ -59,38 +61,36 @@ const zh: SiteSeo = {
 
 const en: SiteSeo = {
   home: {
-    title: "Chongqing Ba Kingdom Banquet | Dinner Show & Hanfu Experience",
-    description: "Experience Chongqing's Ba Kingdom Banquet with Ba-Yu cuisine, immersive palace performances and traditional costume styling. View show times, location, seating and booking information.",
-    ogTitle: "Chongqing Ba Kingdom Banquet | Immersive Dinner Show",
-    ogDescription: "Ba-Yu cuisine, palace performances, and Hanfu costume experience in Chongqing.",
+    title: "Liyan Baguo | Banquet of Ba Kingdom in Chongqing",
+    description: "Experience Liyan Baguo, Chongqing's immersive Banquet of Ba Kingdom, with traditional cuisine, live performances and costumes. Plan your visit and book.",
   },
   experience: {
-    title: "The Experience | Chongqing Ba Kingdom Banquet",
-    description: "Immersive cultural experience at Ba Kingdom Banquet: ritual performances, Ba-Yu dining, and Hanfu costume styling in one unforgettable evening.",
+    title: "Banquet Experience & Visitor Journey | Liyan Baguo",
+    description: "Explore the Liyan Baguo visitor journey in Chongqing: garden activities, welcome rituals, a 110-minute banquet show and optional traditional costume styling.",
   },
   banquetMenu: {
-    title: "Banquet Menu | Chongqing Ba Kingdom Banquet",
-    description: "Ba-Yu cuisine banquet menu at Chongqing's Ba Kingdom Banquet. Multi-course dining inspired by local ingredients and ritual hospitality.",
+    title: "Chongqing Banquet Menu & Dietary Requests | Liyan Baguo",
+    description: "Explore Sichuan and Chongqing flavours at Liyan Baguo. See the banquet menu, dining arrangements and how to discuss allergies or dietary needs before booking.",
   },
   costume: {
-    title: "Hanfu Costume Experience | Chongqing Ba Kingdom Banquet",
-    description: "Traditional Hanfu costume styling and photo experience at Ba Kingdom Banquet in Chongqing. Dress in dynasty attire for memorable photos.",
+    title: "Costume Packages & Styling at Liyan Baguo, Chongqing",
+    description: "Compare traditional costume and headwear inclusions at Liyan Baguo in Chongqing. Plan sizes, styling time and photo needs before your banquet visit.",
   },
   showTimes: {
-    title: "Show Times & Prices | Chongqing Ba Kingdom Banquet",
-    description: "View show times, admission, ticket prices, and seating options for Chongqing Ba Kingdom Banquet. Adult, VIP, and group pricing.",
+    title: "Chongqing Dinner Show Tickets & Times | Liyan Baguo",
+    description: "Compare Liyan Baguo lunch and dinner show times, Guest, VIP and SVIP tickets in CNY. Confirm your date, package and seat number with the official team.",
   },
   location: {
-    title: "Location & Booking | Chongqing Ba Kingdom Banquet",
-    description: "Full address, directions, map, contact information, and online booking for Chongqing Ba Kingdom Banquet.",
+    title: "Liyan Baguo Location, Directions & Booking | Chongqing",
+    description: "Find Liyan Baguo in Baguocheng, Jiulongpo District, Chongqing. Get the Chinese address, map, arrival guidance and official WhatsApp or WeChat booking contacts.",
   },
   faq: {
-    title: "FAQ | Chongqing Ba Kingdom Banquet Visitor Guide",
-    description: "Frequently asked questions about Ba Kingdom Banquet: overseas visitors, costume experience, group bookings, and more.",
+    title: "Liyan Baguo FAQ | Banquet of Ba Kingdom Visitor Guide",
+    description: "Plan your Banquet of Ba Kingdom visit: meal inclusions, arrival times, costume options, families, English support and official booking at Liyan Baguo.",
   },
   about: {
-    title: "About | Chongqing Ba Kingdom Banquet",
-    description: "Ba Kingdom Banquet blends Ba-Yu cultural heritage with stage performance, ritual ceremony, regional cuisine, and Hanfu costume in Chongqing.",
+    title: "About Liyan Baguo | Banquet of Ba Kingdom, Chongqing",
+    description: "Meet Liyan Baguo, the Chongqing brand behind the Banquet of Ba Kingdom. Discover how regional culture inspires its dining, performance and hospitality.",
   },
 };
 
@@ -202,18 +202,40 @@ const ko: SiteSeo = {
 export const siteSeo: Record<Lang, SiteSeo> = { zh, tw, en, ja, ko };
 
 export function getCanonicalPath(lang: Lang, page: string): string {
-  const base = "https://gongyanshow.com";
+  const base = business.url;
   if (page === "home") return `${base}/${lang}/`;
   return `${base}/${lang}/${page}/`;
 }
 
 export function getHreflang(page: string): Record<string, string> {
-  const base = "https://gongyanshow.com";
+  const base = business.url;
   const result: Record<string, string> = {};
   for (const lang of languages) {
     const code = langCodes[lang];
     if (page === "home") result[code] = `${base}/${lang}/`;
     else result[code] = `${base}/${lang}/${page}/`;
   }
+  result["x-default"] = getCanonicalPath("en", page);
   return result;
+}
+
+export const pageRoutes = {
+  home: "home", experience: "experience", banquetMenu: "banquet-menu",
+  costume: "costume-experience", showTimes: "show-times-prices",
+  location: "location-booking", faq: "faq", about: "about",
+} as const;
+
+export function pageMetadata(lang: Lang, key: keyof SiteSeo): Metadata {
+  const seo = siteSeo[lang][key];
+  const path = pageRoutes[key];
+  const url = getCanonicalPath(lang, path);
+  const image = { url: business.url + (seo.ogImage || business.image), width: 1920, height: 1080, alt: "Ceremonial performance at Liyan Baguo in Chongqing" };
+  const ogLocales: Record<Lang, string> = { zh: "zh_CN", tw: "zh_TW", en: "en_US", ja: "ja_JP", ko: "ko_KR" };
+  return {
+    title: seo.title, description: seo.description,
+    robots: { index: true, follow: true, "max-image-preview": "large" },
+    alternates: { canonical: url, languages: getHreflang(path) },
+    openGraph: { title: seo.ogTitle || seo.title, description: seo.ogDescription || seo.description, url, type: "website", siteName: business.name, locale: ogLocales[lang], alternateLocale: languages.filter(l => l !== lang).map(l => ogLocales[l]), images: [image] },
+    twitter: { card: "summary_large_image", title: seo.title, description: seo.description, images: [image.url] },
+  };
 }

@@ -1,14 +1,13 @@
 import Image from "next/image";
 import type { Metadata } from "next";
 import { languages, type Lang } from "../../languages";
-import { siteSeo, getCanonicalPath, getHreflang } from "../../seo";
+import { pageMetadata } from "../../seo";
 import { InnerPageShell, DetailFaq } from "../InnerPageShell";
 
 export function generateStaticParams() { return languages.map((lang) => ({ lang })); }
 export async function generateMetadata({ params }: { params: Promise<{ lang: Lang }> }): Promise<Metadata> {
   const { lang } = await params;
-  const seo = siteSeo[lang].banquetMenu;
-  return { title: seo.title, description: seo.description, alternates: { canonical: getCanonicalPath(lang, "banquet-menu"), languages: getHreflang("banquet-menu") } };
+  return pageMetadata(lang, "banquetMenu");
 }
 
 export default async function Page({ params }: { params: Promise<{ lang: Lang }> }) {
@@ -89,7 +88,7 @@ export default async function Page({ params }: { params: Promise<{ lang: Lang }>
       ["儿童用餐", "请于预约时说明儿童年龄与饮食需求。"],
     ];
 
-  const page = en ? { title: "A Ba-Yu Banquet at the Centre of the Show", summary: "Local flavour and ceremonial hospitality meet in a paced menu served alongside the performance.", tableTitle: "A table designed as part of the performance", tableText: "Serving rhythm, table setting and guest interaction are considered together, so the meal feels connected to the story rather than placed beside it.", dishes: "DISH DETAILS", flavours: "Flavours served with ceremony", atTable: "AT THE TABLE", atmosphere: "The banquet in full view", needs: "DIETARY NEEDS", needsTitle: "Tell us before the kitchen prepares", faqTitle: "Menu questions", faq: [["Is the menu fixed?", "Dishes may vary by season and selected package."], ["Can allergies be accommodated?", "Submit full details before payment so the venue can confirm."], ["Is costume included with a ticket?", "SVIP includes traditional costume and traditional headwear."]] }
+  const page = en ? { title: "Chongqing Banquet Menu at Liyan Baguo", summary: "Regional Sichuan and Chongqing flavours accompany the Banquet of Ba Kingdom at Liyan Baguo. Explore the dishes below for your lunch or dinner visit, then confirm your package and any family, group or dietary requirements with the team before booking.", tableTitle: "A table designed as part of the performance", tableText: "Serving rhythm, table setting and guest interaction are considered together, so the meal feels connected to the story rather than placed beside it.", dishes: "DISH DETAILS", flavours: "Flavours served with ceremony", atTable: "AT THE TABLE", atmosphere: "The banquet in full view", needs: "DIETARY NEEDS", needsTitle: "Tell us before the kitchen prepares", faqTitle: "Menu questions", faq: [["Is the menu fixed?", "Dishes may vary by season and selected package."], ["Can allergies be accommodated?", "Submit full details before payment so the venue can confirm."], ["Is costume included with a ticket?", "SVIP includes traditional costume and traditional headwear."]] }
     : lang === "ja" ? { title: "演芸と美食 · 巴渝の宴席", summary: "地方の味と礼を尽くすおもてなしを、公演に合わせたコースでお楽しみください。", tableTitle: "宴席も公演の一部に", tableText: "料理を出すリズム、卓上のしつらえ、交流を一つの物語として構成しています。", dishes: "料理のご紹介", flavours: "一皿ごとに広がる巴渝の味", atTable: "宴席の様子", atmosphere: "料理と公演が交わる空間", needs: "食事のご要望", needsTitle: "調理前にお知らせください", faqTitle: "メニューのよくある質問", faq: [["メニューは固定ですか？", "季節とプランにより料理が変わる場合があります。"], ["アレルギーに対応できますか？", "お支払い前に詳細をお知らせください。"], ["衣装は含まれますか？", "SVIPには伝統衣装と髪飾りが含まれます。"]] }
     : lang === "ko" ? { title: "공연과 미식 · 파위 연회", summary: "지역의 맛과 의식적인 환대가 공연 흐름에 맞춘 코스로 이어집니다.", tableTitle: "공연의 일부로 설계된 식탁", tableText: "요리 제공 순서, 테이블 연출과 방문객 참여를 하나의 이야기로 구성했습니다.", dishes: "요리 소개", flavours: "의식과 함께 즐기는 파위의 맛", atTable: "연회 현장", atmosphere: "요리와 공연이 어우러지는 공간", needs: "식이 요청", needsTitle: "조리 전에 알려주세요", faqTitle: "메뉴 자주 묻는 질문", faq: [["메뉴는 고정인가요?", "계절과 선택한 패키지에 따라 요리가 달라질 수 있습니다."], ["알레르기 대응이 가능한가요?", "결제 전에 상세 내용을 알려주세요."], ["티켓에 의상이 포함되나요?", "SVIP에는 전통 의상과 머리 장식이 포함됩니다."]] }
     : { title: "演艺美馔 · 巴渝风味宴席", summary: "菜单不只是菜名罗列，而是与演出节奏同步展开的巴渝待客之礼。", tableTitle: "让宴席成为演出的一部分", tableText: "上菜节奏、餐桌陈设与宾客互动被放在同一条叙事线上，让味道与舞台相互回应。", dishes: "菜品实拍", flavours: "风味入席，一菜一景", atTable: "宴席现场", atmosphere: "上菜仪式与用餐氛围", needs: "饮食需求", needsTitle: "有饮食需求，请提前说明", faqTitle: "菜单常见问题", faq: [["菜单是否固定？", "菜品可能随季节及所选套餐调整。"], ["过敏或忌口可以处理吗？", "请在付款前提供完整信息，由场地方确认。"], ["餐票是否包含古装？", "SVIP 席位赠送古装服饰和古装头饰。"]] };

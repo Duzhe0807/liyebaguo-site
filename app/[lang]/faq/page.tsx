@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { languages, type Lang } from "../../languages";
-import { siteSeo, getCanonicalPath, getHreflang } from "../../seo";
+import { pageMetadata } from "../../seo";
+import { englishFaqs } from "../../business";
+import { JsonLdFAQPage } from "../../JsonLd";
 import { InnerPageShell } from "../InnerPageShell";
 
 export function generateStaticParams() {
@@ -9,12 +11,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: Lang }> }): Promise<Metadata> {
   const { lang } = await params;
-  const seo = siteSeo[lang].faq;
-  return {
-    title: seo.title,
-    description: seo.description,
-    alternates: { canonical: getCanonicalPath(lang, "faq"), languages: getHreflang("faq") },
-  };
+  return pageMetadata(lang, "faq");
 }
 
 type Group = { name: string; items: Array<[string, string]> };
@@ -29,7 +26,7 @@ export default async function Page({ params }: { params: Promise<{ lang: Lang }>
       { name: "Costume", items: [["Is costume styling included?", "Only selected ticket types include costume styling. Confirm the inclusion on the Tickets page."]] },
       { name: "Transportation", items: [["Where is the venue?", "Baguocheng, Jiulongpo District, Chongqing."], ["How should I plan public transport?", "Use the live route to Baguocheng in your preferred map app and follow its current station and exit guidance."]] },
       { name: "Children & Accessibility", items: [["Are children welcome?", "Add the child's age and dining needs to the booking request so the team can confirm the suitable ticket."], ["Is the venue accessible?", "The venue information states wheelchair access is supported. Contact the team before arrival if assistance is needed."]] },
-      { name: "Cancellation", items: [["Can I cancel a booking?", "Unused bookings may be cancelled. The original booking channel will confirm refund processing and timing."]] },
+      { name: "Cancellation", items: [["Can I cancel a booking?", "Confirm cancellation and rescheduling terms before payment. Eligibility depends on seat assignment and timing; contact the original booking channel about your order."]] },
     ],
     zh: [
       { name: "预订", items: [["如何预订？", "填写预订表单，收到场次确认后再安排行程。"], ["团队可以咨询吗？", "可以，请在团队表单填写日期、人数和活动需求。"]] },
@@ -71,11 +68,11 @@ export default async function Page({ params }: { params: Promise<{ lang: Lang }>
   const pageCopy = {
     zh: ["常见问题 · 到访前须知", "按主题快速查找预订、票务、餐饮、交通和取消规则。", "问题分类", "常见问题"],
     tw: ["常見問題 · 到訪前須知", "按主題快速查找預訂、票務、餐飲、交通和取消規則。", "問題分類", "常見問題"],
-    en: ["Frequently Asked Questions", "Quick answers by topic, without making you search through a long page.", "FAQ categories", "FAQ"],
+    en: ["Liyan Baguo Visitor Questions", "Practical answers for the Banquet of Ba Kingdom in Chongqing: sessions, dining, traditional costume, families and official reservations.", "FAQ categories", "FAQ"],
     ja: ["よくある質問 · ご来場前の案内", "予約、チケット、食事、交通、キャンセルについて項目別にご案内します。", "質問カテゴリー", "よくある質問"],
     ko: ["자주 묻는 질문 · 방문 전 안내", "예약, 티켓, 식사, 교통과 취소 규정을 항목별로 확인하세요.", "질문 카테고리", "자주 묻는 질문"],
   } as const;
-  const groups = groupsByLang[lang];
+  const groups = lang === "en" ? [{ name: "Planning the Banquet of Ba Kingdom", items: englishFaqs }, ...groupsByLang.en] : groupsByLang[lang];
   const page = pageCopy[lang];
 
   return (
@@ -87,6 +84,7 @@ export default async function Page({ params }: { params: Promise<{ lang: Lang }>
       pageType="faq"
       heroSize="faq"
     >
+      <JsonLdFAQPage questions={groups.flatMap(group => group.items.map(([question, answer]) => ({ question, answer })))} />
       <nav className="faq-category-nav" aria-label={page[2]}>
         {groups.map((group, index) => <a href={`#faq-${index}`} key={group.name}>{group.name}</a>)}
       </nav>

@@ -2,14 +2,17 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { languages, type Lang } from "../../languages";
-import { siteSeo, getCanonicalPath, getHreflang } from "../../seo";
+import { pageMetadata } from "../../seo";
 import { InnerPageShell, DetailFaq } from "../InnerPageShell";
 import { customerServiceUrl, whatsappId, whatsappUrl } from "../../customerService";
 import { CopyButton } from "../CopyButton";
 import { PhoneIcon, MailIcon, WechatIcon, PinIcon, PlaneIcon, TrainIcon, TaxiIcon, CarIcon } from "./LocationIcons";
 
 export function generateStaticParams() { return languages.map((lang) => ({ lang })); }
-export async function generateMetadata({ params }: { params: Promise<{ lang: Lang }> }): Promise<Metadata> { const { lang } = await params; const seo = siteSeo[lang].location; return { title: seo.title, description: seo.description, alternates: { canonical: getCanonicalPath(lang, "location-booking"), languages: getHreflang("location-booking") } }; }
+export async function generateMetadata({ params }: { params: Promise<{ lang: Lang }> }): Promise<Metadata> {
+  const { lang } = await params;
+  return pageMetadata(lang, "location");
+}
 
 const zhAddress = "中国重庆市九龙坡区巴国城";
 const enAddress = "Baguocheng, Jiulongpo District, Chongqing, China";
@@ -64,7 +67,7 @@ const copy = {
     ],
   },
   en: {
-    eyebrow: "LOCATION & BOOKING", title: "Plan Your Visit", summary: "Save the bilingual address, open your preferred map, and confirm the session before setting out.",
+    eyebrow: "LOCATION & BOOKING", title: "Liyan Baguo Location & Booking", summary: "Visit Liyan Baguo in Baguocheng, Jiulongpo District, Chongqing, China, for the Banquet of Ba Kingdom. Find the Chinese address and map, then confirm your lunch or dinner session, guest count and seats through official WhatsApp or WeChat Support.",
     venue: "Ba Kingdom City, Chongqing", addressLabel: "Chinese", addressLabelEn: "English", hours: "Opening hours", hoursVal: "Daily 10:00–21:00",
     mapTitle: "Open the route in one tap", mapEmbed: "Map of Baguocheng Chongqing",
     gettingTitle: "Choose the most convenient arrival", gettingSubtitle: "From Chongqing's main transport hubs, Baguocheng is roughly 30–60 minutes away.",

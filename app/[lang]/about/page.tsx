@@ -1,11 +1,14 @@
 import Image from "next/image";
 import type { Metadata } from "next";
 import { languages, type Lang } from "../../languages";
-import { siteSeo, getCanonicalPath, getHreflang } from "../../seo";
+import { pageMetadata } from "../../seo";
 import { InnerPageShell, DetailFaq } from "../InnerPageShell";
 
 export function generateStaticParams() { return languages.map((lang) => ({ lang })); }
-export async function generateMetadata({ params }: { params: Promise<{ lang: Lang }> }): Promise<Metadata> { const { lang } = await params; const seo = siteSeo[lang].about; return { title: seo.title, description: seo.description, alternates: { canonical: getCanonicalPath(lang, "about"), languages: getHreflang("about") } }; }
+export async function generateMetadata({ params }: { params: Promise<{ lang: Lang }> }): Promise<Metadata> {
+  const { lang } = await params;
+  return pageMetadata(lang, "about");
+}
 
 export default async function Page({ params }: { params: Promise<{ lang: Lang }> }) {
   const { lang } = await params; const en = lang === "en";
@@ -40,7 +43,7 @@ export default async function Page({ params }: { params: Promise<{ lang: Lang }>
       ["04", "一席发生", "每一晚由演员、服务团队与入席宾客共同完成这场礼宴。"],
     ];
 
-  const page = en ? { title: "Where History Comes to the Table", summary: "Ba Kingdom Banquet translates Ba-Yu culture into an evening of performance, ceremony, regional cuisine and dress.", idea: "THE IDEA", ideaTitle: "Not a museum display — a shared table", ideaText: "Can visitors understand a place by tasting, hearing and taking part in it? Hospitality connects performance, food and costume.", team: "THE TEAM", teamTitle: "People behind the evening", teamLabels: ["Performers & storytellers", "Hospitality team", "Creative direction"], disciplines: "FOUR DISCIPLINES", disciplinesTitle: "Four disciplines, one evening", timeline: "FROM INSPIRATION TO BANQUET", timelineTitle: "How the story reaches the table", behind: "BEHIND THE EVENING", behindTitle: "People complete the scene", faqTitle: "About the brand", faq: [["Is this a historical reenactment?", "It is a contemporary cultural interpretation rather than a literal reconstruction."], ["Where is the experience based?", "In Baguocheng, Jiulongpo District, Chongqing."]] }
+  const page = en ? { title: "About Liyan Baguo", summary: "Liyan Baguo is the Chongqing brand behind the Banquet of Ba Kingdom, an immersive cultural dining experience in Baguocheng. Regional food, live performance, ceremony and traditional dress welcome travellers, families and private groups. Contact the official team to arrange a visit.", idea: "THE IDEA", ideaTitle: "Not a museum display — a shared table", ideaText: "Can visitors understand a place by tasting, hearing and taking part in it? Hospitality connects performance, food and costume.", team: "THE TEAM", teamTitle: "People behind the experience", teamLabels: ["Performers & storytellers", "Hospitality team", "Creative direction"], disciplines: "FOUR DISCIPLINES", disciplinesTitle: "Four disciplines, one banquet", timeline: "FROM INSPIRATION TO BANQUET", timelineTitle: "How the story reaches the table", behind: "BEHIND THE EVENING", behindTitle: "People complete the scene", faqTitle: "About the brand", faq: [["Is this a historical reenactment?", "It is a contemporary cultural interpretation rather than a literal reconstruction."], ["Where is the experience based?", "In Baguocheng, Jiulongpo District, Chongqing."]] }
     : lang === "ja" ? { title: "歴史を食卓へ、巴渝を目の前に", summary: "巴渝文化を舞台、儀礼、地方料理、華服で表現する重慶の一夜です。", idea: "発想", ideaTitle: "展示ではなく、同じ食卓を囲む", ideaText: "味わい、聴き、参加することで街を知ることはできるのか。おもてなしが公演、料理、衣装を結びます。", team: "チーム", teamTitle: "一夜を支える人々", teamLabels: ["出演者・語り手", "接遇チーム", "クリエイティブ統括"], disciplines: "四つの表現", disciplinesTitle: "四つの設計でつくる一夜", timeline: "着想から宴席まで", timelineTitle: "物語が食卓に届くまで", behind: "舞台裏", behindTitle: "人が場面を完成させる", faqTitle: "ブランドについて", faq: [["歴史を忠実に再現した公演ですか？", "原寸の再現ではなく、現代的な文化表現です。"], ["会場はどこですか？", "重慶市九龍坡区の巴国城です。"]] }
     : lang === "ko" ? { title: "역사를 식탁으로, 파위를 눈앞에", summary: "파위 문화를 무대, 의식, 지역 요리와 전통 의상으로 풀어낸 충칭의 밤입니다.", idea: "시작", ideaTitle: "전시가 아닌, 함께 앉는 식탁", ideaText: "맛보고 듣고 참여하며 도시를 이해할 수 있을까요? 환대가 공연, 음식과 의상을 하나로 연결합니다.", team: "팀", teamTitle: "이 밤을 만드는 사람들", teamLabels: ["배우·이야기 전달자", "서비스팀", "크리에이티브 디렉션"], disciplines: "네 가지 예술", disciplinesTitle: "네 가지 설계가 만드는 한밤", timeline: "영감에서 연회까지", timelineTitle: "이야기가 식탁에 도착하는 과정", behind: "무대 뒤", behindTitle: "사람이 장면을 완성합니다", faqTitle: "브랜드 소개", faq: [["역사를 그대로 재현한 공연인가요?", "문자 그대로의 복원이 아닌 현대적인 문화 해석입니다."], ["체험 장소는 어디인가요?", "충칭시 주룽포구 바궈청입니다."]] }
     : { title: "让历史入席，让巴渝被看见", summary: "礼宴巴国以巴渝文化为灵感，用舞台、礼仪、地方风味与华服，共同讲述一晚的重庆故事。", idea: "缘起", ideaTitle: "不是陈列文化，而是共同入席", ideaText: "人们能否在味道、声音与参与中感受一座城市？待客之礼成为连接演出、饮食与华服的线索。", team: "幕后团队", teamTitle: "让这一晚成立的人", teamLabels: ["演员与叙事者", "接待团队", "创意统筹"], disciplines: "四艺合一", disciplinesTitle: "四种设计，共同完成一晚", timeline: "从灵感到餐桌", timelineTitle: "故事如何抵达餐桌", behind: "幕后片段", behindTitle: "最终让场景成立的，是现场的人", faqTitle: "关于品牌", faq: [["这是历史复原演出吗？", "这是当代文化表达，并非对某一历史时期的原样复刻。"], ["体验位于哪里？", "位于重庆市九龙坡区巴国城。"]] };
