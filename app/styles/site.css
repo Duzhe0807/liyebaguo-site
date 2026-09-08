@@ -61,8 +61,6 @@
 .site-refresh .story-media img { object-fit:cover; transform:none; filter:none; }
 .site-refresh .section { padding-block:64px; }
 .site-refresh .gallery-heading { gap:28px; }
-.gallery-photo-controls { display:flex; gap:8px; margin-top:16px; }
-.gallery-photo-controls button { display:grid; place-items:center; width:44px; height:44px; border:1px solid var(--line); background:transparent; color:#eceee7; cursor:pointer; }
 .site-refresh .gallery-tabs { flex-wrap:wrap; }
 .site-refresh .gallery-tabs button { min-height:44px; padding:10px 16px; font-size:14px; }
 .site-refresh .gallery-tabs button small { display:none; }
@@ -79,22 +77,18 @@
 .site-refresh .service-booking-copy p { font-size:16px; line-height:1.8; }
 .site-refresh .service-booking-actions { align-content:center; }
 .site-refresh .conversion>.service-booking-note { margin-top:24px; }
-.email-enquiry { margin-top:32px; border-block:1px solid var(--line); }
-.email-enquiry>summary { cursor:pointer; min-height:60px; padding:20px 0; font-size:17px; }
-.email-draft-note { max-width:720px; font-size:14px; line-height:1.7; color:#b5bcb0; }
-.site-refresh .email-enquiry .booking-tabs { display:flex; gap:0; border-bottom:1px solid var(--line); margin:24px 0; }
-.site-refresh .email-enquiry .booking-tabs button { width:auto; min-height:48px; padding:10px 20px; border:0; background:none; color:#b5bcb0; font-size:15px; }
-.site-refresh .email-enquiry .booking-tabs button.active { border-bottom:2px solid #a9c4ae; color:#fff; }
-.site-refresh .email-enquiry form { display:none; }
-.site-refresh .email-enquiry form.mobile-form-active { display:flex; gap:20px; width:100%; margin:0; padding:12px 0 28px; background:none; border:0; }
-.site-refresh .email-enquiry form h2 { font-size:24px; margin:0; }
-.site-refresh .email-enquiry form>.eyebrow { align-self:flex-start; text-align:left; }
-.site-refresh .email-enquiry .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
-.enquiry-field { display:flex; flex-direction:column; gap:8px; min-width:0; }
-.enquiry-field>span { font-size:13px; color:#bac5b5; }
-.site-refresh .email-enquiry input,.site-refresh .email-enquiry select,.site-refresh .email-enquiry textarea { min-width:0; font-size:16px; background:#141713; border:1px solid #505949; border-radius:4px; }
-.site-refresh .email-enquiry .notice { position:static; margin:12px 0; background:#14352c; font-size:15px; }
-.site-refresh .contact-section { border-top:1px solid var(--line); margin-bottom:0; }
+.site-refresh .home-page .contact-section { display:block; width:min(calc(100% - 48px),1200px); margin:0 auto; padding:48px 0; border:0; border-top:1px solid var(--line); background:none; box-shadow:none; overflow:visible; }
+.site-refresh .home-page .contact-intro { width:100%; min-width:0; padding:0; background:none; }
+.site-refresh .contact-meta { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+.site-refresh .contact-meta p { min-width:0; color:var(--muted); }
+.site-refresh .contact-meta span { overflow-wrap:anywhere; }
+.site-refresh .map-links { display:flex; flex-wrap:wrap; gap:24px; margin-top:24px; }
+.site-refresh .map-links a { display:inline-flex; align-items:center; gap:10px; min-height:44px; font-size:14px; }
+.site-refresh .conversion>.email-contact { display:flex; background:none; border:0; border-top:1px solid var(--line); padding:24px 0 0; align-items:center; flex-wrap:wrap; gap:12px 28px; margin-top:28px; padding-top:24px; border-top:1px solid var(--line); }
+.email-contact>span { font-size:14px; color:var(--muted); }
+.email-contact>a { display:inline-flex; align-items:center; gap:10px; min-height:44px; font-size:16px; overflow-wrap:anywhere; }
+.email-contact svg { flex-shrink:0; }
+.mobile-hero-brand { display:none; }
 .site-refresh .contact-intro,.site-refresh .contact-panel { background:none; border:0; padding:0; }
 .site-refresh .contact-intro h2 { font-size:30px; line-height:1.3; }
 .site-refresh .contact-actions { display:none; }
@@ -150,6 +144,18 @@
   .site-refresh .unified-header .button { font-size:11px; padding:8px; }
 }
 @media(max-width:980px) {
+  .site-refresh .mobile-hero-brand { display:flex; position:absolute; inset:0; z-index:2; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:24px; text-align:center; color:#fff; pointer-events:none; text-shadow:0 2px 16px rgba(0,0,0,.65); background:linear-gradient(transparent 25%,rgba(0,0,0,.16) 50%,transparent 75%); }
+  .mobile-hero-brand strong { font-family:Georgia,"Times New Roman",serif; font-size:32px; line-height:1.15; font-weight:400; letter-spacing:0; }
+  .mobile-hero-brand span { font-family:Georgia,"Times New Roman",serif; font-size:15px; line-height:1.5; letter-spacing:0; }
+  .site-refresh .home-page .mobile-cta,.site-refresh .inner-page .inner-mobile-book { grid-template-columns:minmax(0,1fr); padding:8px 20px max(8px,env(safe-area-inset-bottom)); background:#0c0e0c; border-top:1px solid var(--line); }
+  .site-refresh .mobile-cta>a,.site-refresh .inner-mobile-book>a { display:none; }
+  .site-refresh .mobile-cta>.service-trigger,.site-refresh .inner-mobile-book>.service-trigger { grid-column:1; border-radius:4px; }
+  .site-refresh .home-page .contact-section { padding-block:36px; }
+  .site-refresh .contact-meta { grid-template-columns:1fr; gap:16px; }
+  .site-refresh .site-footer nav:first-of-type,.site-refresh .site-footer nav:last-of-type { display:none; }
+  .site-refresh .site-footer nav:nth-of-type(2) { grid-column:1/-1; flex-direction:row; flex-wrap:wrap; gap:8px 20px; }
+  .site-refresh .site-footer nav:nth-of-type(2) h2 { display:none; }
+  .site-refresh .site-footer nav:nth-of-type(2) a { min-height:44px; display:flex; align-items:center; }
   .site-refresh .unified-header { height:64px; padding-inline:20px; }
   .site-refresh .site-language { display:none; }
   .site-refresh .home-page .hero-copy { padding:32px 24px; }
@@ -176,7 +182,6 @@
   .site-refresh .section>h2,.site-refresh .journey h2 { font-size:28px; }
   .site-refresh .service-booking-panel { grid-template-columns:1fr; gap:24px; }
   .site-refresh .service-booking-actions { display:grid; grid-template-columns:1fr; }
-  .site-refresh .email-enquiry .form-grid { grid-template-columns:1fr; }
   .site-refresh .inner-page .inner-hero h1 { font-size:30px; }
   .site-refresh .inner-page .inner-hero-copy,.site-refresh .inner-page:has(.guide-reading) .inner-hero-copy { padding-block:32px; }
   .site-refresh .inner-content h2,.site-refresh .inner-feature h2 { font-size:27px; }

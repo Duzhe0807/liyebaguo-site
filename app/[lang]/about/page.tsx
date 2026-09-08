@@ -59,7 +59,6 @@ export default async function Page({ params }: { params: Promise<{ lang: Lang }>
       </div>
       <div className="timeline-grid">{timeline.map(([number, title, text]) => <article key={number}><span>{number}</span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div>
     </section>
-    <section className="inner-section backstage-gallery"><p className="eyebrow">{page.behind}</p><h2>{page.behindTitle}</h2><div><figure><Image src="/images/gallery-western-2.webp" alt={page.behindTitle} fill sizes="55vw" /></figure><figure><Image src="/images/gallery-sea-2.webp" alt={page.behindTitle} fill sizes="35vw" /></figure><figure><Image src="/images/gallery-western-3.webp" alt={page.behindTitle} fill sizes="35vw" /></figure></div></section>
     <DetailFaq title={page.faqTitle} items={page.faq.map(([question, answer]) => [question, answer] as const)} />
   </InnerPageShell>;
 }

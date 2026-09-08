@@ -3,11 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
-  ArrowLeft, ArrowRight, CalendarBlank, ChatCircleDots, Clock, Crown, DoorOpen,
+  ArrowRight, CalendarBlank, ChatCircleDots, Clock, Crown, DoorOpen,
   EnvelopeSimple, MapPin, MusicNotes, Phone, Play, Plus, Quotes,
   UsersThree,
 } from "@phosphor-icons/react";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { TrailerModal } from "./TrailerModal";
 import { customerServiceUrl, whatsappId, whatsappUrl } from "../customerService";
 import { CustomerServiceChooser, ServiceBookingNote } from "./CustomerServiceChooser";
@@ -312,73 +312,17 @@ const homeUi = {
   ko: { facts: [["위치", "충칭 · 바궈청"], ["소요 시간", "약 110분"], ["포함 사항", "파위 연회 · 라이브 공연"], ["언어", "영어 지원 사전 문의"]], ticketTitle: "회차 선택 후 좌석 선택", ticketText: "점심과 저녁 회차 모두 정원 산책, 환영 의식, 연회와 공연을 포함합니다.", ticketLink: "공연·좌석 보기", locationTitle: "충칭 · 바궈청", locationText: "주소, 지도와 방문 방법을 확인하세요.", locationLink: "방문 안내 보기", guestCategories: "방문객 유형", serviceTitle: "온라인 고객센터 예약", serviceText: "원하는 연락 방법을 선택해 주세요. 회차, 좌석과 단체 방문을 안내해 드립니다.", address: "중국 충칭시 주룽포구 바궈청", hours: "매일 10:00–21:00", baidu: "바이두 지도", phone: "전화", footer: "충칭 몰입형 파위 문화 디너쇼", quick: "빠른 연락", call: "전화" },
 } as const;
 
-const formUi = {
-  zh: { name: "姓名", phone: "手机 / WhatsApp", email: "邮箱", country: "国家 / 地区", date: "预约日期", session: "宴席时段", chooseSession: "选择午宴或晚宴", lunch: "午宴", dinner: "晚宴", guests: "人数", package: "套餐类型", guest: "嘉宾体验", vip: "贵宾体验", notes: "忌口 / 过敏 / 备注", submitting: "正在提交…", company: "公司 / 旅行社名称", contact: "联系人", estimatedDate: "预计日期", estimatedGuests: "预计人数", eventType: "活动类型", events: ["旅行团", "商务宴请", "企业活动", "海外游客团", "其他"], buyout: "是否需要包场", yes: "需要", no: "不需要", unsure: "待确认", budget: "预算范围", requirements: "需求描述" },
-  "zh-hant": { name: "姓名", phone: "手機 / WhatsApp", email: "電郵", country: "國家 / 地區", date: "預約日期", session: "宴席時段", chooseSession: "選擇午宴或晚宴", lunch: "午宴", dinner: "晚宴", guests: "人數", package: "套餐類型", guest: "嘉賓體驗", vip: "貴賓體驗", notes: "忌口 / 過敏 / 備註", submitting: "正在提交…", company: "公司 / 旅行社名稱", contact: "聯絡人", estimatedDate: "預計日期", estimatedGuests: "預計人數", eventType: "活動類型", events: ["旅行團", "商務宴請", "企業活動", "海外旅客團", "其他"], buyout: "是否需要包場", yes: "需要", no: "不需要", unsure: "待確認", budget: "預算範圍", requirements: "需求描述" },
-  en: { name: "Name", phone: "Phone / WhatsApp", email: "Email", country: "Country / Region", date: "Booking Date", session: "Banquet session", chooseSession: "Choose Lunch or Dinner", lunch: "Lunch", dinner: "Dinner", guests: "Guests", package: "Package", guest: "Guest", vip: "VIP", notes: "Dietary needs / Allergies / Notes", submitting: "Submitting…", company: "Company / Travel Agency", contact: "Contact Name", estimatedDate: "Estimated Date", estimatedGuests: "Estimated Guests", eventType: "Event Type", events: ["Tour Group", "Business Dinner", "Corporate Event", "International Group", "Other"], buyout: "Private Buyout?", yes: "Yes", no: "No", unsure: "Not Sure", budget: "Budget Range", requirements: "Requirements" },
-  ja: { name: "お名前", phone: "電話 / WhatsApp", email: "メール", country: "国 / 地域", date: "予約日", session: "宴席時間", chooseSession: "ランチまたはディナーを選択", lunch: "ランチ", dinner: "ディナー", guests: "人数", package: "プラン", guest: "ゲスト席", vip: "VIP席", notes: "食事制限 / アレルギー / 備考", submitting: "送信中…", company: "会社 / 旅行会社名", contact: "ご担当者名", estimatedDate: "希望日", estimatedGuests: "予定人数", eventType: "イベント種類", events: ["旅行団体", "ビジネス宴席", "企業イベント", "海外旅行団体", "その他"], buyout: "貸切を希望しますか？", yes: "はい", no: "いいえ", unsure: "未定", budget: "ご予算", requirements: "ご要望" },
-  ko: { name: "이름", phone: "전화 / WhatsApp", email: "이메일", country: "국가 / 지역", date: "예약 날짜", session: "연회 시간", chooseSession: "점심 또는 저녁 선택", lunch: "점심", dinner: "저녁", guests: "인원", package: "패키지", guest: "일반석", vip: "VIP석", notes: "식이 요청 / 알레르기 / 메모", submitting: "전송 중…", company: "회사 / 여행사명", contact: "담당자 이름", estimatedDate: "예정 날짜", estimatedGuests: "예상 인원", eventType: "행사 유형", events: ["여행 단체", "비즈니스 만찬", "기업 행사", "해외 관광단", "기타"], buyout: "단독 대관이 필요한가요?", yes: "예", no: "아니요", unsure: "미정", budget: "예산 범위", requirements: "요청 사항" },
-} as const;
-
 export function HomePage({ locale }: { locale: Locale }) {
   const t = copy[locale];
   const ui = homeUi[locale];
-  const form = formUi[locale];
   const lang = locale === "zh-hant" ? "tw" : locale;
   const navigation = siteCopy[lang];
   const practicalFacts = ui.facts;
-  const emailNotice = {
-    zh: "请在打开的邮件应用中点击发送。我们尚未收到邮件；如未打开，请通过 WhatsApp 或微信客服咨询。",
-    "zh-hant": "請在開啟的郵件應用中點擊傳送。我們尚未收到郵件；如未開啟，請透過 WhatsApp 或微信客服聯絡。",
-    en: "Your email app should open with a draft. Please send it there; your request has not been received yet. If no app opens, contact us through WhatsApp or WeChat Support.",
-    ja: "メールアプリで下書きを送信してください。まだお問い合わせは届いていません。開かない場合はWhatsAppまたはWeChatでご連絡ください。",
-    ko: "메일 앱에서 초안을 보내주세요. 아직 문의가 접수되지 않았습니다. 앱이 열리지 않으면 WhatsApp 또는 WeChat으로 연락해 주세요.",
-  }[locale];
   const [activeGallery, setActiveGallery] = useState(0);
-  const [galleryPhotoOffset, setGalleryPhotoOffset] = useState(0);
-  const [bookingMode, setBookingMode] = useState<"guest" | "group">("guest");
-  const [notice, setNotice] = useState("");
-  const [submitStatus, setSubmitStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [trailerOpen, setTrailerOpen] = useState(false);
   useEffect(() => {
     document.documentElement.lang = locale === "zh-hant" ? "zh-TW" : locale === "zh" ? "zh-CN" : locale;
   }, [locale]);
-
-  const submit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const form = event.currentTarget;
-    setSubmitStatus("loading");
-    setNotice("");
-    const formData = new FormData(form);
-    const data: Record<string, string> = {};
-    formData.forEach((value, key) => {
-      data[key] = value.toString();
-    });
-    data.form_type = form.dataset.formType || "guest-booking";
-
-    const typeLabel = data.form_type === "guest-booking"
-      ? (locale === "zh" || locale === "zh-hant" ? "席位预约" : locale === "ko" ? "좌석 예약" : locale === "ja" ? "ご予約" : "Guest Booking")
-      : (locale === "zh" || locale === "zh-hant" ? "团队咨询" : locale === "ko" ? "단체 문의" : locale === "ja" ? "団体お問い合わせ" : "Group Inquiry");
-    const contactName = data.name || data.contact || data.company || "";
-    const subject = `${typeLabel} — ${contactName || "Liyan Baguo website"}`;
-    const lines = Object.entries(data)
-      .filter(([key]) => key !== "form_type")
-      .map(([key, value]) => {
-        const displayKey = key.replace(/([A-Z])/g, " $1").replace(/^./, (s) => s.toUpperCase());
-        return `${displayKey}: ${value || "—"}`;
-      });
-    const body = lines.join("\n");
-    const mailto = `mailto:${business.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-    try {
-      window.location.href = mailto;
-      setSubmitStatus("success");
-      setNotice(emailNotice);
-    } catch {
-      setSubmitStatus("error");
-      setNotice(locale === "zh" ? "提交未成功，请稍后重试，或通过电话、邮件与 WeChat Support 联系。" : locale === "zh-hant" ? "提交未成功，請稍後重試。" : locale === "ko" ? "제출하지 못했습니다. 다시 시도하거나 다른 연락처로 문의해 주세요." : locale === "ja" ? "送信に失敗しました。時間をおいて再度お試しください。" : "Submission failed. Please retry or contact us by phone, email or WeChat Support.");
-    }
-  };
 
   return (
     <main className="home-page">
@@ -390,6 +334,7 @@ export function HomePage({ locale }: { locale: Locale }) {
           <video autoPlay muted loop playsInline preload="metadata" poster="/hero-banquet-cropped.jpg" aria-label={`${t.heroTitle} · ${t.heroTagline}`}>
             <source src="/videos/hero-banquet.mp4" type="video/mp4" />
           </video>
+          <div className="mobile-hero-brand"><strong>LIYANBAGUO</strong><span>Banquet of Ba Kingdom</span></div>
         </div>
         <div className="hero-copy">
           <p className="eyebrow">Liyan Baguo {locale === "en" ? "· Chongqing, China" : "· Banquet of Ba Kingdom"}</p>
@@ -438,9 +383,8 @@ export function HomePage({ locale }: { locale: Locale }) {
           <div><p className="eyebrow">GALLERY</p><h2>{t.gallery}</h2></div>
           <div className="gallery-controls">
             <div className="gallery-tabs" role="tablist" aria-label={ui.guestCategories}>
-              {galleryGroups[locale].map((group, index) => <button type="button" role="tab" aria-selected={activeGallery === index} className={activeGallery === index ? "active" : ""} onClick={() => { setActiveGallery(index); setGalleryPhotoOffset(0); }} key={group.title}><span>{group.title}</span><small>{group.en}</small></button>)}
+              {galleryGroups[locale].map((group, index) => <button type="button" role="tab" aria-selected={activeGallery === index} className={activeGallery === index ? "active" : ""} onClick={() => setActiveGallery(index)} key={group.title}><span>{group.title}</span><small>{group.en}</small></button>)}
             </div>
-            <div className="gallery-photo-controls"><button type="button" aria-label={navigation.previous} onClick={() => setGalleryPhotoOffset(current => (current + 3) % 4)}><ArrowLeft /></button><button type="button" aria-label={navigation.next} onClick={() => setGalleryPhotoOffset(current => (current + 1) % 4)}><ArrowRight /></button></div>
             <p className="gallery-description">{galleryGroups[locale][activeGallery].text}</p>
           </div>
         </div>
@@ -450,7 +394,7 @@ export function HomePage({ locale }: { locale: Locale }) {
             <figcaption>{galleryGroups[locale][activeGallery].title}</figcaption>
           </figure>
           <div className="gallery-photos">
-            {[...galleryGroups[locale][activeGallery].images.slice(galleryPhotoOffset), ...galleryGroups[locale][activeGallery].images.slice(0, galleryPhotoOffset)].slice(0, 3).map((src, index) => <figure key={src}><Image src={src} alt={locale === "en" ? `Guests at Liyan Baguo in Chongqing: ${galleryGroups[locale][activeGallery].title}, photo ${index + 1}` : `${galleryGroups[locale][activeGallery].title} ${index + 1}`} fill sizes={index === 0 ? "(max-width: 980px) 100vw, 64vw" : "(max-width: 700px) 50vw, 21vw"} /></figure>)}
+            {galleryGroups[locale][activeGallery].images.slice(0, 3).map((src, index) => <figure key={src}><Image src={src} alt={locale === "en" ? `Guests at Liyan Baguo in Chongqing: ${galleryGroups[locale][activeGallery].title}, photo ${index + 1}` : `${galleryGroups[locale][activeGallery].title} ${index + 1}`} fill sizes={index === 0 ? "(max-width: 980px) 100vw, 64vw" : "(max-width: 700px) 50vw, 21vw"} /></figure>)}
           </div>
         </div>
       </section>
@@ -483,7 +427,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       <section className="section home-faq" id="faq">
         <h2>{t.faq}</h2>
         <JsonLdFAQPage questions={faqs[locale].slice(0, 5).map(([question, answer]) => ({ question, answer }))} />
-        {faqs[locale].map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}
+        {faqs[locale].slice(0, 5).map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}
         <Link className="text-link" href={`/${lang}/faq/`}>{navigation.faq} <ArrowRight /></Link>
       </section>
 
@@ -500,28 +444,11 @@ export function HomePage({ locale }: { locale: Locale }) {
           </div>
         </div>
         <ServiceBookingNote lang={locale === "zh-hant" ? "tw" : locale} />
-        <details className="email-enquiry"><summary>{navigation.email}</summary><p className="email-draft-note">{emailNotice}</p>
-        <div className="booking-tabs" role="group"><button type="button" aria-pressed={bookingMode === "guest"} className={bookingMode === "guest" ? "active" : ""} onClick={() => setBookingMode("guest")}>{t.booking}</button><button type="button" aria-pressed={bookingMode === "group"} className={bookingMode === "group" ? "active" : ""} onClick={() => setBookingMode("group")}>{t.inquiry}</button></div>
-        <form className={bookingMode === "guest" ? "mobile-form-active" : ""} onSubmit={submit} id="guest-form" data-form-type="guest-booking"><p className="eyebrow">AVAILABILITY ENQUIRY</p><h2>{t.booking}</h2><div className="form-grid"><label className="enquiry-field"><span>{form.name}</span><input name="name" required aria-label={form.name} placeholder={form.name} /></label><label className="enquiry-field"><span>{form.phone}</span><input name="phone" required aria-label={form.phone} placeholder={form.phone} /></label><label className="enquiry-field"><span>{form.email}</span><input name="email" required type="email" aria-label={form.email} placeholder={form.email} /></label><label className="enquiry-field"><span>{form.country}</span><input name="country" aria-label={form.country} placeholder={form.country} /></label><label className="picker-field"><span>{form.date}</span><input name="date" required type="date" aria-label={form.date} onClick={(event) => event.currentTarget.showPicker?.()} /></label><label className="enquiry-field"><span>{form.session}</span><select name="mealPeriod" required aria-label={form.session} defaultValue=""><option value="" disabled>{form.chooseSession}</option><option value="lunch">{form.lunch}</option><option value="dinner">{form.dinner}</option></select></label><label className="enquiry-field"><span>{form.guests}</span><input name="guests" required type="number" min="1" max="160" aria-label={form.guests} placeholder={form.guests} /></label><label className="enquiry-field"><span>{form.package}</span><select name="package" required aria-label={form.package} defaultValue=""><option value="" disabled>{form.package}</option><option>{form.guest}</option><option>{form.vip}</option><option>SVIP</option></select></label><label className="enquiry-field full-field"><span>{form.notes}</span><textarea name="notes" className="full-field" aria-label={form.notes} placeholder={form.notes} /></label></div><button className="button" type="submit" disabled={submitStatus === "loading"}>{submitStatus === "loading" ? form.submitting : t.submitBook}</button></form>
-        <form className={bookingMode === "group" ? "mobile-form-active" : ""} onSubmit={submit} id="group-form" data-form-type="group-inquiry"><p className="eyebrow">GROUP INQUIRY</p><h2>{t.inquiry}</h2><div className="form-grid"><label className="enquiry-field"><span>{form.company}</span><input name="company" required aria-label={form.company} placeholder={form.company} /></label><label className="enquiry-field"><span>{form.contact}</span><input name="contact" required aria-label={form.contact} placeholder={form.contact} /></label><label className="enquiry-field"><span>{form.phone}</span><input name="phone" required aria-label={form.phone} placeholder={form.phone} /></label><label className="enquiry-field"><span>{form.email}</span><input name="email" required type="email" aria-label={form.email} placeholder={form.email} /></label><label className="enquiry-field"><span>{form.country}</span><input name="country" aria-label={form.country} placeholder={form.country} /></label><label className="picker-field"><span>{form.estimatedDate}</span><input name="date" required type="date" aria-label={form.estimatedDate} onClick={(event) => event.currentTarget.showPicker?.()} /></label><label className="enquiry-field"><span>{form.estimatedGuests}</span><input name="guests" required type="number" min="1" max="160" aria-label={form.estimatedGuests} placeholder={form.estimatedGuests} /></label><label className="enquiry-field"><span>{form.eventType}</span><select name="eventType" required aria-label={form.eventType} defaultValue=""><option value="" disabled>{form.eventType}</option>{form.events.map((event) => <option key={event}>{event}</option>)}</select></label><label className="enquiry-field"><span>{form.buyout}</span><select name="privateBuyout" aria-label={form.buyout} defaultValue=""><option value="" disabled>{form.buyout}</option><option>{form.yes}</option><option>{form.no}</option><option>{form.unsure}</option></select></label><label className="enquiry-field"><span>{form.budget}</span><input name="budget" aria-label={form.budget} placeholder={form.budget} /></label><label className="enquiry-field full-field"><span>{form.requirements}</span><textarea name="requirements" className="full-field" aria-label={form.requirements} placeholder={form.requirements} /></label></div><button className="button" type="submit" disabled={submitStatus === "loading"}>{submitStatus === "loading" ? form.submitting : t.submitGroup}</button></form>
-        {notice && <p className={`notice ${submitStatus}`} role="status">{notice}</p>}
-        </details>
+        <div className="email-contact"><span>{navigation.email}</span><a href={`mailto:${business.email}`}><EnvelopeSimple aria-hidden="true" />{business.email}</a></div>
       </section>
 
       <section className="section contact-section" id="contact">
         <div className="contact-intro"><p className="eyebrow">CONTACT & LOCATION</p><h2>{t.contactTitle}</h2><div className="contact-meta"><p><MapPin /><span>{ui.address}</span></p><p><Clock /><span>{ui.hours}</span></p></div><nav className="map-links"><a href="https://maps.app.goo.gl/ZddotMySGkJYsjFh7" target="_blank" rel="noreferrer">Google Maps <ArrowRight /></a><a href="https://j.map.baidu.com/76/_1tc" target="_blank" rel="noreferrer">{ui.baidu} <ArrowRight /></a></nav></div>
-        <div className="contact-panel">
-          <div className="contact-list">
-            <a href="tel:+8617383017612"><Phone />{ui.phone}: +86 173 8301 7612</a>
-            <a href="mailto:liaorenxi23@gmail.com"><EnvelopeSimple />Email: liaorenxi23@gmail.com</a>
-            <a href={whatsappUrl} target="_blank" rel="noreferrer"><ChatCircleDots />WhatsApp: {whatsappId}</a>
-            <a href={customerServiceUrl} target="_blank" rel="noreferrer"><ChatCircleDots />WeChat Support</a>
-          </div>
-          <div className="contact-actions">
-            <CustomerServiceChooser booking lang={locale === "zh-hant" ? "tw" : locale} className="button" />
-            <a className="button secondary" href="#booking">{t.group}</a>
-          </div>
-        </div>
       </section>
 
       <SiteFooter lang={lang} />
