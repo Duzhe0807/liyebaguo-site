@@ -10,7 +10,7 @@ import {
 import { FormEvent, useEffect, useState } from "react";
 import { TrailerModal } from "./TrailerModal";
 import { customerServiceUrl, whatsappId, whatsappUrl } from "../customerService";
-import { CustomerServiceChooser } from "./CustomerServiceChooser";
+import { CustomerServiceChooser, ServiceBookingNote } from "./CustomerServiceChooser";
 import { business, englishFaqs, verifiedReviews } from "../business";
 import { JsonLdFAQPage } from "../JsonLd";
 import { guideLinks } from "../guideLinks";
@@ -25,7 +25,7 @@ const baseCopy = {
     heroTitle: "礼宴巴国",
     heroTagline: "一席宫宴，看懂巴蜀",
     heroSub: "一席可观、可食、可赏、可忆的巴国礼宴，以礼乐为引，邀君入席。",
-    book: "预订席位", group: "团体咨询", watchTrailer: "观看影片",
+    book: "咨询档期", group: "团体咨询", watchTrailer: "观看影片",
     facts: ["约 110 分钟", "最多 160 人", "支持包场", "重庆巴国城"],
     valueTitle: "一席之间\n读懂巴蜀",
     values: [
@@ -59,8 +59,8 @@ const baseCopy = {
     contactTitle: "到访礼宴巴国",
     trustTitle: "宾客心声",
     trustSubtitle: "来自世界各地体验者的真实反馈",
-    gallery: "精彩瞬间", faq: "常见问题", booking: "席位预约", inquiry: "团队咨询",
-    submitBook: "提交预约", submitGroup: "提交询价",
+    gallery: "精彩瞬间", faq: "常见问题", booking: "邮件咨询", inquiry: "团队咨询",
+    submitBook: "打开邮件咨询", submitGroup: "提交询价",
     success: "感谢您的垂询，礼宴巴国团队将在 24 小时内与您联系。",
   },
   en: {
@@ -68,7 +68,7 @@ const baseCopy = {
     heroTitle: "Liyan Baguo",
     heroTagline: "An Immersive Palace Banquet & Cultural Dinner Show in Chongqing",
     heroSub: "Liyan Baguo brings the Banquet of Ba Kingdom to Chongqing through regional cuisine, live performances, ceremonial dining and Chinese costume options. Plan a lunch or dinner visit for travellers, families or groups, and book with the official team.",
-    book: "Book Your Experience", group: "Group Enquiry", watchTrailer: "Watch trailer",
+    book: "Check availability", group: "Group Enquiry", watchTrailer: "Watch trailer",
     facts: ["Approx. 110 Minutes", "Up to 160 Guests", "Private Events", "Chongqing"],
     valueTitle: "Discover Bashu Culture in One Banquet",
     values: [
@@ -102,8 +102,8 @@ const baseCopy = {
     contactTitle: "Visit Liyan Baguo",
     trustTitle: "Guest Love",
     trustSubtitle: "Real feedback from guests around the world",
-    gallery: "Gallery", faq: "Frequently Asked Questions", booking: "Seat Reservation", inquiry: "Group Consultation",
-    submitBook: "Submit Booking", submitGroup: "Submit Inquiry",
+    gallery: "Gallery", faq: "Frequently Asked Questions", booking: "Email enquiry", inquiry: "Group Consultation",
+    submitBook: "Open email enquiry", submitGroup: "Submit Inquiry",
     success: "Thank you. Your enquiry has been received and our team will contact you within 24 hours.",
   },
 } as const;
@@ -114,7 +114,7 @@ const copy = {
     nav: ["體驗概覽", "演藝美饌", "團隊接待", "圖片與影片", "關於我們", "常見問題"],
     heroTagline: "一席宮宴，讀懂巴蜀",
     heroSub: "一席可觀、可食、可賞、可憶的巴國禮宴，以禮樂為引，邀君入席。",
-    book: "預訂席位", group: "團體諮詢", watchTrailer: "觀看影片",
+    book: "諮詢檔期", group: "團體諮詢", watchTrailer: "觀看影片",
     facts: ["約 110 分鐘", "最多 160 人", "支援包場", "重慶巴國城"],
     valueTitle: "一席之間\n讀懂巴蜀",
     values: [["正宗川渝宴席", "地方風味與宴席禮序共同呈現"], ["全場景沉浸演藝", "禮樂、舞台與互動貫穿用餐過程"], ["國際接待服務", "面向海外旅客、旅行社與商務團隊"]],
@@ -138,8 +138,8 @@ const copy = {
     contactTitle: "到訪禮宴巴國",
     trustTitle: "賓客心聲",
     trustSubtitle: "來自世界各地體驗者的真實反饋",
-    gallery: "精彩瞬間", faq: "常見問題", booking: "席位預約", inquiry: "團隊諮詢",
-    submitBook: "提交預約", submitGroup: "提交詢價",
+    gallery: "精彩瞬間", faq: "常見問題", booking: "郵件諮詢", inquiry: "團隊諮詢",
+    submitBook: "開啟郵件諮詢", submitGroup: "提交詢價",
     success: "感謝您的垂詢，禮宴巴國團隊將在 24 小時內與您聯絡。",
   },
   ko: {
@@ -148,7 +148,7 @@ const copy = {
     heroTitle: "리옌 바궈",
     heroTagline: "음식과 공연, 한푸가 어우러진 충칭의 하룻밤",
     heroSub: "한푸, 라이브 공연, 전통 의식과 사진 스타일링이 어우러지는 몰입형 문화 디너쇼입니다.",
-    book: "좌석 예약", group: "단체 문의", watchTrailer: "소개 영상 보기",
+    book: "예약 가능 여부 문의", group: "단체 문의", watchTrailer: "소개 영상 보기",
     facts: ["약 110분", "최대 160명", "단독 대관 가능", "충칭 바궈청"],
     valueTitle: "한 번의 연회로 만나는 바슈 문화",
     values: [["정통 쓰촨 연회", "지역의 맛과 전통 연회 문화를 함께 경험합니다"], ["몰입형 라이브 공연", "식사 내내 의식과 무대, 관객 참여가 이어집니다"], ["해외 고객 맞춤 응대", "해외 여행객과 여행사, 비즈니스 단체를 위한 서비스"]],
@@ -173,8 +173,8 @@ const copy = {
     contactTitle: "리옌 바궈 방문 안내",
     trustTitle: "게스트 후기",
     trustSubtitle: "전 세계 방문객의 실제 후기",
-    gallery: "하이라이트", faq: "자주 묻는 질문", booking: "좌석 예약", inquiry: "단체 상담",
-    submitBook: "예약 신청", submitGroup: "문의 제출",
+    gallery: "하이라이트", faq: "자주 묻는 질문", booking: "이메일 문의", inquiry: "단체 상담",
+    submitBook: "이메일 문의 열기", submitGroup: "문의 제출",
     success: "문의가 접수되었습니다. 담당자가 일정, 인원, 요청 사항을 확인한 후 연락드리겠습니다.",
   },
   ja: {
@@ -183,7 +183,7 @@ const copy = {
     heroTitle: "礼宴巴国",
     heroTagline: "食と演劇、漢服が織りなす重慶の一夜",
     heroSub: "漢服、ライブパフォーマンス、儀式の交流、フォトスタイリングを楽しむ没入型文化ディナーショーです。",
-    book: "ご予約", group: "団体問い合わせ", watchTrailer: "紹介動画を見る",
+    book: "空席を問い合わせ", group: "団体問い合わせ", watchTrailer: "紹介動画を見る",
     facts: ["約110分", "最大160名", "貸切可", "重慶・巴国城"],
     valueTitle: "一席で味わう巴蜀文化",
     values: [
@@ -219,9 +219,9 @@ const copy = {
     trustSubtitle: "世界中からのリアルな感想",
     gallery: "ギャラリー",
     faq: "よくある質問",
-    booking: "席予約",
+    booking: "メールで問い合わせ",
     inquiry: "団体問い合わせ",
-    submitBook: "予約を送信",
+    submitBook: "メールを作成",
     submitGroup: "問い合わせを送信",
     success: "お問い合わせを受け付けました。担当者が日程・人数・ご要望を確認のうえ、ご連絡いたします。",
   },
@@ -403,7 +403,7 @@ export function HomePage({ locale }: { locale: Locale }) {
             <Link className={locale === "ja" ? "active" : ""} href="/ja/">日</Link>
             <Link className={locale === "ko" ? "active" : ""} href="/ko/">KR</Link>
           </nav>
-          <a className="button compact" href={whatsappUrl}>{t.book}</a>
+          <CustomerServiceChooser booking lang={locale === "zh-hant" ? "tw" : locale} className="button compact" />
           <MobileNavigation lang={locale === "zh-hant" ? "tw" : locale} />
         </div>
       </header>
@@ -421,7 +421,7 @@ export function HomePage({ locale }: { locale: Locale }) {
           <p className="hero-tagline">{t.heroTagline}</p>
           <p className="hero-sub">{t.heroSub}</p>
           <div className="button-row">
-            <a className="button" href={whatsappUrl}>{t.book}</a>
+            <CustomerServiceChooser booking lang={locale === "zh-hant" ? "tw" : locale} className="button" />
             <a className="button secondary" href={locale === "en" ? "/en/banquet-of-ba-kingdom/" : "#booking"}>{locale === "en" ? "Explore the Banquet" : t.group}</a>
             <button type="button" className="button ghost" onClick={() => setTrailerOpen(true)}>
               <Play weight="fill" /> {t.watchTrailer}
@@ -523,8 +523,9 @@ export function HomePage({ locale }: { locale: Locale }) {
             <a className="button secondary" href={customerServiceUrl} target="_blank" rel="noreferrer"><ChatCircleDots />WeChat Support</a>
           </div>
         </div>
+        <ServiceBookingNote lang={locale === "zh-hant" ? "tw" : locale} />
         <div className="booking-tabs" role="tablist"><button type="button" role="tab" aria-selected={bookingMode === "guest"} className={bookingMode === "guest" ? "active" : ""} onClick={() => setBookingMode("guest")}>{t.booking}</button><button type="button" role="tab" aria-selected={bookingMode === "group"} className={bookingMode === "group" ? "active" : ""} onClick={() => setBookingMode("group")}>{t.inquiry}</button></div>
-        <form className={bookingMode === "guest" ? "mobile-form-active" : ""} onSubmit={submit} id="guest-form" data-form-type="guest-booking"><p className="eyebrow">SEAT RESERVATION</p><h2>{t.booking}</h2><div className="form-grid"><input name="name" required aria-label={form.name} placeholder={form.name} /><input name="phone" required aria-label={form.phone} placeholder={form.phone} /><input name="email" required type="email" aria-label={form.email} placeholder={form.email} /><input name="country" aria-label={form.country} placeholder={form.country} /><label className="picker-field"><span>{form.date}</span><input name="date" required type="date" aria-label={form.date} onClick={(event) => event.currentTarget.showPicker?.()} /></label><select name="mealPeriod" required aria-label={form.session} defaultValue=""><option value="" disabled>{form.chooseSession}</option><option value="lunch">{form.lunch}</option><option value="dinner">{form.dinner}</option></select><input name="guests" required type="number" min="1" max="160" aria-label={form.guests} placeholder={form.guests} /><select name="package" required aria-label={form.package} defaultValue=""><option value="" disabled>{form.package}</option><option>{form.guest}</option><option>{form.vip}</option><option>SVIP</option></select><textarea name="notes" className="full-field" aria-label={form.notes} placeholder={form.notes} /></div><button className="button" type="submit" disabled={submitStatus === "loading"}>{submitStatus === "loading" ? form.submitting : t.submitBook}</button></form>
+        <form className={bookingMode === "guest" ? "mobile-form-active" : ""} onSubmit={submit} id="guest-form" data-form-type="guest-booking"><p className="eyebrow">AVAILABILITY ENQUIRY</p><h2>{t.booking}</h2><div className="form-grid"><input name="name" required aria-label={form.name} placeholder={form.name} /><input name="phone" required aria-label={form.phone} placeholder={form.phone} /><input name="email" required type="email" aria-label={form.email} placeholder={form.email} /><input name="country" aria-label={form.country} placeholder={form.country} /><label className="picker-field"><span>{form.date}</span><input name="date" required type="date" aria-label={form.date} onClick={(event) => event.currentTarget.showPicker?.()} /></label><select name="mealPeriod" required aria-label={form.session} defaultValue=""><option value="" disabled>{form.chooseSession}</option><option value="lunch">{form.lunch}</option><option value="dinner">{form.dinner}</option></select><input name="guests" required type="number" min="1" max="160" aria-label={form.guests} placeholder={form.guests} /><select name="package" required aria-label={form.package} defaultValue=""><option value="" disabled>{form.package}</option><option>{form.guest}</option><option>{form.vip}</option><option>SVIP</option></select><textarea name="notes" className="full-field" aria-label={form.notes} placeholder={form.notes} /></div><button className="button" type="submit" disabled={submitStatus === "loading"}>{submitStatus === "loading" ? form.submitting : t.submitBook}</button></form>
         <form className={bookingMode === "group" ? "mobile-form-active" : ""} onSubmit={submit} id="group-form" data-form-type="group-inquiry"><p className="eyebrow">GROUP INQUIRY</p><h2>{t.inquiry}</h2><div className="form-grid"><input name="company" required aria-label={form.company} placeholder={form.company} /><input name="contact" required aria-label={form.contact} placeholder={form.contact} /><input name="phone" required aria-label={form.phone} placeholder={form.phone} /><input name="email" required type="email" aria-label={form.email} placeholder={form.email} /><input name="country" aria-label={form.country} placeholder={form.country} /><label className="picker-field"><span>{form.estimatedDate}</span><input name="date" required type="date" aria-label={form.estimatedDate} onClick={(event) => event.currentTarget.showPicker()} /></label><input name="guests" required type="number" min="1" max="160" aria-label={form.estimatedGuests} placeholder={form.estimatedGuests} /><select name="eventType" required aria-label={form.eventType} defaultValue=""><option value="" disabled>{form.eventType}</option>{form.events.map((event) => <option key={event}>{event}</option>)}</select><select name="privateBuyout" aria-label={form.buyout} defaultValue=""><option value="" disabled>{form.buyout}</option><option>{form.yes}</option><option>{form.no}</option><option>{form.unsure}</option></select><input name="budget" aria-label={form.budget} placeholder={form.budget} /><textarea name="requirements" className="full-field" aria-label={form.requirements} placeholder={form.requirements} /></div><button className="button" type="submit" disabled={submitStatus === "loading"}>{submitStatus === "loading" ? form.submitting : t.submitGroup}</button></form>
         {notice && <p className={`notice ${submitStatus}`} role="status">{notice}</p>}
       </section>
@@ -539,14 +540,14 @@ export function HomePage({ locale }: { locale: Locale }) {
             <a href={customerServiceUrl} target="_blank" rel="noreferrer"><ChatCircleDots />WeChat Support</a>
           </div>
           <div className="contact-actions">
-            <a className="button" href={whatsappUrl}>{t.book}</a>
+            <CustomerServiceChooser booking lang={locale === "zh-hant" ? "tw" : locale} className="button" />
             <a className="button secondary" href="#booking">{t.group}</a>
           </div>
         </div>
       </section>
 
       <footer id="about"><div className="brand-logo footer-logo"><Image src="/brand-logo.png" alt={`${t.heroTitle} Liyan Baguo`} width={1540} height={539} /></div><p>{ui.footer}</p><div><Link href={`${langPath(locale)}/about/`}>{t.nav[4]}</Link><Link href={`${langPath(locale)}/faq/`}>FAQ</Link></div></footer>
-      <div className="mobile-cta" aria-label={ui.quick}><a href={whatsappUrl} className="primary">{t.book}</a><CustomerServiceChooser compact lang={locale === "zh-hant" ? "tw" : locale} /><a href="tel:+8617383017612">{ui.call}</a></div>
+      <div className="mobile-cta" aria-label={ui.quick}><CustomerServiceChooser compact booking lang={locale === "zh-hant" ? "tw" : locale} /><a href="tel:+8617383017612">{ui.call}</a></div>
     </main>
   );
 }

@@ -1,0 +1,24 @@
+.service-trigger { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:44px; border:1px solid var(--line); padding:10px 16px; background:transparent; color:inherit; cursor:pointer; font:inherit; line-height:1.4; letter-spacing:0; white-space:normal; }
+.service-trigger svg { flex-shrink:0; }
+.service-dialog { position:fixed; inset:0; width:min(480px,calc(100% - 32px)); max-width:none; max-height:calc(100dvh - 32px); margin:auto; padding:0; border:1px solid #555646; border-radius:8px; background:#131611; color:#f3eee2; overflow:auto; overscroll-behavior:contain; }
+.service-dialog::backdrop { background:rgba(0,0,0,.7); }
+.service-dialog-content { padding:24px; }
+.service-dialog header { display:flex; align-items:flex-start; gap:16px; justify-content:space-between; }
+.service-dialog h2 { margin:4px 0 0; font-size:22px; line-height:1.4; letter-spacing:0; overflow-wrap:anywhere; }
+.service-dialog header button { flex-shrink:0; display:grid; place-items:center; width:44px; height:44px; padding:0; border:1px solid #626350; color:inherit; background:none; cursor:pointer; }
+.service-dialog p { margin:16px 0 24px; font-size:15px; line-height:1.7; color:#c6c9bf; }
+.service-dialog nav { display:grid; gap:12px; }
+.service-dialog nav a { display:flex; align-items:center; justify-content:space-between; gap:16px; min-height:68px; padding:14px 18px; border:1px solid #535b4d; color:#fff; text-decoration:none; }
+.service-dialog nav a:first-child { background:#15564f; }
+.service-dialog small { display:block; font-size:12px; color:#c6d9cf; margin-top:4px; }
+.service-dialog :focus-visible,.service-trigger:focus-visible { outline:2px solid #e7c880; outline-offset:3px; }
+.service-booking-note { grid-column:1/-1; font-size:15px; line-height:1.7; color:#d3ccb9; max-width:75ch; }
+@media(max-width:980px) {
+  .site-header .service-trigger { display:none; }
+  .service-dialog { inset:auto 0 0; width:100%; max-height:90dvh; margin:0; border-radius:8px 8px 0 0; border-bottom:0; }
+  .service-dialog-content { padding:20px 20px max(24px,env(safe-area-inset-bottom)); }
+  .home-page .mobile-cta,.inner-page .inner-mobile-book { grid-template-columns:minmax(0,1fr) 88px; }
+  .mobile-cta>.service-trigger,.inner-mobile-book>.service-trigger { width:100%; height:100%; min-width:0; border:0; border-radius:0; padding:8px 12px; background:#15564f; color:#fff; font-size:14px; line-height:1.4; }
+  .inner-mobile-book>.service-trigger { grid-column:1; grid-row:1; }
+  .inner-mobile-book>a { grid-column:2; grid-row:1; }
+}

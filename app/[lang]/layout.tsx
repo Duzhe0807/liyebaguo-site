@@ -9,6 +9,7 @@ import "../styles/pages.css";
 import "../styles/responsive.css";
 import "../styles/seo.css";
 import "../styles/mobile.css";
+import "../styles/service.css";
 
 export default async function LangLayout({ children, params }: {
   children: React.ReactNode;

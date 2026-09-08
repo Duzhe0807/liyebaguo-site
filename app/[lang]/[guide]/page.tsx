@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { guides } from "../../guides";
 import { business } from "../../business";
-import { whatsappUrl } from "../../customerService";
+import { CustomerServiceChooser } from "../CustomerServiceChooser";
 import { JsonLd } from "../../JsonLd";
 import { InnerPageShell, DetailFaq } from "../InnerPageShell";
 
@@ -64,7 +64,7 @@ export default async function GuidePage({ params }: { params: Promise<{ lang: st
         <dl className="guide-sessions">{business.sessions.map(session => <div key={session.name}>
           <dt>{session.name}</dt><dd>Garden: {session.garden}<br />Banquet show: {session.start}-{session.end} (end time approximate)</dd>
         </div>)}</dl>
-        <a className="button" href={whatsappUrl}>Book Your Experience</a>
+        <CustomerServiceChooser booking lang="en" className="button" />
       </section>
       <DetailFaq title="Questions before booking" items={guide.faq} />
     </div>

@@ -1,4 +1,4 @@
-import { whatsappUrl } from "../../customerService";
+import { CustomerServiceChooser, ServiceBookingNote } from "../CustomerServiceChooser";
 import { CheckIcon, XIcon, StarIcon } from "./TicketIcons";
 import type { Metadata } from "next";
 import { languages, type Lang } from "../../languages";
@@ -45,6 +45,7 @@ export default async function Page({ params }: { params: Promise<{ lang: Lang }>
   const labels = t.labels;
 
   return <InnerPageShell lang={lang} eyebrow="SHOW TIMES & PRICES" title={t.title} summary={t.summary} image="/audience-ritual.jpg">
+    <ServiceBookingNote lang={lang} />
     <section className="inner-section schedule-section">
       <p className="eyebrow">DAILY SCHEDULE</p>
       <h2>{t.schedule}</h2>
@@ -82,7 +83,7 @@ export default async function Page({ params }: { params: Promise<{ lang: Lang }>
               <li className={ticket.headwear ? "yes" : "no"}><span>{ticket.headwear ? <CheckIcon /> : <XIcon />}</span>{labels.headwear}</li>
             </ul>
             <p className="ticket-audience"><span>{labels.bestFor}</span>{ticket.audience}</p>
-            <a className="button" href={whatsappUrl}>{labels.choose}</a>
+            <CustomerServiceChooser booking lang={lang} className="button" />
           </article>
         ))}
       </div>
