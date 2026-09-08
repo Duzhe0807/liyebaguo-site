@@ -97,8 +97,20 @@
 .site-refresh .inner-page .inner-hero-copy,.site-refresh .inner-page:has(.guide-reading) .inner-hero-copy { height:auto; min-height:0; padding:44px 0; width:min(calc(100% - 48px),1200px); }
 .site-refresh .inner-page .inner-hero h1 { font-size:40px; line-height:1.2; max-width:920px; text-wrap:balance; white-space:normal; }
 .site-refresh .inner-page .inner-hero-copy>p:last-child { font-size:16px; line-height:1.8; max-width:72ch; }
-.page-contents { display:flex; gap:24px; padding:0 24px; overflow-x:auto; border-bottom:1px solid var(--line); background:#141713; }
-.page-contents a { flex:0 0 auto; padding:18px 0; max-width:260px; font-size:13px; line-height:1.4; }
+.page-contents { display:flex; justify-content:center; flex-wrap:wrap; gap:0 24px; padding:0 24px; border-bottom:1px solid var(--line); background:#141713; }
+.page-contents a { display:flex; align-items:center; justify-content:center; text-align:center; flex:0 1 240px; min-height:58px; padding:14px 8px; font-size:13px; line-height:1.5; }
+.page-contents a:hover,.page-contents a:focus-visible { color:#fff; background:rgba(255,255,255,.04); }
+.site-refresh .inner-content section { scroll-margin-top:92px; }
+.site-refresh .inner-section>h2,.site-refresh .inner-section>.eyebrow { text-align:left; margin-left:0; }
+.site-refresh .theme-banquet .menu-intro>div { background:none; padding:24px 0; text-align:left; }
+.site-refresh .dish-card-grid { gap:0 28px; }
+.site-refresh .dish-card-grid article { min-height:0; padding:24px 0; border:0; border-bottom:1px solid var(--line); border-radius:0; background:none; text-align:left; }
+.site-refresh .dish-card-grid .dish-tag { position:static; display:block; width:auto; padding:0; background:none; color:var(--muted); font-size:12px; }
+.site-refresh .dish-card-grid h3 { margin:8px 0; font-size:20px; line-height:1.45; }
+.site-refresh .dish-card-grid p { margin:0; font-size:14px; color:var(--muted); }
+.site-refresh .dietary-card-grid article { background:none; padding:20px 0; border:0; border-top:1px solid var(--line); border-radius:0; text-align:left; }
+.site-refresh .dietary-card-grid h3 { font-size:20px; }
+.site-refresh .inner-feature { background:none; }
 .site-refresh .inner-content { width:min(calc(100% - 48px),1200px); padding:36px 0; }
 .site-refresh .inner-section { padding:36px 0; }
 .site-refresh .inner-content h2,.site-refresh .inner-feature h2 { font-size:30px; line-height:1.3; max-width:100%; white-space:normal; }
@@ -144,9 +156,17 @@
   .site-refresh .unified-header .button { font-size:11px; padding:8px; }
 }
 @media(max-width:980px) {
-  .site-refresh .mobile-hero-brand { display:flex; position:absolute; inset:0; z-index:2; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:24px; text-align:center; color:#fff; pointer-events:none; text-shadow:0 2px 16px rgba(0,0,0,.65); background:linear-gradient(transparent 25%,rgba(0,0,0,.16) 50%,transparent 75%); }
-  .mobile-hero-brand strong { font-family:Georgia,"Times New Roman",serif; font-size:32px; line-height:1.15; font-weight:400; letter-spacing:0; }
-  .mobile-hero-brand span { font-family:Georgia,"Times New Roman",serif; font-size:15px; line-height:1.5; letter-spacing:0; }
+  .site-refresh .mobile-hero-brand { display:flex; position:absolute; inset:0; z-index:2; flex-direction:column; align-items:center; justify-content:center; gap:10px; padding:20px; text-align:center; pointer-events:none; text-shadow:0 2px 14px rgba(0,0,0,.45); background:linear-gradient(transparent 25%,rgba(0,0,0,.16) 50%,transparent 75%); }
+  .site-refresh .mobile-hero-brand strong { font-family:"Cinzel",Georgia,serif; font-size:30px; line-height:1.25; font-weight:500; letter-spacing:0; color:rgba(255,255,255,.8); }
+  .site-refresh .mobile-hero-brand span { font-family:"Cormorant Garamond",Georgia,serif; font-size:17px; line-height:1.5; font-weight:500; letter-spacing:0; color:rgba(255,255,255,.75); }
+  .page-contents { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0; padding:8px 16px; }
+  .page-contents a { min-width:0; padding:12px 8px; font-size:12px; }
+  .site-refresh .inner-content section { scroll-margin-top:80px; }
+  .site-refresh .theme-banquet .menu-intro { gap:24px; }
+  .site-refresh .theme-banquet .menu-intro>div { padding:0; }
+  .site-refresh .dish-card-grid { grid-template-columns:1fr; }
+  .site-refresh .food-gallery-grid { grid-template-columns:1fr; grid-template-rows:none; grid-auto-rows:auto; }
+  .site-refresh .food-gallery-grid figure { min-height:0; aspect-ratio:3/2; grid-row:auto; }
   .site-refresh .home-page .mobile-cta,.site-refresh .inner-page .inner-mobile-book { grid-template-columns:minmax(0,1fr); padding:8px 20px max(8px,env(safe-area-inset-bottom)); background:#0c0e0c; border-top:1px solid var(--line); }
   .site-refresh .mobile-cta>a,.site-refresh .inner-mobile-book>a { display:none; }
   .site-refresh .mobile-cta>.service-trigger,.site-refresh .inner-mobile-book>.service-trigger { grid-column:1; border-radius:4px; }
