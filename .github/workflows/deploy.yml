@@ -95,6 +95,8 @@ jobs:
           done
 
           # Replace production with new build
+          mkdir -p /var/backups
+          tar -czf "/var/backups/gongyanshow-pages-$stamp.tar.gz" --exclude='./images' --exclude='./videos' -C /var/www/liyan-baguo .
           rm -rf /var/www/liyan-baguo/*
           cp -a "$tmpdir"/* /var/www/liyan-baguo/
           rm -rf /var/www/liyanbaguo/*
@@ -108,9 +110,26 @@ jobs:
           find /var/www/liyanbaguo -type f -exec chmod 644 {} +
 
           test -f /var/www/liyan-baguo/zh/index.html
+          test -f /var/www/liyan-baguo/en/index.html
+
+          # Keep the root language in sync with the English x-default alternate.
+          config=/etc/nginx/sites-enabled/gongyanshow.com
+          if grep -q 'return 301 /zh/;' "$config"; then
+            backup="/var/backups/gongyanshow-nginx-$stamp.conf"
+            cp -L "$config" "$backup"
+            sed -i 's@return 301 /zh/;@return 302 /en/;@' "$(readlink -f "$config")"
+            if ! nginx -t; then
+              cp "$backup" "$(readlink -f "$config")"
+              exit 1
+            fi
+            systemctl reload nginx
+          fi
           echo "Deploy OK: $stamp"
           REMOTE
 
       - name: Verify
         shell: bash
-        run: curl --fail --silent --show-error --retry 4 --retry-delay 3 https://gongyanshow.com/ > /dev/null
+        run: |
+          set -euo pipefail
+          target=$(curl --fail --silent --show-error --location --retry 4 --retry-delay 3 --output /dev/null --write-out '%{url_effective}' https://gongyanshow.com/)
+          test "$target" = "https://gongyanshow.com/en/"

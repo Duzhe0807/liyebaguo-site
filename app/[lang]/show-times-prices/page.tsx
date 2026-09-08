@@ -1,4 +1,6 @@
 import { CustomerServiceChooser, ServiceBookingNote } from "../CustomerServiceChooser";
+import { business } from "../../business";
+import { siteCopy } from "../../siteNavigation";
 import { CheckIcon, XIcon, StarIcon } from "./TicketIcons";
 import type { Metadata } from "next";
 import { languages, type Lang } from "../../languages";
@@ -21,10 +23,11 @@ export default async function Page({ params }: { params: Promise<{ lang: Lang }>
     ko: { lunch: ["전통 정원 산책", "점심 환영 의식", "점심 연회·공연"], dinner: ["전통 정원 산책", "저녁 환영 의식", "저녁 연회·공연"], labels: { lunch: "점심", dinner: "저녁", priceNote: "점심 / 저녁 · 1인", bestFor: "추천 대상", choose: "이 좌석 선택", meal: "연회 식사", costume: "전통 의상", headwear: "전통 머리 장식" }, title: "공연 시간·좌석·요금", summary: "점심과 저녁 회차를 비교하고 방문 목적에 맞는 좌석을 선택하세요.", schedule: "입장부터 마지막 장면까지", compare: "세 가지 좌석 비교", recommended: "추천", cancellation: "취소·환불", policy: "사용하지 않은 예약은 취소할 수 있습니다. 환불 방법과 시기는 예약 채널에서 안내합니다.", faqTitle: "티켓 자주 묻는 질문", faq: [["가격은 1인 기준인가요?", "네. 점심／저녁 1인 기준 가격입니다."], ["SVIP에는 무엇이 포함되나요?", "연회 공연 외에 전통 의상과 머리 장식이 포함됩니다."], ["잔여 좌석은 어떻게 확인하나요?", "희망 날짜, 회차와 인원을 보내주세요."]] },
   } as const;
   const t = copy[lang];
-  const lunch = t.lunch;
-  const dinner = t.dinner;
-  const lunchTimes = ["11:20", "12:05", "12:30–14:10"];
-  const dinnerTimes = ["17:30", "18:20", "19:00–20:40"];
+  const sessionCopy = siteCopy[lang];
+  const lunch = [sessionCopy.garden, sessionCopy.show];
+  const dinner = lunch;
+  const lunchTimes = [business.sessions[0].garden, `${business.sessions[0].start}–${business.sessions[0].end}`];
+  const dinnerTimes = [business.sessions[1].garden, `${business.sessions[1].start}–${business.sessions[1].end}`];
   const tickets = lang === "en" ? [
     { name: "Guest Seat", price: "¥238 / ¥316", zone: "Standard seating area", meal: true, costume: false, headwear: false, audience: "First-time visitors" },
     { name: "VIP Seat", price: "¥296 / ¥458", zone: "Upgraded seating area", meal: true, costume: false, headwear: false, audience: "Guests who value the view" },
@@ -48,7 +51,7 @@ export default async function Page({ params }: { params: Promise<{ lang: Lang }>
     <ServiceBookingNote lang={lang} />
     <section className="inner-section schedule-section">
       <p className="eyebrow">DAILY SCHEDULE</p>
-      <h2>{t.schedule}</h2>
+      <h2>{t.schedule}</h2><p className="schedule-timezone">{sessionCopy.time}</p>
       <div className="schedule-timeline">
         {[ { label: labels.lunch, times: lunchTimes, steps: lunch }, { label: labels.dinner, times: dinnerTimes, steps: dinner } ].map((session) => (
           <div className="timeline-row" key={session.label}>

@@ -10,6 +10,7 @@ import "../styles/responsive.css";
 import "../styles/seo.css";
 import "../styles/mobile.css";
 import "../styles/service.css";
+import "../styles/site.css";
 
 export default async function LangLayout({ children, params }: {
   children: React.ReactNode;
@@ -35,7 +36,7 @@ export default async function LangLayout({ children, params }: {
           href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css"
         />
       </head>
-      <body><JsonLdOrganization /><JsonLdLocalBusiness />{children}</body>
+      <body className="site-refresh"><JsonLdOrganization /><JsonLdLocalBusiness />{children}</body>
     </html>
   );
 }

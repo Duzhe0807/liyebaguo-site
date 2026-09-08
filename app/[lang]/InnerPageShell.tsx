@@ -10,11 +10,11 @@ import { whatsappUrl } from "../customerService";
 import { HtmlLang } from "./HtmlLang";
 import { Phone } from "@phosphor-icons/react";
 import { CustomerServiceChooser } from "./CustomerServiceChooser";
-import { guideLinks } from "../guideLinks";
 import { JsonLd, JsonLdFAQPage } from "../JsonLd";
-import { MobileNavigation } from "./MobileNavigation";
+import { SiteHeader } from "./SiteHeader";
+import { SiteFooter } from "./SiteFooter";
+import { PageContents } from "./PageContents";
 
-const routes = ["experience", "banquet-menu", "costume-experience", "show-times-prices", "location-booking", "about"];
 
 type RelatedLink = { href: string; label: string; meta: string };
 
@@ -58,7 +58,6 @@ export function InnerPageShell({ lang, title, eyebrow, summary, image, imageAlt,
   const theme = themeFromEyebrow(eyebrow);
   const resolvedPageType = pageType ?? (theme === "faq" ? "faq" : theme === "tickets" || theme === "location" ? "utility" : "content");
   const resolvedHeroSize = heroSize ?? (theme === "experience" ? "experience" : theme === "about" ? "about" : resolvedPageType === "faq" ? "faq" : resolvedPageType === "utility" ? "utility" : "content");
-  const labels = [t.navExperience, t.navBanquet, t.navCostume, ui.tickets, t.navVisit, t.navAbout];
   const defaultContentLinks: RelatedLink[] = [
     { href: `/${lang}/show-times-prices/`, label: ui.showTimes, meta: ui.chooseSession },
     { href: whatsappUrl, label: ui.bookNow, meta: ui.planVisit },
@@ -73,12 +72,7 @@ export function InnerPageShell({ lang, title, eyebrow, summary, image, imageAlt,
   const links = relatedLinks ?? (resolvedPageType === "content" ? defaultContentLinks : resolvedPageType === "utility" ? defaultUtilityLinks : []);
   const [ctaTitle, ctaText] = ui.cta[theme];
   const pathname = usePathname();
-  const switchLangHref = (l: string) => {
-    const parts = pathname.split("/").filter(Boolean);
-    const rest = parts.slice(1).join("/");
-    if (l !== "en" && guideLinks.some(guide => guide.slug === rest)) return `/${l}/experience/`;
-    return rest ? `/${l}/${rest}/` : `/${l}/`;
-  };
+
   const breadcrumb = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -92,25 +86,9 @@ export function InnerPageShell({ lang, title, eyebrow, summary, image, imageAlt,
     <main className={`inner-page page-${resolvedPageType} theme-${theme}`}>
       <HtmlLang lang={langCodes[lang]} />
       <JsonLd data={breadcrumb} />
-      <header className="site-header inner-header">
-        <Link className="wordmark" href={`/${lang}/`}><strong>礼宴巴国</strong><span>LIYAN BAGUO</span></Link>
-        <nav className="nav inner-nav" aria-label={ui.navAria}>
-          {labels.map((label, index) => <Link href={`/${lang}/${routes[index]}/`} key={routes[index]}>{label}</Link>)}
-        </nav>
-        <div className="header-actions">
-          <nav className="language-switcher" aria-label="Language">
-            <Link className={lang === "zh" ? "active" : ""} href={switchLangHref("zh")}>简</Link>
-            <Link className={lang === "tw" ? "active" : ""} href={switchLangHref("tw")}>繁</Link>
-            <Link className={lang === "en" ? "active" : ""} href={switchLangHref("en")}>EN</Link>
-            <Link className={lang === "ja" ? "active" : ""} href={switchLangHref("ja")}>日</Link>
-            <Link className={lang === "ko" ? "active" : ""} href={switchLangHref("ko")}>KR</Link>
-          </nav>
-          <CustomerServiceChooser booking lang={lang} className="button compact" />
-          <MobileNavigation lang={lang} />
-        </div>
-      </header>
+      <SiteHeader lang={lang} />
 
-      <section className={`inner-hero hero-${resolvedHeroSize}`}>
+      <section className={`inner-hero hero-${resolvedHeroSize}`} id="main-content" tabIndex={-1}>
         {image ? <Image src={image} alt={imageAlt || title} fill priority sizes="100vw" /> : null}
         <div className="inner-hero-shade" />
         <div className="inner-hero-copy">
@@ -119,6 +97,7 @@ export function InnerPageShell({ lang, title, eyebrow, summary, image, imageAlt,
         </div>
       </section>
 
+      <PageContents lang={lang} />
       <div className="inner-content">{children}</div>
 
       {links.length ? <section className="related-pages"><p className="eyebrow">{ui.continuePlanning}</p><div>{links.map((link) => <Link href={link.href} key={link.href}><small>{link.meta}</small><strong>{link.label}</strong><span aria-hidden="true">→</span></Link>)}</div></section> : null}
@@ -128,7 +107,7 @@ export function InnerPageShell({ lang, title, eyebrow, summary, image, imageAlt,
         <CustomerServiceChooser booking lang={lang} className="button" />
       </section>
 
-      <footer className="inner-footer"><div className="wordmark"><strong>{t.brandName}</strong><span>LIYAN BAGUO</span></div><p>{ui.footer}</p><div><Link href={`/${lang}/about/`}>{t.navAbout}</Link><Link href={`/${lang}/faq/`}>FAQ</Link></div></footer>
+      <SiteFooter lang={lang} />
       <div className="inner-mobile-book">
         <a href="tel:+8617383017612" aria-label={ui.call}><Phone size={20} weight="fill" /></a>
         <CustomerServiceChooser compact booking lang={lang} />

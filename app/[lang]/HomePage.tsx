@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
-  ArrowRight, CalendarBlank, ChatCircleDots, Clock, Crown, DoorOpen,
+  ArrowLeft, ArrowRight, CalendarBlank, ChatCircleDots, Clock, Crown, DoorOpen,
   EnvelopeSimple, MapPin, MusicNotes, Phone, Play, Plus, Quotes,
   UsersThree,
 } from "@phosphor-icons/react";
@@ -14,7 +14,10 @@ import { CustomerServiceChooser, ServiceBookingNote } from "./CustomerServiceCho
 import { business, englishFaqs, verifiedReviews } from "../business";
 import { JsonLdFAQPage } from "../JsonLd";
 import { guideLinks } from "../guideLinks";
-import { MobileNavigation } from "./MobileNavigation";
+import { SiteHeader } from "./SiteHeader";
+import { SiteFooter } from "./SiteFooter";
+import { VisitPlanner } from "./VisitPlanner";
+import { siteCopy } from "../siteNavigation";
 
 
 type Locale = "zh" | "zh-hant" | "en" | "ja" | "ko";
@@ -103,7 +106,7 @@ const baseCopy = {
     trustTitle: "Guest Love",
     trustSubtitle: "Real feedback from guests around the world",
     gallery: "Gallery", faq: "Frequently Asked Questions", booking: "Email enquiry", inquiry: "Group Consultation",
-    submitBook: "Open email enquiry", submitGroup: "Submit Inquiry",
+    submitBook: "Open email enquiry", submitGroup: "Open email enquiry",
     success: "Thank you. Your enquiry has been received and our team will contact you within 24 hours.",
   },
 } as const;
@@ -260,14 +263,6 @@ function langPath(locale: Locale): string {
   if (locale === "zh-hant") return "/tw";
   return `/${locale}`;
 }
-const navSlugs = ["experience", "banquet-menu", "costume-experience", "show-times-prices", "location-booking", "about"];
-const mainNavLabels = {
-  zh: ["体验概览", "演艺美馔", "华服体验", "场次票价", "到访指引", "品牌故事"],
-  "zh-hant": ["體驗概覽", "演藝美饌", "華服體驗", "場次票價", "到訪指引", "品牌故事"],
-  en: ["Experience", "Banquet", "Costume", "Tickets", "Plan Your Visit", "About"],
-  ja: ["体験", "宴と料理", "衣装体験", "公演・料金", "アクセス", "私たちについて"],
-  ko: ["체험", "연회와 요리", "의상 체험", "공연·요금", "방문 안내", "브랜드 소개"],
-} as const;
 const baseFaqs = {
   zh: [
     ["完整体验需要多久？", "餐秀约 110 分钟，团队活动可根据行程与接待需求提前协调。"],
@@ -277,7 +272,7 @@ const baseFaqs = {
     ["最多可以接待多少人？", "场地最多可接待约 160 人，具体座位与场次以确认结果为准。"],
     ["是否可以包场？", "支持包场及定制活动，请尽早提交团队需求。"],
     ["是否支持儿童、素食、清真或过敏备注？", "儿童及饮食需求请在预约时备注，团队会根据实际情况回复确认。"],
-    ["如何预约？", "个人宾客可提交席位预约表单；旅行社、企业或多人团队请使用团队咨询表单。"],
+    ["如何预约？", "请点击咨询档期，通过微信或 WhatsApp 联系客服，确认日期、场次、人数与席位。官网不直接售票。"],
     ["取消或改期规则是什么？", "具体规则将在确认档期与套餐时说明，改期请尽早联系工作人员。"],
     ["地址在哪里，如何到达？", "位于中国重庆九龙坡区巴国城，页面底部提供 Google Maps 与百度地图入口。"],
   ],
@@ -290,7 +285,7 @@ const baseFaqs = {
     ["最大人数は何名ですか？", "会場は最大約160名まで対応可能です。レイアウトと日程は要確認です。"],
     ["貸切はできますか？", "はい。貸切やカスタムイベントは事前にお問い合わせください。"],
     ["子どもや食事制限にも対応できますか？", "お子様の年齢、ベジタリアン、ハラール、アレルギーは予約時にお知らせください。"],
-    ["予約方法を教えてください。", "個人は席予約、旅行会社・企業・団体は団体問い合わせをご利用ください。"],
+    ["予約方法を教えてください。", "WhatsAppまたはWeChatで希望日、公演、人数をお知らせください。スタッフが空席をご案内します。"],
     ["キャンセルや日程変更の規定は？", "適用される規定は日付とプランの確定時にご案内します。"],
     ["会場はどこですか？", "中国・重慶市九龍坡区の巴国城です。ページ下部から地図を開けます。"],
   ],
@@ -302,7 +297,7 @@ const baseFaqs = {
     ["최대 수용 인원은 몇 명인가요?", "약 160명까지 가능하며 좌석 배치와 일정은 확인이 필요합니다."],
     ["단독 대관이 가능한가요?", "네. 단독 대관과 맞춤 행사는 사전에 문의해 주세요."],
     ["어린이 또는 식이 요청도 가능한가요?", "어린이 나이, 채식, 할랄, 알레르기 사항을 예약 시 남겨주시면 확인해 드립니다."],
-    ["어떻게 예약하나요?", "개인 방문은 좌석 예약, 여행사·기업·단체는 단체 문의를 이용해 주세요."],
+    ["어떻게 예약하나요?", "WhatsApp 또는 WeChat으로 날짜, 회차, 인원을 알려주세요. 담당자가 예약 가능 여부를 확인합니다."],
     ["취소 또는 일정 변경 규정은 무엇인가요?", "적용 규정은 날짜와 패키지 확정 시 안내해 드립니다."],
     ["위치는 어디인가요?", "중국 충칭시 주룽포구 바궈청에 있으며 페이지 하단에서 지도를 열 수 있습니다."],
   ],
@@ -329,7 +324,8 @@ export function HomePage({ locale }: { locale: Locale }) {
   const t = copy[locale];
   const ui = homeUi[locale];
   const form = formUi[locale];
-  const navLabels = mainNavLabels[locale];
+  const lang = locale === "zh-hant" ? "tw" : locale;
+  const navigation = siteCopy[lang];
   const practicalFacts = ui.facts;
   const emailNotice = {
     zh: "请在打开的邮件应用中点击发送。我们尚未收到邮件；如未打开，请通过 WhatsApp 或微信客服咨询。",
@@ -347,11 +343,7 @@ export function HomePage({ locale }: { locale: Locale }) {
   useEffect(() => {
     document.documentElement.lang = locale === "zh-hant" ? "zh-TW" : locale === "zh" ? "zh-CN" : locale;
   }, [locale]);
-  useEffect(() => {
-    setGalleryPhotoOffset(0);
-    const timer = window.setInterval(() => setGalleryPhotoOffset((current) => (current + 1) % 4), 4000);
-    return () => window.clearInterval(timer);
-  }, [activeGallery]);
+
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -390,25 +382,9 @@ export function HomePage({ locale }: { locale: Locale }) {
 
   return (
     <main className="home-page">
-      <header className="site-header">
-        <Link className="wordmark" href={`${langPath(locale)}/`}><strong>礼宴巴国</strong><span>LIYAN BAGUO</span></Link>
-        <nav className="nav">
-          {navLabels.map((item, index) => <Link key={item} href={`${langPath(locale)}/${navSlugs[index]}/`}>{item}</Link>)}
-        </nav>
-        <div className="header-actions">
-          <nav className="language-switcher" aria-label="Language">
-            <Link className={locale === "zh" ? "active" : ""} href="/zh/">简</Link>
-            <Link className={locale === "zh-hant" ? "active" : ""} href="/tw/">繁</Link>
-            <Link className={locale === "en" ? "active" : ""} href="/en/">EN</Link>
-            <Link className={locale === "ja" ? "active" : ""} href="/ja/">日</Link>
-            <Link className={locale === "ko" ? "active" : ""} href="/ko/">KR</Link>
-          </nav>
-          <CustomerServiceChooser booking lang={locale === "zh-hant" ? "tw" : locale} className="button compact" />
-          <MobileNavigation lang={locale === "zh-hant" ? "tw" : locale} />
-        </div>
-      </header>
+      <SiteHeader lang={lang} />
 
-      <section className="hero">
+      <section className="hero" id="main-content" tabIndex={-1}>
 
         <div className="hero-media">
           <video autoPlay muted loop playsInline preload="metadata" poster="/hero-banquet-cropped.jpg" aria-label={`${t.heroTitle} · ${t.heroTagline}`}>
@@ -438,12 +414,7 @@ export function HomePage({ locale }: { locale: Locale }) {
         })}
       </section>
 
-      {locale === "en" && <section className="section discover-guides">
-        <p className="eyebrow">EXPLORE LIYAN BAGUO</p>
-        <h2>Plan your Chongqing cultural experience</h2>
-        <p>A palace-style banquet, a live dinner show or time in traditional costume: explore what matters to your visit.</p>
-        <nav aria-label="Experience guides">{guideLinks.map(link => <Link key={link.slug} href={`/en/${link.slug}/`}>{link.label}<ArrowRight aria-hidden="true" /></Link>)}</nav>
-      </section>}
+      <VisitPlanner lang={lang} />
 
       <section className="journey" id="experience">
         <p className="eyebrow">THE EXPERIENCE</p><h2>{t.journey}</h2>
@@ -461,18 +432,15 @@ export function HomePage({ locale }: { locale: Locale }) {
         ))}
       </section>
 
-      <section className="home-practical-grid">
-        <article><p className="eyebrow">SHOW TIMES & PRICES</p><h2>{ui.ticketTitle}</h2><p>{ui.ticketText}</p><Link className="button secondary" href={`${langPath(locale)}/show-times-prices/`}>{ui.ticketLink}</Link></article>
-        <article><p className="eyebrow">LOCATION</p><h2>{ui.locationTitle}</h2><p>{ui.locationText}</p><Link className="button secondary" href={`${langPath(locale)}/location-booking/`}>{ui.locationLink}</Link></article>
-      </section>
 
       <section className="section gallery" id="gallery">
         <div className="gallery-heading">
           <div><p className="eyebrow">GALLERY</p><h2>{t.gallery}</h2></div>
           <div className="gallery-controls">
             <div className="gallery-tabs" role="tablist" aria-label={ui.guestCategories}>
-              {galleryGroups[locale].map((group, index) => <button type="button" role="tab" aria-selected={activeGallery === index} className={activeGallery === index ? "active" : ""} onClick={() => setActiveGallery(index)} key={group.title}><span>{group.title}</span><small>{group.en}</small></button>)}
+              {galleryGroups[locale].map((group, index) => <button type="button" role="tab" aria-selected={activeGallery === index} className={activeGallery === index ? "active" : ""} onClick={() => { setActiveGallery(index); setGalleryPhotoOffset(0); }} key={group.title}><span>{group.title}</span><small>{group.en}</small></button>)}
             </div>
+            <div className="gallery-photo-controls"><button type="button" aria-label={navigation.previous} onClick={() => setGalleryPhotoOffset(current => (current + 3) % 4)}><ArrowLeft /></button><button type="button" aria-label={navigation.next} onClick={() => setGalleryPhotoOffset(current => (current + 1) % 4)}><ArrowRight /></button></div>
             <p className="gallery-description">{galleryGroups[locale][activeGallery].text}</p>
           </div>
         </div>
@@ -505,18 +473,26 @@ export function HomePage({ locale }: { locale: Locale }) {
         </div>
       </section>}
 
+      {locale === "en" && <section className="section discover-guides">
+        <p className="eyebrow">EXPLORE LIYAN BAGUO</p>
+        <h2>Plan your Chongqing cultural experience</h2>
+        <p>A palace-style banquet, a live dinner show or time in traditional costume: explore what matters to your visit.</p>
+        <nav aria-label="Experience guides">{guideLinks.map(link => <Link key={link.slug} href={`/en/${link.slug}/`}>{link.label}<ArrowRight aria-hidden="true" /></Link>)}</nav>
+      </section>}
+
       <section className="section home-faq" id="faq">
         <h2>{t.faq}</h2>
-        <JsonLdFAQPage questions={faqs[locale].map(([question, answer]) => ({ question, answer }))} />
+        <JsonLdFAQPage questions={faqs[locale].slice(0, 5).map(([question, answer]) => ({ question, answer }))} />
         {faqs[locale].map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}
+        <Link className="text-link" href={`/${lang}/faq/`}>{navigation.faq} <ArrowRight /></Link>
       </section>
 
       <section className="section conversion" id="booking">
         <div className="service-booking-panel">
           <div className="service-booking-copy">
-            <p className="eyebrow">ONLINE RESERVATIONS</p>
+            <p className="eyebrow">CONTACT OUR TEAM</p>
             <h2>{ui.serviceTitle}</h2>
-            <p>{ui.serviceText}</p>{locale === "en" && <p>After purchase, contact customer service to arrange your seat number. Your reservation is confirmed only when the team confirms your date and package.</p>}
+            <p>{ui.serviceText}</p>
           </div>
           <div className="service-booking-actions">
             <a className="button" href={whatsappUrl} target="_blank" rel="noreferrer"><ChatCircleDots />WhatsApp <small>{whatsappId}</small></a>
@@ -524,10 +500,12 @@ export function HomePage({ locale }: { locale: Locale }) {
           </div>
         </div>
         <ServiceBookingNote lang={locale === "zh-hant" ? "tw" : locale} />
-        <div className="booking-tabs" role="tablist"><button type="button" role="tab" aria-selected={bookingMode === "guest"} className={bookingMode === "guest" ? "active" : ""} onClick={() => setBookingMode("guest")}>{t.booking}</button><button type="button" role="tab" aria-selected={bookingMode === "group"} className={bookingMode === "group" ? "active" : ""} onClick={() => setBookingMode("group")}>{t.inquiry}</button></div>
-        <form className={bookingMode === "guest" ? "mobile-form-active" : ""} onSubmit={submit} id="guest-form" data-form-type="guest-booking"><p className="eyebrow">AVAILABILITY ENQUIRY</p><h2>{t.booking}</h2><div className="form-grid"><input name="name" required aria-label={form.name} placeholder={form.name} /><input name="phone" required aria-label={form.phone} placeholder={form.phone} /><input name="email" required type="email" aria-label={form.email} placeholder={form.email} /><input name="country" aria-label={form.country} placeholder={form.country} /><label className="picker-field"><span>{form.date}</span><input name="date" required type="date" aria-label={form.date} onClick={(event) => event.currentTarget.showPicker?.()} /></label><select name="mealPeriod" required aria-label={form.session} defaultValue=""><option value="" disabled>{form.chooseSession}</option><option value="lunch">{form.lunch}</option><option value="dinner">{form.dinner}</option></select><input name="guests" required type="number" min="1" max="160" aria-label={form.guests} placeholder={form.guests} /><select name="package" required aria-label={form.package} defaultValue=""><option value="" disabled>{form.package}</option><option>{form.guest}</option><option>{form.vip}</option><option>SVIP</option></select><textarea name="notes" className="full-field" aria-label={form.notes} placeholder={form.notes} /></div><button className="button" type="submit" disabled={submitStatus === "loading"}>{submitStatus === "loading" ? form.submitting : t.submitBook}</button></form>
-        <form className={bookingMode === "group" ? "mobile-form-active" : ""} onSubmit={submit} id="group-form" data-form-type="group-inquiry"><p className="eyebrow">GROUP INQUIRY</p><h2>{t.inquiry}</h2><div className="form-grid"><input name="company" required aria-label={form.company} placeholder={form.company} /><input name="contact" required aria-label={form.contact} placeholder={form.contact} /><input name="phone" required aria-label={form.phone} placeholder={form.phone} /><input name="email" required type="email" aria-label={form.email} placeholder={form.email} /><input name="country" aria-label={form.country} placeholder={form.country} /><label className="picker-field"><span>{form.estimatedDate}</span><input name="date" required type="date" aria-label={form.estimatedDate} onClick={(event) => event.currentTarget.showPicker()} /></label><input name="guests" required type="number" min="1" max="160" aria-label={form.estimatedGuests} placeholder={form.estimatedGuests} /><select name="eventType" required aria-label={form.eventType} defaultValue=""><option value="" disabled>{form.eventType}</option>{form.events.map((event) => <option key={event}>{event}</option>)}</select><select name="privateBuyout" aria-label={form.buyout} defaultValue=""><option value="" disabled>{form.buyout}</option><option>{form.yes}</option><option>{form.no}</option><option>{form.unsure}</option></select><input name="budget" aria-label={form.budget} placeholder={form.budget} /><textarea name="requirements" className="full-field" aria-label={form.requirements} placeholder={form.requirements} /></div><button className="button" type="submit" disabled={submitStatus === "loading"}>{submitStatus === "loading" ? form.submitting : t.submitGroup}</button></form>
+        <details className="email-enquiry"><summary>{navigation.email}</summary><p className="email-draft-note">{emailNotice}</p>
+        <div className="booking-tabs" role="group"><button type="button" aria-pressed={bookingMode === "guest"} className={bookingMode === "guest" ? "active" : ""} onClick={() => setBookingMode("guest")}>{t.booking}</button><button type="button" aria-pressed={bookingMode === "group"} className={bookingMode === "group" ? "active" : ""} onClick={() => setBookingMode("group")}>{t.inquiry}</button></div>
+        <form className={bookingMode === "guest" ? "mobile-form-active" : ""} onSubmit={submit} id="guest-form" data-form-type="guest-booking"><p className="eyebrow">AVAILABILITY ENQUIRY</p><h2>{t.booking}</h2><div className="form-grid"><label className="enquiry-field"><span>{form.name}</span><input name="name" required aria-label={form.name} placeholder={form.name} /></label><label className="enquiry-field"><span>{form.phone}</span><input name="phone" required aria-label={form.phone} placeholder={form.phone} /></label><label className="enquiry-field"><span>{form.email}</span><input name="email" required type="email" aria-label={form.email} placeholder={form.email} /></label><label className="enquiry-field"><span>{form.country}</span><input name="country" aria-label={form.country} placeholder={form.country} /></label><label className="picker-field"><span>{form.date}</span><input name="date" required type="date" aria-label={form.date} onClick={(event) => event.currentTarget.showPicker?.()} /></label><label className="enquiry-field"><span>{form.session}</span><select name="mealPeriod" required aria-label={form.session} defaultValue=""><option value="" disabled>{form.chooseSession}</option><option value="lunch">{form.lunch}</option><option value="dinner">{form.dinner}</option></select></label><label className="enquiry-field"><span>{form.guests}</span><input name="guests" required type="number" min="1" max="160" aria-label={form.guests} placeholder={form.guests} /></label><label className="enquiry-field"><span>{form.package}</span><select name="package" required aria-label={form.package} defaultValue=""><option value="" disabled>{form.package}</option><option>{form.guest}</option><option>{form.vip}</option><option>SVIP</option></select></label><label className="enquiry-field full-field"><span>{form.notes}</span><textarea name="notes" className="full-field" aria-label={form.notes} placeholder={form.notes} /></label></div><button className="button" type="submit" disabled={submitStatus === "loading"}>{submitStatus === "loading" ? form.submitting : t.submitBook}</button></form>
+        <form className={bookingMode === "group" ? "mobile-form-active" : ""} onSubmit={submit} id="group-form" data-form-type="group-inquiry"><p className="eyebrow">GROUP INQUIRY</p><h2>{t.inquiry}</h2><div className="form-grid"><label className="enquiry-field"><span>{form.company}</span><input name="company" required aria-label={form.company} placeholder={form.company} /></label><label className="enquiry-field"><span>{form.contact}</span><input name="contact" required aria-label={form.contact} placeholder={form.contact} /></label><label className="enquiry-field"><span>{form.phone}</span><input name="phone" required aria-label={form.phone} placeholder={form.phone} /></label><label className="enquiry-field"><span>{form.email}</span><input name="email" required type="email" aria-label={form.email} placeholder={form.email} /></label><label className="enquiry-field"><span>{form.country}</span><input name="country" aria-label={form.country} placeholder={form.country} /></label><label className="picker-field"><span>{form.estimatedDate}</span><input name="date" required type="date" aria-label={form.estimatedDate} onClick={(event) => event.currentTarget.showPicker?.()} /></label><label className="enquiry-field"><span>{form.estimatedGuests}</span><input name="guests" required type="number" min="1" max="160" aria-label={form.estimatedGuests} placeholder={form.estimatedGuests} /></label><label className="enquiry-field"><span>{form.eventType}</span><select name="eventType" required aria-label={form.eventType} defaultValue=""><option value="" disabled>{form.eventType}</option>{form.events.map((event) => <option key={event}>{event}</option>)}</select></label><label className="enquiry-field"><span>{form.buyout}</span><select name="privateBuyout" aria-label={form.buyout} defaultValue=""><option value="" disabled>{form.buyout}</option><option>{form.yes}</option><option>{form.no}</option><option>{form.unsure}</option></select></label><label className="enquiry-field"><span>{form.budget}</span><input name="budget" aria-label={form.budget} placeholder={form.budget} /></label><label className="enquiry-field full-field"><span>{form.requirements}</span><textarea name="requirements" className="full-field" aria-label={form.requirements} placeholder={form.requirements} /></label></div><button className="button" type="submit" disabled={submitStatus === "loading"}>{submitStatus === "loading" ? form.submitting : t.submitGroup}</button></form>
         {notice && <p className={`notice ${submitStatus}`} role="status">{notice}</p>}
+        </details>
       </section>
 
       <section className="section contact-section" id="contact">
@@ -546,7 +524,7 @@ export function HomePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <footer id="about"><div className="brand-logo footer-logo"><Image src="/brand-logo.png" alt={`${t.heroTitle} Liyan Baguo`} width={1540} height={539} /></div><p>{ui.footer}</p><div><Link href={`${langPath(locale)}/about/`}>{t.nav[4]}</Link><Link href={`${langPath(locale)}/faq/`}>FAQ</Link></div></footer>
+      <SiteFooter lang={lang} />
       <div className="mobile-cta" aria-label={ui.quick}><CustomerServiceChooser compact booking lang={locale === "zh-hant" ? "tw" : locale} /><a href="tel:+8617383017612">{ui.call}</a></div>
     </main>
   );

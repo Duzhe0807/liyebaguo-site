@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Globe, List, X } from "@phosphor-icons/react";
 import { usePathname } from "next/navigation";
-import { content } from "../content";
+import { siteCopy, localizedPath } from "../siteNavigation";
 import { languages, type Lang } from "../languages";
 import { guideLinks } from "../guideLinks";
 
@@ -19,7 +19,7 @@ const languageNames = { zh: "简体中文", tw: "繁體中文", en: "English", j
 
 export function MobileNavigation({ lang }: { lang: Lang }) {
   const t = copy[lang];
-  const c = content[lang];
+  const c = siteCopy[lang];
   const pathname = usePathname();
   const dialog = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
@@ -36,14 +36,10 @@ export function MobileNavigation({ lang }: { lang: Lang }) {
       desktop.removeEventListener("change", onResize);
     };
   }, [open]);
-  const languageHref = (next: Lang) => {
-    const rest = pathname.split("/").filter(Boolean).slice(1).join("/");
-    if (next !== "en" && guideLinks.some(guide => guide.slug === rest)) return `/${next}/experience/`;
-    return rest ? `/${next}/${rest}/` : `/${next}/`;
-  };
+  const languageHref = (next: Lang) => localizedPath(pathname, next);
   const groups = [
-    { title: t.plan, items: [["show-times-prices", t.times], ["location-booking", c.navVisit], ["faq", "FAQ"]] },
-    { title: t.explore, items: [["experience", c.navExperience], ["banquet-menu", c.navBanquet], ["costume-experience", c.navCostume], ["about", c.navAbout]] },
+    { title: t.plan, items: [["show-times-prices", t.times], ["location-booking", c.nav[4]], ["faq", "FAQ"]] },
+    { title: t.explore, items: [["experience", c.nav[0]], ["banquet-menu", c.nav[1]], ["costume-experience", c.nav[2]], ["about", c.nav[5]]] },
   ];
   return <div className="mobile-navigation">
     <button className="mobile-menu-trigger" type="button" aria-haspopup="dialog" aria-expanded={open} aria-controls="mobile-site-menu" onClick={() => { dialog.current?.showModal(); setOpen(true); }}>
