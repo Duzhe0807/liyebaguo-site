@@ -2,16 +2,17 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 import { usePathname } from "next/navigation";
 import type { Lang } from "../languages";
 import { langCodes } from "../languages";
 import { content } from "../content";
+import { whatsappUrl } from "../customerService";
 import { HtmlLang } from "./HtmlLang";
 import { Phone } from "@phosphor-icons/react";
 import { CustomerServiceChooser } from "./CustomerServiceChooser";
 import { guideLinks } from "../guideLinks";
 import { JsonLd, JsonLdFAQPage } from "../JsonLd";
+import { MobileNavigation } from "./MobileNavigation";
 
 const routes = ["experience", "banquet-menu", "costume-experience", "show-times-prices", "location-booking", "about"];
 
@@ -60,18 +61,17 @@ export function InnerPageShell({ lang, title, eyebrow, summary, image, imageAlt,
   const labels = [t.navExperience, t.navBanquet, t.navCostume, ui.tickets, t.navVisit, t.navAbout];
   const defaultContentLinks: RelatedLink[] = [
     { href: `/${lang}/show-times-prices/`, label: ui.showTimes, meta: ui.chooseSession },
-    { href: `/${lang}/location-booking/`, label: ui.bookNow, meta: ui.planVisit },
+    { href: whatsappUrl, label: ui.bookNow, meta: ui.planVisit },
   ];
   const defaultUtilityLinks: RelatedLink[] = theme === "tickets" ? [
     { href: `/${lang}/location-booking/`, label: ui.locationBooking, meta: ui.directions },
-    { href: `/${lang}/#booking`, label: ui.bookNow, meta: ui.sendRequest },
+    { href: whatsappUrl, label: ui.bookNow, meta: ui.sendRequest },
   ] : [
     { href: `/${lang}/show-times-prices/`, label: ui.tickets, meta: ui.compare },
-    { href: `/${lang}/#booking`, label: ui.bookNow, meta: ui.sendRequest },
+    { href: whatsappUrl, label: ui.bookNow, meta: ui.sendRequest },
   ];
   const links = relatedLinks ?? (resolvedPageType === "content" ? defaultContentLinks : resolvedPageType === "utility" ? defaultUtilityLinks : []);
   const [ctaTitle, ctaText] = ui.cta[theme];
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const switchLangHref = (l: string) => {
     const parts = pathname.split("/").filter(Boolean);
@@ -105,14 +105,10 @@ export function InnerPageShell({ lang, title, eyebrow, summary, image, imageAlt,
             <Link className={lang === "ja" ? "active" : ""} href={switchLangHref("ja")}>日</Link>
             <Link className={lang === "ko" ? "active" : ""} href={switchLangHref("ko")}>KR</Link>
           </nav>
-          <Link className="button compact" href={`/${lang}/#booking`}>{t.bookCta}</Link>
+          <a className="button compact" href={whatsappUrl}>{t.bookCta}</a>
+          <MobileNavigation lang={lang} />
         </div>
       </header>
-
-      <details className="inner-mobile-nav" open={mobileMenuOpen} onToggle={(e) => setMobileMenuOpen((e.currentTarget as HTMLDetailsElement).open)}>
-        <summary>{ui.menu}</summary>
-        <nav>{labels.map((label, index) => <Link href={`/${lang}/${routes[index]}/`} key={routes[index]} onClick={() => setMobileMenuOpen(false)}>{label}</Link>)}</nav>
-      </details>
 
       <section className={`inner-hero hero-${resolvedHeroSize}`}>
         {image ? <Image src={image} alt={imageAlt || title} fill priority sizes="100vw" /> : null}
@@ -129,14 +125,14 @@ export function InnerPageShell({ lang, title, eyebrow, summary, image, imageAlt,
 
       <section className="inner-cta">
         <p className="eyebrow">RESERVATIONS</p><h2>{ctaTitle}</h2><p>{ctaText}</p>
-        <Link className="button" href={`/${lang}/#booking`}>{t.bookCta}</Link>
+        <a className="button" href={whatsappUrl}>{t.bookCta}</a>
       </section>
 
       <footer className="inner-footer"><div className="wordmark"><strong>{t.brandName}</strong><span>LIYAN BAGUO</span></div><p>{ui.footer}</p><div><Link href={`/${lang}/about/`}>{t.navAbout}</Link><Link href={`/${lang}/faq/`}>FAQ</Link></div></footer>
       <div className="inner-mobile-book">
         <a href="tel:+8617383017612" aria-label={ui.call}><Phone size={20} weight="fill" /></a>
         <CustomerServiceChooser compact lang={lang} />
-        <Link className="book" href={`/${lang}/#booking`}>{t.bookCta}</Link>
+        <a className="book" href={whatsappUrl}>{t.bookCta}</a>
       </div>
     </main>
   );

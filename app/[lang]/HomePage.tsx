@@ -4,8 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight, CalendarBlank, ChatCircleDots, Clock, Crown, DoorOpen,
-  EnvelopeSimple, List, MapPin, MusicNotes, Phone, Play, Plus, Quotes,
-  UsersThree, X,
+  EnvelopeSimple, MapPin, MusicNotes, Phone, Play, Plus, Quotes,
+  UsersThree,
 } from "@phosphor-icons/react";
 import { FormEvent, useEffect, useState } from "react";
 import { TrailerModal } from "./TrailerModal";
@@ -14,6 +14,7 @@ import { CustomerServiceChooser } from "./CustomerServiceChooser";
 import { business, englishFaqs, verifiedReviews } from "../business";
 import { JsonLdFAQPage } from "../JsonLd";
 import { guideLinks } from "../guideLinks";
+import { MobileNavigation } from "./MobileNavigation";
 
 
 type Locale = "zh" | "zh-hant" | "en" | "ja" | "ko";
@@ -337,7 +338,6 @@ export function HomePage({ locale }: { locale: Locale }) {
     ja: "メールアプリで下書きを送信してください。まだお問い合わせは届いていません。開かない場合はWhatsAppまたはWeChatでご連絡ください。",
     ko: "메일 앱에서 초안을 보내주세요. 아직 문의가 접수되지 않았습니다. 앱이 열리지 않으면 WhatsApp 또는 WeChat으로 연락해 주세요.",
   }[locale];
-  const [menuOpen, setMenuOpen] = useState(false);
   const [activeGallery, setActiveGallery] = useState(0);
   const [galleryPhotoOffset, setGalleryPhotoOffset] = useState(0);
   const [bookingMode, setBookingMode] = useState<"guest" | "group">("guest");
@@ -392,8 +392,8 @@ export function HomePage({ locale }: { locale: Locale }) {
     <main className="home-page">
       <header className="site-header">
         <Link className="wordmark" href={`${langPath(locale)}/`}><strong>礼宴巴国</strong><span>LIYAN BAGUO</span></Link>
-        <nav className={menuOpen ? "nav open" : "nav"}>
-          {navLabels.map((item, index) => <Link key={item} href={`${langPath(locale)}/${navSlugs[index]}/`} onClick={() => setMenuOpen(false)}>{item}</Link>)}
+        <nav className="nav">
+          {navLabels.map((item, index) => <Link key={item} href={`${langPath(locale)}/${navSlugs[index]}/`}>{item}</Link>)}
         </nav>
         <div className="header-actions">
           <nav className="language-switcher" aria-label="Language">
@@ -403,10 +403,8 @@ export function HomePage({ locale }: { locale: Locale }) {
             <Link className={locale === "ja" ? "active" : ""} href="/ja/">日</Link>
             <Link className={locale === "ko" ? "active" : ""} href="/ko/">KR</Link>
           </nav>
-          <a className="button compact" href="#booking">{t.book}</a>
-          <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
-            {menuOpen ? <X /> : <List />}
-          </button>
+          <a className="button compact" href={whatsappUrl}>{t.book}</a>
+          <MobileNavigation lang={locale === "zh-hant" ? "tw" : locale} />
         </div>
       </header>
 
@@ -423,7 +421,7 @@ export function HomePage({ locale }: { locale: Locale }) {
           <p className="hero-tagline">{t.heroTagline}</p>
           <p className="hero-sub">{t.heroSub}</p>
           <div className="button-row">
-            <a className="button" href="#booking">{t.book}</a>
+            <a className="button" href={whatsappUrl}>{t.book}</a>
             <a className="button secondary" href={locale === "en" ? "/en/banquet-of-ba-kingdom/" : "#booking"}>{locale === "en" ? "Explore the Banquet" : t.group}</a>
             <button type="button" className="button ghost" onClick={() => setTrailerOpen(true)}>
               <Play weight="fill" /> {t.watchTrailer}
@@ -541,14 +539,14 @@ export function HomePage({ locale }: { locale: Locale }) {
             <a href={customerServiceUrl} target="_blank" rel="noreferrer"><ChatCircleDots />WeChat Support</a>
           </div>
           <div className="contact-actions">
-            <a className="button" href="#booking">{t.book}</a>
+            <a className="button" href={whatsappUrl}>{t.book}</a>
             <a className="button secondary" href="#booking">{t.group}</a>
           </div>
         </div>
       </section>
 
       <footer id="about"><div className="brand-logo footer-logo"><Image src="/brand-logo.png" alt={`${t.heroTitle} Liyan Baguo`} width={1540} height={539} /></div><p>{ui.footer}</p><div><Link href={`${langPath(locale)}/about/`}>{t.nav[4]}</Link><Link href={`${langPath(locale)}/faq/`}>FAQ</Link></div></footer>
-      <div className="mobile-cta" aria-label={ui.quick}><a href="#booking" className="primary">{t.book}</a><CustomerServiceChooser compact lang={locale === "zh-hant" ? "tw" : locale} /><a href="tel:+8617383017612">{ui.call}</a></div>
+      <div className="mobile-cta" aria-label={ui.quick}><a href={whatsappUrl} className="primary">{t.book}</a><CustomerServiceChooser compact lang={locale === "zh-hant" ? "tw" : locale} /><a href="tel:+8617383017612">{ui.call}</a></div>
     </main>
   );
 }
