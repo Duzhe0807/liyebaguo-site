@@ -21,6 +21,12 @@ export default async function LangLayout({ children, params }: {
   return (
     <html lang={langCodes[lang as Lang]}>
       <head>
+        <script
+          defer
+          src="/analytics/script.js"
+          data-website-id="ecd7116a-5004-4ce0-8c93-f38e244570c7"
+          data-domains="gongyanshow.com,www.gongyanshow.com"
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
