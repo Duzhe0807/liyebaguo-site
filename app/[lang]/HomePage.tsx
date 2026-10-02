@@ -47,7 +47,7 @@ const baseCopy = {
     tiers: [
       ["嘉宾体验", "嘉宾席位", "午宴 238 / 晚宴 316", "含古风游园、迎宾礼、演艺与宫宴", "标准观演席位", "选择此体验"],
       ["贵宾体验", "贵宾席位", "午宴 296 / 晚宴 458", "含古风游园、迎宾礼、演艺与宫宴", "更优观演席位", "选择此体验"],
-      ["SVIP 体验", "SVIP 席位", "午宴 496 / 晚宴 596", "含古风游园、迎宾礼、演艺与宫宴", "赠送古装服饰和古装头饰", "选择此体验"],
+      ["SVIP 体验", "SVIP 席位", "午宴 496 / 晚宴 596", "含古风游园、迎宾礼、演艺与宫宴", "赠送古装服饰和专业精修照片一张", "选择此体验"],
     ],
     journey: "礼宴体验之旅",
     steps: ["古风游园", "迎宾礼", "入宴", "现场演艺", "互动体验", "礼成离场"],
@@ -90,7 +90,7 @@ const baseCopy = {
     tiers: [
       ["Guest Seat", "Guest seating area", "Lunch 238 / Dinner 316", "Garden visit, welcome ritual, show & banquet included", "Standard viewing position", "Select Experience"],
       ["VIP Seat", "VIP seating area", "Lunch 296 / Dinner 458", "Garden visit, welcome ritual, show & banquet included", "Enhanced viewing position", "Select Experience"],
-      ["SVIP Seat", "SVIP premium seating area", "Lunch 496 / Dinner 596", "Garden visit, welcome ritual, show & banquet included", "Traditional costume and headwear included", "Select Experience"],
+      ["SVIP Seat", "SVIP premium seating area", "Lunch 496 / Dinner 596", "Garden visit, welcome ritual, show & banquet included", "Traditional costume and one professionally retouched photo included", "Select Experience"],
     ],
     journey: "From Garden Welcome to Banquet of Ba Kingdom",
     steps: ["Garden Visit", "Welcome Ritual", "Banquet", "Live Show", "Interaction", "Farewell"],
@@ -127,7 +127,7 @@ const copy = {
     tiers: [
       ["嘉賓體驗", "嘉賓席位", "午宴 238 / 晚宴 316", "含古風遊園、迎賓禮、演藝與宮宴", "標準觀演席位", "選擇此體驗"],
       ["貴賓體驗", "貴賓席位", "午宴 296 / 晚宴 458", "含古風遊園、迎賓禮、演藝與宮宴", "更佳觀演席位", "選擇此體驗"],
-      ["SVIP 體驗", "SVIP 席位", "午宴 496 / 晚宴 596", "含古風遊園、迎賓禮、演藝與宮宴", "贈送古裝服飾和古裝頭飾", "選擇此體驗"],
+      ["SVIP 體驗", "SVIP 席位", "午宴 496 / 晚宴 596", "含古風遊園、迎賓禮、演藝與宮宴", "贈送古裝服飾和專業精修照片一張", "選擇此體驗"],
     ],
     journey: "禮宴體驗之旅",
     steps: ["古風遊園", "迎賓禮", "入宴", "現場演藝", "互動體驗", "禮成離場"],
@@ -161,7 +161,7 @@ const copy = {
     tiers: [
       ["일반석", "일반 관람 좌석", "점심 238 / 저녁 316", "정원 관람, 환영 의식, 공연과 연회 포함", "일반 관람 위치", "이 좌석 선택"],
       ["VIP석", "VIP 관람 좌석", "점심 296 / 저녁 458", "정원 관람, 환영 의식, 공연과 연회 포함", "더 좋은 관람 위치", "이 좌석 선택"],
-      ["SVIP석", "SVIP 프리미엄 좌석", "점심 496 / 저녁 596", "정원 관람, 환영 의식, 공연과 연회 포함", "전통 의상과 머리 장식 포함", "이 좌석 선택"],
+      ["SVIP석", "SVIP 프리미엄 좌석", "점심 496 / 저녁 596", "정원 관람, 환영 의식, 공연과 연회 포함", "전통 의상과 전문 보정 사진 1장 포함", "이 좌석 선택"],
     ],
     journey: "리옌 바궈 체험 여정",
     steps: ["전통 정원 산책", "환영 의식", "연회 입장", "라이브 공연", "관객 참여", "마무리 인사"],
@@ -205,7 +205,7 @@ const copy = {
     tiers: [
       ["ゲスト席", "ゲストエリア", "ランチ 238 / ディナー 316", "庭園散策、出迎えの儀、ショー＆宴席を含む", "標準的な観覧席", "この体験を選ぶ"],
       ["VIP席", "VIPエリア", "ランチ 296 / ディナー 458", "庭園散策、出迎えの儀、ショー＆宴席を含む", "より良い観覧席", "この体験を選ぶ"],
-      ["SVIP席", "SVIPプレミアムエリア", "ランチ 496 / ディナー 596", "庭園散策、出迎えの儀、ショー＆宴席を含む", "伝統衣装と髪飾り付き", "この体験を選ぶ"],
+      ["SVIP席", "SVIPプレミアムエリア", "ランチ 496 / ディナー 596", "庭園散策、出迎えの儀、ショー＆宴席を含む", "伝統衣装とプロ仕上げのレタッチ写真1枚付き", "この体験を選ぶ"],
     ],
     journey: "礼宴巴国の体験の流れ",
     steps: ["庭園散策", "出迎えの儀", "宴席", "ライブショー", "交流体験", "お見送り"],

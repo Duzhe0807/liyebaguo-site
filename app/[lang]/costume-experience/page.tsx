@@ -29,13 +29,13 @@ export default async function Page({ params }: { params: Promise<{ lang: Lang }>
   const inclusions: [string, string, boolean][] = en
     ? [
       ["Traditional costume", "Included with SVIP", true],
-      ["Traditional headwear", "Included with SVIP", true],
+      ["One professionally retouched photo", "Included with SVIP", true],
     ]
-    : lang === "ja" ? [["伝統衣装", "SVIPに含まれます", true], ["伝統髪飾り", "SVIPに含まれます", true]]
-    : lang === "ko" ? [["전통 의상", "SVIP 포함", true], ["전통 머리 장식", "SVIP 포함", true]]
+    : lang === "ja" ? [["伝統衣装", "SVIPに含まれます", true], ["プロ仕上げのレタッチ写真1枚", "SVIPに含まれます", true]]
+    : lang === "ko" ? [["전통 의상", "SVIP 포함", true], ["전문 보정 사진 1장", "SVIP 포함", true]]
     : [
       ["古装服饰", "SVIP 席位赠送", true],
-      ["古装头饰", "SVIP 席位赠送", true],
+      [(lang === "tw" ? "專業精修照片一張" : "专业精修照片一张"), "SVIP 席位赠送", true],
     ];
   const lookLabels = en ? ["Palace elegance", "Outdoor garden portrait", "Group memory", "Stage atmosphere"] : lang === "ja" ? ["宮廷の装い", "庭園ポートレート", "グループの思い出", "舞台の雰囲気"] : lang === "ko" ? ["궁중의 우아함", "정원 야외 촬영", "단체 추억", "무대 분위기"] : ["宫廷雅致", "园林外景", "亲友合影", "舞台氛围"];
   const looks = [
@@ -44,10 +44,10 @@ export default async function Page({ params }: { params: Promise<{ lang: Lang }>
     ["/images/gallery-western-4.webp", lookLabels[2]],
     ["/images/gallery-hmt-4.webp", lookLabels[3]],
   ];
-  const page = en ? { title: "Costume Packages & Styling at Liyan Baguo", summary: "Plan traditional Chinese costume and headwear for your Banquet of Ba Kingdom visit in Chongqing. Compare ticket inclusions and discuss sizes, preparation and photo time with the official team before reserving.", lookbook: "LOOKBOOK", looks: "Four ways to step into the scene", flow: "HOW IT WORKS", flowTitle: "From fitting to photograph", included: "WHAT IS INCLUDED", includedTitle: "What SVIP includes", faqTitle: "Costume questions", faq: [["What does SVIP include?", "SVIP includes traditional costume and traditional headwear."], ["Can I choose a style?", "Choices depend on availability, size and session."], ["When should I arrive?", "The team will provide an arrival time after the costume service is confirmed."]] }
-    : lang === "ja" ? { title: "伝統衣装 · 着付けと撮影", summary: "衣装選びから着付け、撮影まで、華服を礼宴の物語に取り入れます。", lookbook: "スタイル紹介", looks: "場面に溶け込む四つの装い", flow: "体験の流れ", flowTitle: "試着から撮影まで", included: "含まれる内容", includedTitle: "SVIPに含まれるもの", faqTitle: "衣装のよくある質問", faq: [["SVIPには何が含まれますか？", "伝統衣装と髪飾りが含まれます。"], ["スタイルを選べますか？", "在庫、サイズ、公演時間により異なります。"], ["何時に到着すればよいですか？", "衣装サービス確定後にご案内します。"]] }
-    : lang === "ko" ? { title: "전통 의상 · 스타일링과 촬영", summary: "의상 선택부터 스타일링과 촬영까지 전통 의상을 연회 여정에 자연스럽게 더합니다.", lookbook: "스타일 미리보기", looks: "장면에 어울리는 네 가지 스타일", flow: "체험 과정", flowTitle: "피팅부터 촬영까지", included: "포함 사항", includedTitle: "SVIP 포함 내용", faqTitle: "의상 자주 묻는 질문", faq: [["SVIP에는 무엇이 포함되나요?", "전통 의상과 머리 장식이 포함됩니다."], ["스타일을 선택할 수 있나요?", "재고, 사이즈와 회차에 따라 달라집니다."], ["언제 도착해야 하나요?", "의상 서비스 확정 후 도착 시간을 안내합니다."]] }
-    : { title: "华服体验 · 妆造与留影", summary: "从选款、妆造到场景留影，让华服自然融入整场礼宴。", lookbook: "造型预览", looks: "四种融入场景的方式", flow: "体验流程", flowTitle: "从试穿到留影", included: "包含内容", includedTitle: "SVIP 赠送项目", faqTitle: "古装常见问题", faq: [["SVIP 赠送什么？", "SVIP 席位赠送古装服饰和古装头饰。"], ["可以现场选款吗？", "可选范围取决于库存、尺码和预约时段。"], ["需要提前多久到？", "确认古装服务后，工作人员会告知对应到场时间。"]] };
+  const page = en ? { title: "Costume Packages & Styling at Liyan Baguo", summary: "Plan traditional Chinese costume and an SVIP retouched photo for your Banquet of Ba Kingdom visit in Chongqing. Compare ticket inclusions and discuss sizes, preparation and photo time with the official team before reserving.", lookbook: "LOOKBOOK", looks: "Four ways to step into the scene", flow: "HOW IT WORKS", flowTitle: "From fitting to photograph", included: "WHAT IS INCLUDED", includedTitle: "What SVIP includes", faqTitle: "Costume questions", faq: [["What does SVIP include?", "SVIP includes traditional costume and one professionally retouched photo."], ["Can I choose a style?", "Choices depend on availability, size and session."], ["When should I arrive?", "The team will provide an arrival time after the costume service is confirmed."]] }
+    : lang === "ja" ? { title: "伝統衣装 · 着付けと撮影", summary: "衣装選びから着付け、撮影まで、華服を礼宴の物語に取り入れます。", lookbook: "スタイル紹介", looks: "場面に溶け込む四つの装い", flow: "体験の流れ", flowTitle: "試着から撮影まで", included: "含まれる内容", includedTitle: "SVIPに含まれるもの", faqTitle: "衣装のよくある質問", faq: [["SVIPには何が含まれますか？", "伝統衣装とプロ仕上げのレタッチ写真1枚が含まれます。"], ["スタイルを選べますか？", "在庫、サイズ、公演時間により異なります。"], ["何時に到着すればよいですか？", "衣装サービス確定後にご案内します。"]] }
+    : lang === "ko" ? { title: "전통 의상 · 스타일링과 촬영", summary: "의상 선택부터 스타일링과 촬영까지 전통 의상을 연회 여정에 자연스럽게 더합니다.", lookbook: "스타일 미리보기", looks: "장면에 어울리는 네 가지 스타일", flow: "체험 과정", flowTitle: "피팅부터 촬영까지", included: "포함 사항", includedTitle: "SVIP 포함 내용", faqTitle: "의상 자주 묻는 질문", faq: [["SVIP에는 무엇이 포함되나요?", "전통 의상과 전문 보정 사진 1장이 포함됩니다."], ["스타일을 선택할 수 있나요?", "재고, 사이즈와 회차에 따라 달라집니다."], ["언제 도착해야 하나요?", "의상 서비스 확정 후 도착 시간을 안내합니다."]] }
+    : { title: "华服体验 · 妆造与留影", summary: "从选款、妆造到场景留影，让华服自然融入整场礼宴。", lookbook: "造型预览", looks: "四种融入场景的方式", flow: "体验流程", flowTitle: "从试穿到留影", included: "包含内容", includedTitle: "SVIP 赠送项目", faqTitle: "古装常见问题", faq: [["SVIP 赠送什么？", (lang === "tw" ? "SVIP 席位贈送古裝服飾和專業精修照片一張。" : "SVIP 席位赠送古装服饰和专业精修照片一张。")], ["可以现场选款吗？", "可选范围取决于库存、尺码和预约时段。"], ["需要提前多久到？", "确认古装服务后，工作人员会告知对应到场时间。"]] };
 
   return <InnerPageShell lang={lang} eyebrow="COSTUME EXPERIENCE" title={page.title} summary={page.summary} image="/images/gallery-hmt-1.webp">
     <section className="inner-section costume-lookbook"><p className="eyebrow">{page.lookbook}</p><h2>{page.looks}</h2><div className="lookbook-grid">{looks.map(([src, caption]) => <figure key={src}><Image src={src} alt={caption} fill sizes="(max-width:760px) 92vw,23vw" /><figcaption>{caption}</figcaption></figure>)}</div></section>

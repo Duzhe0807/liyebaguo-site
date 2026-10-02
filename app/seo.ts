@@ -74,7 +74,7 @@ const en: SiteSeo = {
   },
   costume: {
     title: "Costume Packages & Styling at Liyan Baguo, Chongqing",
-    description: "Compare traditional costume and headwear inclusions at Liyan Baguo in Chongqing. Plan sizes, styling time and photo needs before your banquet visit.",
+    description: "Compare traditional costume and one professionally retouched photo inclusions at Liyan Baguo in Chongqing. Plan sizes, styling time and photo needs before your banquet visit.",
   },
   showTimes: {
     title: "Chongqing Dinner Show Tickets & Times | Liyan Baguo",
